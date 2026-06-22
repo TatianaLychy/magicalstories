@@ -13,6 +13,8 @@ import {
 } from '../../../lib/storyData';
 import { checkAccess } from '../../../lib/access';
 
+export const dynamic = 'force-dynamic';
+
 function secureRandom(max) {
   return crypto.randomInt(0, max);
 }
@@ -71,9 +73,12 @@ function makeTitle(tale) {
 }
 
 export async function POST(request) {
-  const hasAccess = await checkAccess(request);
-  if (!hasAccess) {
-    return NextResponse.json({ error: 'Subscription required' }, { status: 403 });
+  const access = await checkAccess(request);
+  if (!access.hasAccess) {
+    let status = 403;
+    if (access.reason === "not_logged_in") status = 401;
+    if (access.reason === "check_failed") status = 503;
+    return NextResponse.json({ error: access.reason }, { status });
   }
 
   const body = await request.json().catch(() => ({}));

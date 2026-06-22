@@ -18,10 +18,14 @@ export default function Page() {
         body: JSON.stringify({ used: usedOverride ?? used }),
       });
       if (!res.ok) {
-        if (res.status === 403) {
-          setResult({ error: 'Subscription required to use this generator.' });
+        if (res.status === 401) {
+          setResult({ error: 'login_required' });
+        } else if (res.status === 403) {
+          setResult({ error: 'subscription_required' });
+        } else if (res.status === 503) {
+          setResult({ error: 'check_failed' });
         } else {
-          setResult({ error: 'Something went wrong. Please try again.' });
+          setResult({ error: 'unknown' });
         }
         return;
       }
@@ -168,7 +172,43 @@ export default function Page() {
           </button>
         </div>
 
-        {result?.error && <div className="error-box">{result.error}</div>}
+        {result?.error === 'login_required' && (
+          <div className="story-card" style={{ textAlign: 'center' }}>
+            <p style={{ color: '#e8f0e6', marginBottom: '1.25rem' }}>
+              Sign in with your Whop account to use the generator.
+            </p>
+            <a href="/api/auth/login" className="main-button" style={{ textDecoration: 'none', display: 'inline-flex' }}>
+              <span>🔑</span>
+              <span>Sign in with Whop</span>
+            </a>
+          </div>
+        )}
+
+        {result?.error === 'subscription_required' && (
+          <div className="story-card" style={{ textAlign: 'center' }}>
+            <p style={{ color: '#e8f0e6', marginBottom: '1.25rem' }}>
+              You're signed in, but you don't have an active subscription yet.
+            </p>
+            <a
+              href={process.env.NEXT_PUBLIC_CHECKOUT_URL || '#'}
+              className="main-button"
+              style={{ textDecoration: 'none', display: 'inline-flex' }}
+            >
+              <span>✨</span>
+              <span>Subscribe now</span>
+            </a>
+          </div>
+        )}
+
+        {result?.error === 'check_failed' && (
+          <div className="error-box">
+            Couldn't verify your subscription right now. Please try again in a moment.
+          </div>
+        )}
+
+        {result?.error === 'unknown' && (
+          <div className="error-box">Something went wrong. Please try again.</div>
+        )}
 
         {result && !result.error && (
           <div className="story-card">
