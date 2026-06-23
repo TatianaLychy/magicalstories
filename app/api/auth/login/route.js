@@ -22,6 +22,7 @@ function sha256base64url(input) {
 export async function GET(request) {
   const codeVerifier = randomString(32);
   const state = randomString(16);
+  const nonce = randomString(16);
   const codeChallenge = sha256base64url(codeVerifier);
 
   const appId = process.env.NEXT_PUBLIC_WHOP_APP_ID;
@@ -33,6 +34,7 @@ export async function GET(request) {
     redirect_uri: redirectUri,
     scope: "openid",
     state,
+    nonce,
     code_challenge: codeChallenge,
     code_challenge_method: "S256",
   });
@@ -43,7 +45,7 @@ export async function GET(request) {
 
   // Short-lived cookie to verify the callback (10 minutes)
   const pkcePayload = Buffer.from(
-    JSON.stringify({ codeVerifier, state })
+    JSON.stringify({ codeVerifier, state, nonce })
   ).toString("base64url");
 
   response.cookies.set("whop_oauth_pkce", pkcePayload, {
