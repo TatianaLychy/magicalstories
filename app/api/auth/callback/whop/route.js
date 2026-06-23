@@ -9,8 +9,12 @@ export async function GET(request) {
   const state = url.searchParams.get("state");
   const error = url.searchParams.get("error");
 
+  const errorDescription = url.searchParams.get("error_description");
+
   if (error) {
-    return NextResponse.redirect(new URL("/?login_error=1", request.url));
+    const params = new URLSearchParams({ login_error: error });
+    if (errorDescription) params.set("desc", errorDescription);
+    return NextResponse.redirect(new URL(`/?${params}`, request.url));
   }
 
   const pkceCookie = request.cookies.get("whop_oauth_pkce")?.value;
@@ -44,7 +48,10 @@ export async function GET(request) {
   });
 
   if (!tokenRes.ok) {
-    return NextResponse.redirect(new URL("/?login_error=token", request.url));
+    const bodyText = await tokenRes.text().catch(() => "");
+    const params = new URLSearchParams({ login_error: "token" });
+    if (bodyText) params.set("desc", bodyText.slice(0, 200));
+    return NextResponse.redirect(new URL(`/?${params}`, request.url));
   }
 
   const tokens = await tokenRes.json();

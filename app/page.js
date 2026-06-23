@@ -1,12 +1,21 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Page() {
   const [used, setUsed] = useState({});
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [loginErrorDetail, setLoginErrorDetail] = useState(null);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const loginError = params.get('login_error');
+    if (loginError) {
+      setLoginErrorDetail({ code: loginError, desc: params.get('desc') });
+    }
+  }, []);
 
   async function generate(usedOverride) {
     setLoading(true);
@@ -171,6 +180,19 @@ export default function Page() {
             <span>New Session</span>
           </button>
         </div>
+
+        {loginErrorDetail && (
+          <div className="error-box" style={{ marginBottom: '1.5rem', textAlign: 'center' }}>
+            <div><strong>Sign-in error:</strong> {loginErrorDetail.code}</div>
+            {loginErrorDetail.desc && <div style={{ marginTop: '0.5rem', fontSize: '0.85rem' }}>{decodeURIComponent(loginErrorDetail.desc)}</div>}
+            <div style={{ marginTop: '1rem' }}>
+              <a href="/api/auth/login" className="main-button" style={{ textDecoration: 'none', display: 'inline-flex' }}>
+                <span>🔑</span>
+                <span>Try signing in again</span>
+              </a>
+            </div>
+          </div>
+        )}
 
         {result?.error === 'login_required' && (
           <div className="story-card" style={{ textAlign: 'center' }}>
