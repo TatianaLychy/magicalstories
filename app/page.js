@@ -30,7 +30,7 @@ const generators = [
     description:
       "Create endless greeting card concepts with floral compositions, ready to paste into Midjourney v7.",
     tag: "Midjourney v7",
-    file: "/Flower-Greeting-Cards-Generator-EN.html",
+    file: "/Flower-Cards-Generator.html",
     active: true,
   },
   {
