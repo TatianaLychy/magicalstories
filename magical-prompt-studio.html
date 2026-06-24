@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magical Prompt Studio — Tatiana Lychy</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--gold:#d4af37;--gold-dim:rgba(212,175,55,0.3);--gold-faint:rgba(212,175,55,0.08);--cream:#f0e6c8;--sage:#a8c5a0;--sage-dim:#6a9e62;--panel:rgba(13,32,22,0.75);--border:rgba(212,175,55,0.18)}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:Georgia,'Times New Roman',serif;min-height:100vh;background:linear-gradient(160deg,#0a1a0e 0%,#1a3a1f 35%,#2d5a27 65%,#1a3a1f 85%,#0a1a0e 100%);background-attachment:fixed;color:var(--cream);overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 10%,rgba(212,175,55,0.05) 0%,transparent 55%),radial-gradient(ellipse at 80% 90%,rgba(212,175,55,0.04) 0%,transparent 55%);pointer-events:none;z-index:0}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(10,26,14,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-size:1rem;font-style:italic;color:var(--gold);letter-spacing:0.04em;cursor:pointer}
+.nav-links{display:flex;gap:1.75rem;align-items:center}
+.nav-links a{font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--sage);text-decoration:none;transition:color 0.2s;cursor:pointer}
+.nav-links a:hover{color:var(--gold)}
+.nav-cta{color:#0a1a0e!important;background:var(--gold);padding:0.4rem 1.1rem;border-radius:9999px;font-style:normal}
+#view-generator{display:none;position:fixed;inset:0;z-index:300;background:#0a1a0e;flex-direction:column}
+#view-generator.active{display:flex}
+.gen-topbar{height:48px;background:rgba(10,26,14,0.96);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;flex-shrink:0}
+.gen-topbar-title{font-size:0.85rem;font-style:italic;color:var(--gold)}
+.back-btn{display:flex;align-items:center;gap:0.5rem;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--sage);background:none;border:1px solid var(--border);padding:0.3rem 0.9rem;border-radius:9999px;cursor:pointer;transition:color 0.2s,border-color 0.2s}
+.back-btn:hover{color:var(--gold);border-color:var(--gold-dim)}
+.gen-frame{flex:1;border:none;width:100%}
+.page{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 1.5rem 6rem}
+.hero{text-align:center;padding:7rem 0 4rem}
+.hero-orn{display:block;color:var(--gold);font-size:0.75rem;letter-spacing:0.55em;opacity:0.6;margin-bottom:1.5rem}
+.hero h1{font-size:clamp(2.4rem,6vw,4rem);font-weight:normal;color:var(--cream);letter-spacing:0.04em;line-height:1.15;text-shadow:0 2px 32px rgba(212,175,55,0.15);margin-bottom:0.4rem}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero-sub{font-size:0.98rem;color:var(--sage);font-style:italic;margin:0.9rem 0 2.5rem;line-height:1.65}
+.hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.btn-gold{display:inline-block;padding:0.8rem 2rem;background:linear-gradient(135deg,#b8922a 0%,#d4af37 50%,#b8922a 100%);color:#0a1a0e;font-family:Georgia,serif;font-size:0.95rem;font-style:italic;letter-spacing:0.05em;border-radius:9999px;text-decoration:none;border:none;cursor:pointer;transition:all 0.25s;box-shadow:0 4px 18px rgba(212,175,55,0.22)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(212,175,55,0.32)}
+.btn-outline{display:inline-block;padding:0.8rem 2rem;background:transparent;color:var(--gold);font-family:Georgia,serif;font-size:0.95rem;font-style:italic;letter-spacing:0.05em;border-radius:9999px;border:1px solid var(--gold-dim);text-decoration:none;cursor:pointer;transition:all 0.25s}
+.btn-outline:hover{border-color:var(--gold);background:var(--gold-faint);transform:translateY(-2px)}
+section{padding:4.5rem 0}
+section+section{border-top:1px solid rgba(212,175,55,0.07)}
+.section-head{text-align:center;margin-bottom:2.5rem}
+.sec-label{display:block;font-size:0.7rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--gold);opacity:0.65;margin-bottom:0.8rem}
+.section-head h2{font-size:clamp(1.6rem,3.5vw,2.3rem);font-weight:normal;color:var(--cream)}
+.section-head h2 em{color:var(--gold)}
+.section-head p{font-size:0.9rem;color:var(--sage);font-style:italic;margin-top:0.6rem;line-height:1.65}
+.gen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+.gen-card{background:var(--panel);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:1.2rem;padding:1.8rem 1.5rem;cursor:pointer;transition:transform 0.25s,border-color 0.25s,box-shadow 0.25s;position:relative;overflow:hidden;text-align:left;display:flex;flex-direction:column}
+.gen-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold-dim),transparent);opacity:0;transition:opacity 0.3s}
+.gen-card:hover{transform:translateY(-5px);border-color:rgba(212,175,55,0.4);box-shadow:0 16px 40px rgba(0,0,0,0.5)}
+.gen-card:hover::after{opacity:1}
+.gen-icon{font-size:2.2rem;margin-bottom:1rem}
+.gen-card h3{font-size:1.1rem;font-weight:normal;color:var(--cream);margin-bottom:0.55rem;line-height:1.3}
+.gen-card p{font-size:0.83rem;color:var(--sage);font-style:italic;line-height:1.65;flex:1}
+.gen-tag{display:inline-block;font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold-dim);padding:2px 9px;border-radius:9999px;margin-top:1rem}
+.gen-open{margin-top:1.2rem;width:100%;padding:0.65rem;background:transparent;color:var(--gold);font-family:Georgia,serif;font-size:0.85rem;font-style:italic;letter-spacing:0.06em;border:1px solid var(--gold-dim);border-radius:0.5rem;cursor:pointer;transition:all 0.2s}
+.gen-open:hover{background:var(--gold-faint);border-color:var(--gold)}
+.gen-card.soon{opacity:0.5;cursor:default;pointer-events:none}
+.soon-badge{position:absolute;top:1rem;right:1rem;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;background:rgba(212,175,55,0.1);color:var(--gold);border:1px solid var(--gold-dim);padding:2px 8px;border-radius:9999px}
+.steps{display:flex;flex-direction:column;max-width:580px;margin:0 auto}
+.step{display:grid;grid-template-columns:52px 1fr;gap:1.25rem;align-items:start;padding:1.5rem 0;border-bottom:1px solid rgba(212,175,55,0.07)}
+.step:last-child{border-bottom:none}
+.step-n{font-size:1.8rem;font-style:italic;color:var(--gold);opacity:0.4;line-height:1;text-align:center;padding-top:2px}
+.step h3{font-size:0.95rem;font-weight:normal;color:var(--cream);margin-bottom:0.3rem}
+.step p{font-size:0.85rem;color:var(--sage);font-style:italic;line-height:1.7}
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:660px;margin:0 auto}
+.price-card{background:var(--panel);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:1.4rem;padding:2rem 1.6rem;text-align:center;transition:transform 0.25s,box-shadow 0.25s;position:relative}
+.price-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,0.5)}
+.price-card.featured{border-color:rgba(212,175,55,0.45);background:rgba(13,32,22,0.92)}
+.price-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--gold);color:#0a1a0e;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;padding:3px 13px;border-radius:9999px;white-space:nowrap}
+.price-plan{font-size:0.68rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);opacity:0.75;margin-bottom:1rem}
+.price-amount{font-size:3rem;font-weight:normal;font-style:italic;color:var(--cream);line-height:1;margin-bottom:0.2rem}
+.price-period{font-size:0.82rem;color:var(--sage);font-style:italic;margin-bottom:0.9rem}
+.trial-pill{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.72rem;letter-spacing:0.06em;background:rgba(212,175,55,0.1);color:var(--gold);border:1px solid rgba(212,175,55,0.28);border-radius:9999px;padding:4px 13px;margin-bottom:1.5rem}
+.trial-pill .dot{width:5px;height:5px;border-radius:50%;background:var(--gold);opacity:0.7;flex-shrink:0}
+.price-features{list-style:none;text-align:left;margin-bottom:1.8rem}
+.price-features li{font-size:0.83rem;color:var(--sage);font-style:italic;padding:0.5rem 0;border-bottom:1px solid rgba(212,175,55,0.06);display:flex;gap:0.55rem;align-items:flex-start;line-height:1.5}
+.price-features li::before{content:'✦';color:var(--gold);opacity:0.5;font-size:0.6em;flex-shrink:0;margin-top:0.35em}
+.price-note{text-align:center;font-size:0.78rem;color:var(--sage);font-style:italic;opacity:0.55;margin-top:1.2rem}
+.faq-list{max-width:580px;margin:0 auto}
+.faq-item{border-bottom:1px solid rgba(212,175,55,0.1)}
+.faq-q{width:100%;text-align:left;background:none;border:none;padding:1.2rem 0;font-family:Georgia,serif;font-size:0.92rem;color:var(--cream);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem;transition:color 0.2s}
+.faq-q:hover{color:var(--gold)}
+.faq-icon{color:var(--gold);font-size:1.2rem;flex-shrink:0;transition:transform 0.3s;line-height:1}
+.faq-item.open .faq-icon{transform:rotate(45deg)}
+.faq-a{font-size:0.86rem;color:var(--sage);font-style:italic;line-height:1.8;max-height:0;overflow:hidden;transition:max-height 0.35s cubic-bezier(0.16,1,0.3,1),padding-bottom 0.35s}
+.faq-item.open .faq-a{max-height:240px;padding-bottom:1.2rem}
+.cta-block{text-align:center;padding:3.5rem 2rem;background:rgba(13,32,22,0.7);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:1.4rem;margin:1.5rem 0}
+.cta-block h2{font-size:clamp(1.4rem,3vw,2rem);font-weight:normal;color:var(--cream);margin-bottom:0.7rem;line-height:1.3}
+.cta-block h2 em{color:var(--gold)}
+.cta-block p{font-size:0.9rem;color:var(--sage);font-style:italic;margin-bottom:1.8rem;line-height:1.65}
+footer{text-align:center;padding:2rem 0 1rem;border-top:1px solid rgba(212,175,55,0.08)}
+footer p{font-size:0.85rem;color:var(--sage-dim);font-style:italic;line-height:2}
+footer .copy{font-size:0.72rem;color:rgba(212,175,55,0.3);letter-spacing:0.06em;margin-top:0.4rem}
+.copyright-badge{position:fixed;top:1rem;right:1rem;background:rgba(10,26,14,0.82);backdrop-filter:blur(14px);padding:0.35rem 0.85rem;border-radius:0.4rem;border:1px solid var(--gold-dim);z-index:999;color:var(--gold);font-size:0.72rem;font-style:italic}
+.fade-in{opacity:0;transition:opacity 0.6s ease,transform 0.6s ease;transform:translateY(18px)}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+@media(max-width:680px){nav{padding:0 1rem}.nav-links a:not(.nav-cta){display:none}.gen-grid{grid-template-columns:1fr 1fr}.pricing-grid{grid-template-columns:1fr;max-width:340px}.hero{padding:5rem 0 3rem}.hero-btns{flex-direction:column;align-items:center}}
+@media(max-width:440px){.gen-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="copyright-badge">© 2026 Tatiana Lychy</div>
+<nav>
+  <span class="nav-logo" onclick="showLanding()">✦ Magical Prompt Studio</span>
+  <div class="nav-links">
+    <a onclick="goTo('#generators')">Generators</a>
+    <a onclick="goTo('#pricing')">Pricing</a>
+    <a onclick="goTo('#faq')">FAQ</a>
+    <a onclick="goTo('#pricing')" class="nav-cta">Start Free Trial</a>
+  </div>
+</nav>
+<div id="view-generator">
+  <div class="gen-topbar">
+    <button class="back-btn" onclick="showLanding()">← Back to Studio</button>
+    <span class="gen-topbar-title" id="gen-topbar-title"></span>
+    <span style="width:120px"></span>
+  </div>
+  <iframe class="gen-frame" id="gen-frame" title="Generator"></iframe>
+</div>
+<div id="view-landing">
+<div class="page">
+  <section class="hero">
+    <span class="hero-orn">✦ &nbsp;&nbsp;&nbsp; ✦ &nbsp;&nbsp;&nbsp; ✦</span>
+    <h1><em>Magical</em> Prompt Studio</h1>
+    <p class="hero-sub">A private library of AI generators for animators, illustrators &amp; storytellers</p>
+    <div class="hero-btns">
+      <a onclick="goTo('#pricing')" class="btn-gold" style="cursor:pointer">Start 3-Day Free Trial</a>
+      <a onclick="goTo('#generators')" class="btn-outline" style="cursor:pointer">Explore the Generators</a>
+    </div>
+  </section>
+  <section id="generators">
+    <div class="section-head">
+      <span class="sec-label">✦ The Collection ✦</span>
+      <h2>The <em>Generators</em></h2>
+      <p>Three professional tools — more added every month.</p>
+    </div>
+    <div class="gen-grid">
+      <div class="gen-card fade-in" onclick="openGenerator('artist')">
+        <div class="gen-icon">🎨</div>
+        <h3>The Artist's Vision</h3>
+        <p>Describe any scene — receive it painted by 90+ masters. From Rembrandt to Bilibin, Klimt to Bouguereau.</p>
+        <span class="gen-tag">Midjourney</span>
+        <button class="gen-open" onclick="event.stopPropagation();openGenerator('artist')">Open Generator →</button>
+      </div>
+      <div class="gen-card fade-in" onclick="openGenerator('fairy')">
+        <div class="gen-icon">📖</div>
+        <h3>Storybook Character Generator</h3>
+        <p>Fairy tale characters in flat-lay photography style — complete prompts for Midjourney &amp; Seedance 2.0.</p>
+        <span class="gen-tag">Midjourney · Seedance</span>
+        <button class="gen-open" onclick="event.stopPropagation();openGenerator('fairy')">Open Generator →</button>
+      </div>
+      <div class="gen-card fade-in" onclick="openGenerator('flower')">
+        <div class="gen-icon">🌸</div>
+        <h3>Flower Greeting Cards</h3>
+        <p>Endless unique greeting card ideas with flowers — every prompt ready for Midjourney v7.</p>
+        <span class="gen-tag">Midjourney v7</span>
+        <button class="gen-open" onclick="event.stopPropagation();openGenerator('flower')">Open Generator →</button>
+      </div>
+      <div class="gen-card soon fade-in"><span class="soon-badge">Coming Soon</span><div class="gen-icon" style="opacity:0.4">✨</div><h3>Kling Animation Builder</h3><p>Camera moves, motion, cinematic mood — structured prompts for Kling AI video.</p><span class="gen-tag">Kling</span></div>
+      <div class="gen-card soon fade-in"><span class="soon-badge">Coming Soon</span><div class="gen-icon" style="opacity:0.4">🎬</div><h3>Seedance Scene Generator</h3><p>Multi-shot sequences with consistent atmosphere for Seedance 2.0 workflows.</p><span class="gen-tag">Seedance</span></div>
+      <div class="gen-card soon fade-in"><span class="soon-badge">Coming Soon</span><div class="gen-icon" style="opacity:0.4">🖼️</div><h3>Character Consistency Sheet</h3><p>One character across multiple poses and scenes — perfectly consistent.</p><span class="gen-tag">Midjourney</span></div>
+    </div>
+  </section>
+  <section>
+    <div class="section-head"><span class="sec-label">✦ The Process ✦</span><h2>How it <em>works</em></h2></div>
+    <div class="steps">
+      <div class="step fade-in"><div class="step-n">I</div><div><h3>Try for Free</h3><p>There is a 3-day free trial when you subscribe. Full access to all generators — no charge until the trial ends.</p></div></div>
+      <div class="step fade-in"><div class="step-n">II</div><div><h3>Choose a Generator</h3><p>Open any tool from the library. Each one is purpose-built for a specific creative workflow.</p></div></div>
+      <div class="step fade-in"><div class="step-n">III</div><div><h3>Generate Your Prompt</h3><p>Fill the fields, click generate. A perfectly structured prompt appears — ready to paste into Midjourney, Kling or Seedance.</p></div></div>
+      <div class="step fade-in"><div class="step-n">IV</div><div><h3>Create &amp; Return</h3><p>New generators are added every month — your library grows with your subscription.</p></div></div>
+    </div>
+  </section>
+  <section id="pricing">
+    <div class="section-head"><span class="sec-label">✦ Subscription ✦</span><h2>Choose Your <em>Plan</em></h2><p>Simple, honest pricing. Cancel anytime.</p></div>
+    <div class="pricing-grid">
+      <div class="price-card fade-in">
+        <div class="price-plan">Monthly</div>
+        <div class="price-amount">$12.99</div>
+        <div class="price-period">per month</div>
+        <div class="trial-pill"><span class="dot"></span>3-day free trial</div>
+        <ul class="price-features">
+          <li>Full access to all generators</li>
+          <li>New tools added every month</li>
+          <li>Works in any browser — no downloads</li>
+          <li>Cancel anytime</li>
+        </ul>
+        <a href="#" class="btn-outline" style="width:100%;text-align:center;display:block;border-radius:0.6rem">Start Free Trial</a>
+      </div>
+      <div class="price-card featured fade-in">
+        <div class="price-badge">Best Value — Save 42%</div>
+        <div class="price-plan">Yearly</div>
+        <div class="price-amount">$90</div>
+        <div class="price-period">per year · $7.50 / month</div>
+        <div class="trial-pill"><span class="dot"></span>3-day free trial</div>
+        <ul class="price-features">
+          <li>Everything in Monthly</li>
+          <li>Priority access to new generators</li>
+          <li>Exclusive bonus style packs</li>
+          <li>One payment, full year</li>
+        </ul>
+        <a href="#" class="btn-gold" style="width:100%;text-align:center;display:block;border-radius:0.6rem">Start Free Trial</a>
+      </div>
+    </div>
+    <p class="price-note">✦ &nbsp; No charge until the trial ends &nbsp; ✦</p>
+  </section>
+  <section id="faq">
+    <div class="section-head"><span class="sec-label">✦ Questions ✦</span><h2><em>Frequently</em> Asked</h2></div>
+    <div class="faq-list">
+      <div class="faq-item open"><button class="faq-q" aria-expanded="true">Can I download the generators?<span class="faq-icon">+</span></button><div class="faq-a">No — all generators run exclusively inside Magical Prompt Studio. They are never available as files to download. Log in from any browser to use them.</div></div>
+      <div class="faq-item"><button class="faq-q" aria-expanded="false">Is there a free trial?<span class="faq-icon">+</span></button><div class="faq-a">Yes — both plans include a 3-day free trial. You get full access to all generators, and nothing is charged until the trial ends.</div></div>
+      <div class="faq-item"><button class="faq-q" aria-expanded="false">What happens if I cancel?<span class="faq-icon">+</span></button><div class="faq-a">Access to all generators pauses until your subscription is renewed. Any prompts you have already copied remain yours — the studio simply waits for your return.</div></div>
+      <div class="faq-item"><button class="faq-q" aria-expanded="false">Which AI tools are the generators for?<span class="faq-icon">+</span></button><div class="faq-a">The generators are tested for Midjourney, Kling, and Seedance / Seedance 2.0. Each generator clearly states which platform it targets.</div></div>
+      <div class="faq-item"><button class="faq-q" aria-expanded="false">How often are new generators added?<span class="faq-icon">+</span></button><div class="faq-a">At least one new generator is added every month. Yearly subscribers receive early access before monthly members.</div></div>
+    </div>
+  </section>
+  <div class="cta-block fade-in">
+    <h2>Begin creating <em>today</em></h2>
+    <p>Both plans include a 3-day free trial. No charge until it ends — cancel anytime.</p>
+    <a onclick="goTo('#pricing')" class="btn-gold" style="cursor:pointer">Choose Your Plan</a>
+  </div>
+  <footer>
+    <p style="font-size:1rem;color:var(--sage)">Every ordinary scene deserves an extraordinary vision</p>
+    <p>Created with love by Tatiana Lychy</p>
+    <p class="copy">© 2026 Tatiana Lychy — All Rights Reserved · Generators are protected. Downloading or redistribution is prohibited.</p>
+  </footer>
+</div>
+</div>
+<script>
+const G={artist:{title:"The Artist's Vision",src:'Artist-s-Vision.html'},fairy:{title:"Storybook Character Generator",src:'FairyTale-Flat-lay-photography-style.html'},flower:{title:"Flower Greeting Cards Generator",src:'Flower-Greeting-Cards-Generator-EN.html'}};
+function openGenerator(k){const g=G[k];if(!g)return;document.getElementById('gen-topbar-title').textContent=g.title;document.getElementById('gen-frame').src=g.src;document.getElementById('view-landing').style.display='none';document.getElementById('view-generator').classList.add('active');document.body.style.overflow='hidden'}
+function showLanding(){document.getElementById('view-generator').classList.remove('active');document.getElementById('view-landing').style.display='block';document.getElementById('gen-frame').src='';document.body.style.overflow=''}
+function goTo(h){showLanding();setTimeout(()=>{const el=document.querySelector(h);if(el)el.scrollIntoView({behavior:'smooth',block:'start'})},50)}
+document.querySelectorAll('.faq-q').forEach(btn=>{btn.addEventListener('click',()=>{const item=btn.closest('.faq-item'),isOpen=item.classList.contains('open');document.querySelectorAll('.faq-item').forEach(i=>{i.classList.remove('open');i.querySelector('.faq-q').setAttribute('aria-expanded','false')});if(!isOpen){item.classList.add('open');btn.setAttribute('aria-expanded','true')}})});
+document.querySelectorAll('.fade-in').forEach(el=>new IntersectionObserver(([e])=>{if(e.isIntersecting)e.target.classList.add('visible')},{threshold:0.1}).observe(el));
+</script>
+</body>
+</html>

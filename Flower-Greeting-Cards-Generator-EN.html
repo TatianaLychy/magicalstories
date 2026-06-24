@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flower Greeting Cards Generator | Tatiana Lychy</title>
+    <meta name="author" content="Tatiana Lychy">
+    <meta name="copyright" content="© 2026 Tatiana Lychy. All rights reserved.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .min-h-screen {
+            min-height: 100vh;
+        }
+
+        .bg-gradient {
+            background: linear-gradient(135deg, #1e3a20 0%, #2d5016 50%, #c2410c 100%);
+        }
+
+        .container {
+            max-width: 896px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .header-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 96px;
+            height: 96px;
+            background: linear-gradient(135deg, #fbbf24, #f97316, #dc2626);
+            border-radius: 50%;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: #fef3c7;
+            margin-bottom: 1rem;
+        }
+
+        .possibilities-badge {
+            display: inline-block;
+            background: rgba(251, 191, 36, 0.2);
+            border: 2px solid #fbbf24;
+            border-radius: 9999px;
+            padding: 0.5rem 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .possibilities-text {
+            color: #fde68a;
+            font-weight: bold;
+            font-size: 1.125rem;
+        }
+
+        .stats-box {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stats-text {
+            color: white;
+        }
+
+        .count-number {
+            font-weight: bold;
+            font-size: 1.875rem;
+            color: #fcd34d;
+            margin: 0 0.5rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .main-button {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem 3rem;
+            background: linear-gradient(90deg, #dc2626, #ea580c, #d97706);
+            color: white;
+            border: none;
+            border-radius: 9999px;
+            font-weight: bold;
+            font-size: 1.25rem;
+            font-family: Georgia, serif;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .main-button:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 20px 25px -5px rgba(220, 38, 38, 0.5);
+        }
+
+        .main-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .shuffle-button {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem 3rem;
+            background: linear-gradient(90deg, #84cc16, #16a34a, #059669);
+            color: white;
+            border: none;
+            border-radius: 9999px;
+            font-weight: bold;
+            font-size: 1.25rem;
+            font-family: Georgia, serif;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .shuffle-button:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 20px 25px -5px rgba(132, 204, 22, 0.5);
+        }
+
+        .shuffle-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .idea-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .idea-header {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .icon-box {
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #fbbf24, #f97316);
+            border-radius: 0.75rem;
+        }
+
+        .idea-title {
+            font-size: 1.875rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .description-box {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .description-text {
+            color: #fef3c7;
+            font-size: 1.125rem;
+            line-height: 1.75;
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fde68a;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+
+        .prompt-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 2px solid rgba(251, 191, 36, 0.3);
+        }
+
+        .prompt-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            color: #fde68a;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .prompt-text {
+            color: white;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.5rem;
+            word-wrap: break-word;
+        }
+
+        .copy-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(90deg, #fbbf24, #f97316);
+            color: white;
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: bold;
+            font-size: 1rem;
+            font-family: Georgia, serif;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(251, 191, 36, 0.4);
+        }
+
+        .copyright-badge {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 9999px;
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 1000;
+        }
+
+        .copyright-text {
+            color: white;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .spin {
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .footer {
+            text-align: center;
+            color: #fef3c7;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer p {
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #fef3c7;
+            margin-bottom: 2rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 640px) {
+            .title {
+                font-size: 2rem;
+            }
+            .main-button, .shuffle-button {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+            .idea-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen bg-gradient">
+        <div class="copyright-badge">
+            <div class="copyright-text">
+                <span>©</span>
+                <span>2026 Tatiana Lychy</span>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="text-center" style="padding-top: 2rem; margin-bottom: 3rem;">
+                <div class="header-icon pulse">
+                    <span style="font-size: 3rem;">🌸</span>
+                </div>
+                <h1 class="title">Flower Greeting Cards Generator</h1>
+                <p class="subtitle">Endless ideas for creating beautiful greeting cards</p>
+                <div class="possibilities-badge">
+                    <p class="possibilities-text">
+                        ♾️ Infinite combinations
+                    </p>
+                </div>
+            </div>
+
+            <div class="stats-box text-center">
+                <div class="stats-text">
+                    <span style="color: #fef3c7;">You've generated</span>
+                    <span class="count-number" id="generatedCount">0</span>
+                    <span style="color: #fef3c7;">unique ideas</span>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button id="generateBtn" class="main-button">
+                    <span style="font-size: 2rem;" id="mainBtnIcon">🌺</span>
+                    <span id="mainBtnText">Generate Idea</span>
+                </button>
+
+                <button id="shuffleBtn" class="shuffle-button">
+                    <span style="font-size: 2rem;">🔄</span>
+                    <span>Start Over</span>
+                </button>
+            </div>
+
+            <div id="ideaContainer"></div>
+
+            <div id="emptyState" class="empty-state">
+                <p style="font-size: 1.125rem; margin-bottom: 1rem;">
+                    🌺 Click the button above to create your first idea!
+                </p>
+                <p style="font-size: 0.875rem; color: #fde68a;">
+                    Every idea is unique and ready to use in Midjourney v7
+                </p>
+            </div>
+
+            <div class="footer">
+                <p>🌸 Created with love by Tatiana Lychy</p>
+                <p>Perfect for creating AI greeting cards</p>
+                <p style="font-size: 0.875rem; margin-top: 1rem; color: #fde68a;">
+                    ✨ Anti-duplicate system guarantees uniqueness of every prompt
+                </p>
+                <p style="font-size: 0.75rem; margin-top: 1rem; color: #fde68a;">
+                    @TatianaLychy · © 2026 Tatiana Lychy · All Rights Reserved · For personal use only
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // === DATA ===
+            var occasions = [
+                'Birthday', 'Anniversary', 'Women\'s Day', 'Mother\'s Day', 'Valentine\'s Day',
+                'Congratulations', 'Thank You', 'Get Well Soon', 'Housewarming', 'Wedding',
+                'Wedding Anniversary', 'Holiday', 'Teacher\'s Day', 'Just Because', 'With Love'
+            ];
+
+            var flowerTypes = [
+                'roses', 'peonies', 'tulips', 'daffodils', 'lilies', 'irises',
+                'hydrangeas', 'poppies', 'daisies', 'sunflowers', 'chrysanthemums',
+                'violets', 'orchids', 'freesias', 'lavender', 'forget-me-nots',
+                'cornflowers', 'carnations', 'anemones', 'ranunculus', 'delphiniums',
+                'bluebells', 'dahlias', 'asters', 'crocuses', 'primroses'
+            ];
+
+            var colors = [
+                'soft pink', 'red', 'white', 'cream', 'peach',
+                'lilac', 'purple', 'blue', 'yellow', 'orange',
+                'pastel', 'vibrant', 'powder pink', 'coral', 'burgundy',
+                'lavender-toned', 'mint', 'lavender', 'golden', 'raspberry'
+            ];
+
+            var arrangements = [
+                'in a vintage vase', 'in a wicker basket', 'bouquet with silk ribbons',
+                'floral arrangement', 'in a round flower box', 'cascading bouquet',
+                'in a glass vase', 'with delicate lace', 'adorned with pearls',
+                'rustic countryside style', 'classic elegant style', 'with fresh greenery',
+                'mono bouquet', 'wildflower bouquet', 'romantic bouquet',
+                'in a porcelain vase', 'with eucalyptus sprigs', 'in a ceramic pitcher'
+            ];
+
+            var styles = [
+                'watercolor style', 'vintage greeting card', 'botanical illustration',
+                'realistic photography', 'oil painting', 'impressionist painting',
+                '1950s style', 'retro postcard', 'modern illustration',
+                'pastel painting', 'classical painting', 'hyperrealism',
+                'delicate watercolor', 'digital painting', 'shabby chic style'
+            ];
+
+            var backgrounds = [
+                'on a light background', 'on a cream background', 'on a wooden table',
+                'on linen fabric', 'by a window with soft light', 'on a marble surface',
+                'with lace in the background', 'on vintage wallpaper', 'on white silk',
+                'on a pastel background', 'on textured paper', 'outdoors in nature'
+            ];
+
+            var lighting = [
+                'soft natural light', 'morning window light', 'gentle illumination',
+                'warm sunlight', 'studio lighting', 'romantic lighting',
+                'golden hour light', 'diffused light', 'backlit glow'
+            ];
+
+            var details = [
+                'with a greeting inscription', 'with vintage elements', 'with golden accents',
+                'with elegant calligraphy', 'with a decorative frame', 'with decorative elements',
+                'with rich texture', 'with a silk bow', 'with pearl details',
+                'minimalist composition', 'lush rich composition', 'elegant composition'
+            ];
+
+            // === STATE ===
+            var state = {
+                isGenerating: false,
+                copied: false,
+                generatedCount: 0,
+                usedCombinations: new Set(),
+                currentIdea: null
+            };
+
+            // === LOCALSTORAGE ===
+            function loadState() {
+                try {
+                    var saved = localStorage.getItem('usedFlowerCombinationsEN');
+                    var savedCount = localStorage.getItem('generatedFlowerCountEN');
+
+                    if (saved) {
+                        state.usedCombinations = new Set(JSON.parse(saved));
+                    }
+                    if (savedCount) {
+                        state.generatedCount = parseInt(savedCount, 10) || 0;
+                    }
+                } catch (e) {
+                    console.warn('localStorage unavailable:', e);
+                }
+            }
+
+            function saveState() {
+                try {
+                    localStorage.setItem('usedFlowerCombinationsEN',
+                        JSON.stringify(Array.from(state.usedCombinations)));
+                    localStorage.setItem('generatedFlowerCountEN', String(state.generatedCount));
+                } catch (e) {
+                    // silently ignore
+                }
+            }
+
+            function clearStorage() {
+                try {
+                    localStorage.removeItem('usedFlowerCombinationsEN');
+                    localStorage.removeItem('generatedFlowerCountEN');
+                } catch (e) {}
+            }
+
+            // === HELPERS ===
+            function pick(arr) {
+                return arr[Math.floor(Math.random() * arr.length)];
+            }
+
+            function escapeHtml(str) {
+                var div = document.createElement('div');
+                div.textContent = str;
+                return div.innerHTML;
+            }
+
+            function capitalize(str) {
+                return str.charAt(0).toUpperCase() + str.slice(1);
+            }
+
+            function generateTags(occasion, flowerType, color, style) {
+                var tags = [];
+                tags.push(occasion.toLowerCase().replace(/[^a-z0-9]/g, ''));
+                tags.push(flowerType.replace(/-/g, ''));
+                tags.push('flowers');
+                tags.push('greetingcard');
+                tags.push('floral');
+
+                if (style.indexOf('vintage') !== -1 || style.indexOf('retro') !== -1 || style.indexOf('1950') !== -1) {
+                    tags.push('vintage');
+                }
+                if (style.indexOf('watercolor') !== -1) {
+                    tags.push('watercolor');
+                }
+                if (color.indexOf('pastel') !== -1 || color.indexOf('soft') !== -1) {
+                    tags.push('soft');
+                }
+                if (occasion.indexOf('Birthday') !== -1 || occasion.indexOf('Anniversary') !== -1) {
+                    tags.push('celebration');
+                }
+
+                return tags.slice(0, 6);
+            }
+
+            // === GENERATION ===
+            function generateIdea() {
+                if (state.isGenerating) return;
+                state.isGenerating = true;
+                state.copied = false;
+                renderButtons();
+
+                setTimeout(function() {
+                    var occasion, flowerType, color, arrangement, style, background, light, detail;
+                    var combinationKey;
+                    var attempts = 0;
+                    var maxAttempts = 1000;
+
+                    do {
+                        occasion = pick(occasions);
+                        flowerType = pick(flowerTypes);
+                        color = pick(colors);
+                        arrangement = pick(arrangements);
+                        style = pick(styles);
+                        background = pick(backgrounds);
+                        light = pick(lighting);
+                        detail = pick(details);
+
+                        combinationKey = occasion + '|' + flowerType + '|' + color + '|' +
+                                         arrangement + '|' + style + '|' + background + '|' +
+                                         light + '|' + detail;
+                        attempts++;
+                        if (attempts >= maxAttempts) break;
+                    } while (state.usedCombinations.has(combinationKey));
+
+                    // Midjourney prompt — fully in English
+                    var prompt = 'A beautiful greeting card for ' + occasion + '. ' +
+                                 color + ' ' + flowerType + ' ' + arrangement + ', ' +
+                                 style + ', ' + background + '. ' +
+                                 light + ', ' + detail +
+                                 '. Vertical format, elegant composition, professional photography quality --ar 9:16 --v 7';
+
+                    state.currentIdea = {
+                        title: occasion + ': ' + capitalize(color) + ' ' + capitalize(flowerType),
+                        description: 'A beautiful greeting card for ' + occasion + '. ' +
+                                     capitalize(color) + ' ' + flowerType + ' ' + arrangement +
+                                     ', created in "' + style + '". The composition is set ' +
+                                     background + ', ' + light + '. ' + capitalize(detail) + '.',
+                        tags: generateTags(occasion, flowerType, color, style),
+                        prompt: prompt
+                    };
+
+                    state.usedCombinations.add(combinationKey);
+                    state.generatedCount++;
+                    state.isGenerating = false;
+
+                    saveState();
+                    renderAll();
+                }, 600);
+            }
+
+            function handleShuffle() {
+                if (state.isGenerating) return;
+                // Reset counter and history + immediately generate new prompt
+                state.usedCombinations = new Set();
+                state.generatedCount = 0;
+                state.currentIdea = null;
+                clearStorage();
+                generateIdea();
+            }
+
+            function copyToClipboard(text) {
+                var fallback = function() {
+                    try {
+                        var textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-999999px';
+                        textArea.style.top = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                        state.copied = true;
+                        renderIdea();
+                        setTimeout(function() {
+                            state.copied = false;
+                            renderIdea();
+                        }, 2000);
+                    } catch (e) {
+                        alert('Could not copy automatically. Please copy manually:\n\n' + text);
+                    }
+                };
+
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(function() {
+                        state.copied = true;
+                        renderIdea();
+                        setTimeout(function() {
+                            state.copied = false;
+                            renderIdea();
+                        }, 2000);
+                    }).catch(fallback);
+                } else {
+                    fallback();
+                }
+            }
+
+            // === RENDER ===
+            function renderCounters() {
+                document.getElementById('generatedCount').textContent = state.generatedCount;
+            }
+
+            function renderButtons() {
+                var generateBtn = document.getElementById('generateBtn');
+                var shuffleBtn = document.getElementById('shuffleBtn');
+                var icon = document.getElementById('mainBtnIcon');
+                var text = document.getElementById('mainBtnText');
+
+                generateBtn.disabled = state.isGenerating;
+                shuffleBtn.disabled = state.isGenerating;
+
+                if (state.isGenerating) {
+                    icon.textContent = '🔄';
+                    icon.className = 'spin';
+                    text.textContent = 'Generating...';
+                } else {
+                    icon.textContent = '🌺';
+                    icon.className = '';
+                    text.textContent = 'Generate Idea';
+                }
+            }
+
+            function renderIdea() {
+                var container = document.getElementById('ideaContainer');
+                var emptyState = document.getElementById('emptyState');
+
+                if (!state.currentIdea || state.isGenerating) {
+                    container.innerHTML = '';
+                    emptyState.classList.toggle('hidden', !!state.currentIdea || state.isGenerating);
+                    return;
+                }
+
+                emptyState.classList.add('hidden');
+
+                var idea = state.currentIdea;
+                var tagsHtml = idea.tags.map(function(tag) {
+                    return '<span class="tag">#' + escapeHtml(tag) + '</span>';
+                }).join('');
+
+                var copyBtnText = state.copied ? 'Copied!' : 'Copy';
+                var copyBtnIcon = state.copied ? '✓' : '📋';
+
+                container.innerHTML =
+                    '<div class="idea-card">' +
+                        '<div class="idea-header">' +
+                            '<div class="icon-box">' +
+                                '<span style="font-size: 1.5rem;">🌸</span>' +
+                            '</div>' +
+                            '<div style="flex: 1;">' +
+                                '<h2 class="idea-title">' + escapeHtml(idea.title) + '</h2>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="description-box">' +
+                            '<p class="description-text">' + escapeHtml(idea.description) + '</p>' +
+                        '</div>' +
+                        '<div class="tags-container">' + tagsHtml + '</div>' +
+                        '<div class="prompt-box">' +
+                            '<div class="prompt-header">' +
+                                '<span>🖼️</span>' +
+                                '<span>Midjourney prompt (ready to copy)</span>' +
+                            '</div>' +
+                            '<p class="prompt-text" id="promptText">' + escapeHtml(idea.prompt) + '</p>' +
+                            '<button id="copyBtn" class="copy-button">' +
+                                '<span>' + copyBtnIcon + '</span>' +
+                                '<span>' + copyBtnText + '</span>' +
+                            '</button>' +
+                        '</div>' +
+                    '</div>';
+
+                document.getElementById('copyBtn').addEventListener('click', function() {
+                    copyToClipboard(idea.prompt);
+                });
+            }
+
+            function renderAll() {
+                renderCounters();
+                renderButtons();
+                renderIdea();
+            }
+
+            // === INIT ===
+            function init() {
+                loadState();
+                renderAll();
+                document.getElementById('generateBtn').addEventListener('click', generateIdea);
+                document.getElementById('shuffleBtn').addEventListener('click', handleShuffle);
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+        })();
+    </script>
+</body>
+</html>

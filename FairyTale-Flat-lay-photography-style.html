@@ -1,0 +1,1994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Storybook Character Generator — by Tatiana Lychy</title>
+<style>
+:root {
+  --cream: #fef8f0; --pink: #e8a0b4; --pink-pale: #fdf0f4;
+  --rose: #c4697a; --rose-deep: #a84f62;
+  --gold: #c8a96e; --gold-pale: #faf3e0;
+  --sage: #a8c4a0; --muted: #a08878;
+  --text: #4a3030; --text2: #7a5050;
+  --border: rgba(200,169,110,0.25); --shadow: rgba(180,120,130,0.15);
+  --font-d: Georgia,'Times New Roman',serif;
+  --font-b: system-ui,-apple-system,Arial,sans-serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:var(--font-b); background:var(--cream); color:var(--text); min-height:100vh; overflow-x:hidden; }
+body::before {
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 0%,rgba(232,160,180,0.15) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 60% at 80% 10%,rgba(248,220,200,0.13) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 40% at 50% 100%,rgba(168,196,160,0.10) 0%,transparent 60%);
+}
+.deco-wrap { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+.deco { position:absolute; font-size:20px; opacity:0.15; animation:floatDeco 7s ease-in-out infinite; user-select:none; }
+.deco:nth-child(1){top:4%;left:3%;animation-delay:0s;font-size:24px}
+.deco:nth-child(2){top:8%;right:5%;animation-delay:1.2s;font-size:18px}
+.deco:nth-child(3){top:20%;left:7%;animation-delay:2.4s;font-size:16px}
+.deco:nth-child(4){top:28%;right:3%;animation-delay:0.6s;font-size:22px}
+.deco:nth-child(5){top:42%;left:2%;animation-delay:3s;font-size:15px}
+.deco:nth-child(6){top:55%;right:4%;animation-delay:1.8s;font-size:20px}
+.deco:nth-child(7){top:68%;left:5%;animation-delay:0.9s;font-size:17px}
+.deco:nth-child(8){top:80%;right:5%;animation-delay:2.1s;font-size:19px}
+@keyframes floatDeco {
+  0%,100%{transform:translateY(0) rotate(0deg);opacity:0.15}
+  33%{transform:translateY(-10px) rotate(6deg);opacity:0.22}
+  66%{transform:translateY(5px) rotate(-4deg);opacity:0.10}
+}
+.wrap { position:relative; z-index:1; max-width:780px; margin:0 auto; padding:36px 20px 80px; }
+
+/* COVER */
+.cover-page { text-align:center; padding:60px 20px 50px; animation:fadeDown 0.8s ease both; }
+.orn-row { display:flex; align-items:center; justify-content:center; gap:16px; margin-bottom:20px; }
+.orn-line { flex:1; max-width:110px; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+.orn-center { font-size:30px; }
+.cover-title { font-family:var(--font-d); font-size:clamp(2rem,6vw,3.2rem); font-weight:normal; line-height:1.2; margin-bottom:10px; }
+.cover-title em { font-style:italic; color:var(--rose); }
+.cover-sub { font-family:var(--font-d); font-style:italic; font-size:clamp(1rem,3vw,1.25rem); color:var(--muted); margin-bottom:6px; }
+.cover-tag { font-size:12px; color:var(--muted); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:40px; }
+.div-row { display:flex; align-items:center; gap:12px; justify-content:center; margin:28px 0; }
+.div-line { flex:1; max-width:120px; height:1px; background:linear-gradient(90deg,transparent,rgba(200,169,110,0.4),transparent); }
+.div-dot { width:5px; height:5px; border-radius:50%; background:var(--gold); opacity:0.6; }
+.cover-copy { font-size:11px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; line-height:1.8; }
+.enter-btn {
+  display:inline-flex; align-items:center; gap:12px; padding:18px 60px;
+  background:linear-gradient(135deg,var(--pink) 0%,var(--rose) 50%,#b85870 100%);
+  color:white; border:none; border-radius:50px;
+  font-family:var(--font-d); font-size:18px; font-style:italic; letter-spacing:1px;
+  cursor:pointer; transition:all .3s; box-shadow:0 8px 28px rgba(196,105,122,0.35);
+  position:relative; overflow:hidden;
+}
+.enter-btn::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent); opacity:0; transition:opacity .25s; }
+.enter-btn:hover::before { opacity:1; }
+.enter-btn:hover { transform:translateY(-3px); box-shadow:0 14px 36px rgba(196,105,122,0.45); }
+.enter-btn .bi { font-size:22px; transition:transform .4s; }
+.enter-btn:hover .bi { transform:rotate(15deg) scale(1.1); }
+
+/* APP HEADER */
+.app-header { text-align:center; margin-bottom:26px; animation:fadeDown 0.7s ease both; }
+.app-title { font-family:var(--font-d); font-size:clamp(1.6rem,4.5vw,2.4rem); font-weight:normal; margin-bottom:5px; }
+.app-title em { font-style:italic; color:var(--rose); }
+.app-sub { font-size:12px; color:var(--muted); letter-spacing:0.5px; }
+
+/* SETTINGS */
+.sblock { background:linear-gradient(135deg,#fdf8f0,#fef4f8); border:1px solid rgba(200,169,110,0.22); border-radius:18px; padding:16px 20px; margin-bottom:14px; }
+.stitle { font-size:11px; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+.stitle::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,rgba(200,169,110,0.3),transparent); }
+.srow { display:flex; gap:8px; flex-wrap:wrap; }
+.sbtn {
+  flex:1; min-width:75px; background:white; border:1.5px solid var(--border); border-radius:22px; padding:9px 12px;
+  font-size:12px; color:var(--text2); cursor:pointer; transition:all .2s; font-family:var(--font-b);
+  text-align:center; display:flex; flex-direction:column; align-items:center; gap:2px;
+}
+.sbtn:hover { border-color:var(--rose); background:var(--pink-pale); }
+.sbtn .sico { font-size:15px; }
+.sbtn .sname { font-weight:700; font-size:12px; }
+.sbtn .sdesc { font-size:10px; color:var(--muted); }
+.sbtn.on { background:linear-gradient(135deg,rgba(232,160,180,0.18),rgba(248,220,200,0.18)); border-color:var(--rose); color:var(--rose-deep); }
+.sbtn.on .sdesc { color:var(--rose); }
+.custom-row { display:none; gap:14px; flex-wrap:wrap; margin-top:12px; animation:fadeUp .3s ease both; }
+.custom-row.vis { display:flex; }
+.cgroup { flex:1; min-width:130px; }
+.clabel { font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); font-weight:700; margin-bottom:6px; display:block; }
+.chips { display:flex; flex-wrap:wrap; gap:5px; }
+.chip { background:white; border:1px solid var(--border); border-radius:16px; padding:4px 11px; font-size:12px; color:var(--muted); cursor:pointer; transition:all .17s; }
+.chip:hover { border-color:var(--gold); color:var(--gold); }
+.chip.on { background:rgba(200,169,110,0.12); border-color:var(--gold); color:#8a6020; font-weight:700; }
+.tool-row { display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }
+.tbtn { background:white; border:1.5px solid var(--border); border-radius:22px; padding:7px 18px; font-size:13px; color:var(--text2); cursor:pointer; transition:all .2s; font-family:var(--font-b); }
+.tbtn:hover { border-color:var(--sage); color:#3a8a6a; }
+.tbtn.on { background:rgba(168,212,192,0.2); border-color:var(--sage); color:#3a8a6a; font-weight:700; }
+
+/* GENERATE */
+.gen-wrap { text-align:center; margin-bottom:26px; }
+.gen-btn {
+  display:inline-flex; align-items:center; gap:12px; padding:18px 56px;
+  background:linear-gradient(135deg,var(--pink) 0%,var(--rose) 50%,#b85870 100%);
+  color:white; border:none; border-radius:50px;
+  font-family:var(--font-d); font-size:18px; font-style:italic; letter-spacing:1px;
+  cursor:pointer; transition:all .3s; box-shadow:0 8px 28px rgba(196,105,122,0.35);
+  position:relative; overflow:hidden;
+}
+.gen-btn::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent); opacity:0; transition:opacity .25s; }
+.gen-btn:hover::before { opacity:1; }
+.gen-btn:not(:disabled):hover { transform:translateY(-3px); box-shadow:0 14px 36px rgba(196,105,122,0.45); }
+.gen-btn:disabled { opacity:0.6; cursor:not-allowed; }
+.gen-btn .bi { font-size:22px; transition:transform .4s; }
+.gen-btn:not(:disabled):hover .bi { transform:rotate(20deg) scale(1.1); }
+.sess { margin-top:10px; font-size:12px; color:var(--muted); }
+.sess span { color:var(--rose); font-weight:700; }
+
+/* LOADING */
+.loading { text-align:center; padding:32px; display:none; }
+.loading.vis { display:block; animation:fadeUp .3s ease both; }
+.petals { display:flex; justify-content:center; gap:8px; margin-bottom:12px; }
+.petal { width:10px; height:10px; border-radius:50% 50% 50% 0; animation:pb 1.2s ease-in-out infinite; }
+.petal:nth-child(1){background:var(--pink);animation-delay:0s}
+.petal:nth-child(2){background:#f0b890;animation-delay:.15s}
+.petal:nth-child(3){background:var(--gold);animation-delay:.3s}
+.petal:nth-child(4){background:var(--sage);animation-delay:.45s}
+.petal:nth-child(5){background:#f5d0dc;animation-delay:.6s}
+@keyframes pb { 0%,80%,100%{transform:scale(.7) translateY(0);opacity:.5} 40%{transform:scale(1.1) translateY(-8px);opacity:1} }
+.ltxt { font-family:var(--font-d); font-style:italic; color:var(--rose); font-size:15px; }
+
+/* RESULT CARD */
+.rcard { background:white; border:1px solid rgba(232,160,180,0.3); border-radius:24px; padding:30px; box-shadow:0 8px 40px rgba(180,120,130,0.12); display:none; }
+.rcard.vis { display:block; animation:fadeUp .5s ease both; }
+.corn { display:flex; align-items:center; gap:10px; margin-bottom:18px; }
+.corn-line { flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(200,169,110,0.35),transparent); }
+.corn-c { font-size:18px; opacity:0.7; }
+.scene-head { text-align:center; margin-bottom:14px; }
+.stale { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--gold); font-weight:700; margin-bottom:5px; }
+.stitle-r { font-family:var(--font-d); font-size:1.35rem; color:var(--rose); font-style:italic; line-height:1.3; margin-bottom:4px; }
+.shero { font-size:13px; color:var(--muted); font-family:var(--font-d); font-style:italic; }
+.tbadge { display:block; width:fit-content; margin:0 auto 14px; padding:4px 14px; border-radius:20px; font-size:11px; font-weight:700; letter-spacing:.5px; }
+.tbadge.animal { background:rgba(168,196,160,0.2); color:#4a7a42; border:1px solid rgba(168,196,160,0.5); }
+.tbadge.human  { background:rgba(232,160,180,0.2); color:var(--rose-deep); border:1px solid rgba(232,160,180,0.5); }
+.sbadges { display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:20px; flex-wrap:wrap; }
+.stag { background:var(--gold-pale); border:1px solid rgba(200,169,110,0.3); border-radius:12px; padding:3px 10px; font-size:10px; color:#8a6020; font-weight:600; }
+
+/* PROMPT BLOCKS */
+.pblock { margin-bottom:16px; }
+.plabel { display:flex; align-items:center; gap:8px; font-size:11px; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); font-weight:700; margin-bottom:10px; }
+.plabel::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,rgba(200,169,110,0.3),transparent); }
+.ptxt {
+  font-family:var(--font-d); font-size:13px; line-height:1.9; color:var(--text);
+  background:linear-gradient(135deg,var(--pink-pale),var(--gold-pale));
+  border-radius:14px; padding:18px 20px; border-left:3px solid var(--pink);
+  white-space:pre-wrap; word-break:break-word; margin-bottom:10px;
+}
+.ptxt.anim { background:linear-gradient(135deg,#f0faf4,#f8fff6); border-left-color:var(--sage); }
+.cbtn { width:100%; display:flex; align-items:center; justify-content:center; gap:8px; padding:11px; border:none; border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; transition:all .25s; font-family:var(--font-b); }
+.cbtn.mj { background:linear-gradient(135deg,#e8a0b4,#c4697a); color:white; }
+.cbtn.mj:hover { transform:translateY(-2px); box-shadow:0 6px 18px rgba(196,105,122,0.3); }
+.cbtn.mj.copied { background:linear-gradient(135deg,#c4697a,#a84f62); }
+.cbtn.sd { background:linear-gradient(135deg,#7acca0,#4fa578); color:white; }
+.cbtn.sd:hover { transform:translateY(-2px); box-shadow:0 6px 18px rgba(79,165,120,0.3); }
+.cbtn.sd.copied { background:linear-gradient(135deg,#4fa578,#3a8a60); }
+.pdiv { display:flex; align-items:center; gap:12px; margin:18px 0; }
+.pdiv-line { flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(200,169,110,0.25),transparent); }
+.nbtn { width:100%; margin-top:14px; padding:12px; background:transparent; border:1.5px solid var(--border); border-radius:14px; font-size:14px; color:var(--muted); cursor:pointer; transition:all .2s; font-family:var(--font-d); font-style:italic; }
+.nbtn:hover { border-color:var(--rose); color:var(--rose); background:var(--pink-pale); }
+
+/* HISTORY */
+.hwrap { margin-top:30px; }
+.htoggle { width:100%; display:flex; align-items:center; justify-content:space-between; padding:13px 18px; background:rgba(255,255,255,0.7); border:1px solid var(--border); border-radius:14px; font-size:13px; color:var(--text2); cursor:pointer; transition:all .2s; font-family:var(--font-d); font-style:italic; }
+.htoggle:hover { background:white; border-color:var(--pink); }
+.harrow { transition:transform .3s; font-size:11px; }
+.harrow.open { transform:rotate(180deg); }
+.hlist { display:none; flex-direction:column; gap:8px; margin-top:8px; max-height:500px; overflow-y:auto; }
+.hlist.vis { display:flex; }
+.hitem { background:rgba(255,255,255,0.7); border:1px solid var(--border); border-radius:14px; padding:14px 16px; transition:all .2s; }
+.hitem:hover { background:white; border-color:var(--pink); }
+.hitem-top { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+.hitem-ico { font-size:18px; flex-shrink:0; }
+.hitem-title { font-family:var(--font-d); font-style:italic; font-size:13px; color:var(--rose); flex:1; }
+.hitem-meta { font-size:11px; color:var(--muted); margin-bottom:8px; }
+.hexpbtn { font-size:11px; color:var(--muted); background:none; border:none; cursor:pointer; text-decoration:underline; font-family:var(--font-b); padding:2px 0; }
+.hexpbtn:hover { color:var(--rose); }
+.hprompts { display:none; flex-direction:column; gap:6px; margin-top:8px; }
+.hprompts.vis { display:flex; }
+.hpbox { background:var(--gold-pale); border-radius:10px; padding:10px 12px; }
+.hplabel { font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold); font-weight:700; margin-bottom:5px; }
+.hptxt { font-family:var(--font-d); font-size:11px; color:var(--text); line-height:1.7; white-space:pre-wrap; word-break:break-word; }
+.hcbtn { width:100%; padding:7px; border:none; border-radius:8px; font-size:11px; font-weight:600; cursor:pointer; transition:all .2s; font-family:var(--font-b); margin-top:5px; }
+.hcbtn.mj { background:linear-gradient(135deg,#f0b8c8,#c4697a); color:white; }
+.hcbtn.sd { background:linear-gradient(135deg,#9adcb8,#4fa578); color:white; }
+.clrhbtn { width:100%; margin-top:8px; padding:9px; background:transparent; border:1px dashed rgba(200,169,110,0.35); border-radius:10px; font-size:12px; color:var(--muted); cursor:pointer; transition:all .2s; font-family:var(--font-b); }
+.clrhbtn:hover { border-color:var(--rose); color:var(--rose); }
+
+/* FOOTER */
+.footer { text-align:center; margin-top:48px; padding-top:20px; border-top:1px solid rgba(200,169,110,0.15); }
+.fn { font-family:var(--font-d); font-style:italic; font-size:15px; color:var(--rose); margin-bottom:5px; }
+.fc { font-size:11px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; }
+
+@keyframes fadeUp   { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeDown { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
+@media(max-width:540px){ .gen-btn{padding:16px 36px;font-size:16px} .rcard{padding:20px} }
+</style>
+</head>
+<body>
+
+<div class="deco-wrap">
+  <span class="deco">📖</span><span class="deco">🌿</span><span class="deco">✨</span>
+  <span class="deco">🌸</span><span class="deco">🦋</span><span class="deco">🌼</span>
+  <span class="deco">📖</span><span class="deco">✨</span>
+</div>
+
+<div class="wrap">
+
+<!-- COVER -->
+<div id="coverPage" class="cover-page">
+  <div class="orn-row"><div class="orn-line"></div><div class="orn-center">📖</div><div class="orn-line"></div></div>
+  <h1 class="cover-title">Storybook<br><em>Character Generator</em></h1>
+  <p class="cover-sub">A Tale Comes Alive</p>
+  <p class="cover-tag">Midjourney &amp; Seedance 2.0 · Prompt Generator</p>
+  <div class="div-row"><div class="div-line"></div><div class="div-dot"></div><div class="div-line"></div></div>
+  <button class="enter-btn" onclick="enterApp()"><span class="bi">✨</span> Open the Book</button>
+  <div class="div-row"><div class="div-line"></div><div class="div-dot"></div><div class="div-line"></div></div>
+  <p class="cover-copy">© 2026 Tatiana Lychy · All Rights Reserved<br>For personal use only</p>
+</div>
+
+<!-- APP -->
+<div id="appPage" style="display:none">
+
+  <div class="app-header">
+    <div class="orn-row"><div class="orn-line"></div><div class="orn-center">📖</div><div class="orn-line"></div></div>
+    <h1 class="app-title">Storybook <em>Character</em> Generator</h1>
+    <p class="app-sub">Midjourney · Seedance 2.0 · Flat Lay Photography Style</p>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="sblock">
+    <div class="stitle">🎬 Animation Tool</div>
+    <div class="tool-row">
+      <button class="tbtn on" id="tool-sd" onclick="setTool('seedance')">🌊 Seedance 2.0</button>
+      <button class="tbtn"    id="tool-kl" onclick="setTool('kling')">🎬 Kling</button>
+    </div>
+    <div style="margin-top:10px;font-size:11px;color:var(--muted);text-align:center;letter-spacing:0.5px;">
+      5 frames · 15 seconds · [0s–2s] static · [2s–5s] page awakens · [5s–8s] fully alive · [8s–11s] peak climax · [11s–15s] closing frame
+    </div>
+  </div>
+
+  <!-- GENERATE -->
+  <div class="gen-wrap">
+    <button class="gen-btn" id="genBtn" onclick="generate()"><span class="bi">✨</span> Generate Prompt</button>
+    <div class="sess">Generated this session: <span id="sessCount">0</span></div>
+    <div id="curTaleLabel" style="margin-top:8px;font-size:12px;color:var(--rose);font-family:var(--font-d);font-style:italic;text-align:center;display:none;">
+      Current: <span id="curTaleName"></span>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading" id="loading">
+    <div class="petals"><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div></div>
+    <p class="ltxt">Opening the storybook…</p>
+  </div>
+
+  <!-- RESULT -->
+  <div class="rcard" id="rcard">
+    <div class="corn"><div class="corn-line"></div><div class="corn-c">📖</div><div class="corn-line"></div></div>
+    <div class="scene-head">
+      <div class="stale" id="rTale"></div>
+      <div class="stitle-r" id="rTitle"></div>
+      <div class="shero" id="rHero"></div>
+    </div>
+    <div class="tbadge" id="rBadge"></div>
+    <div class="sbadges">
+      <span class="stag">Flat Lay Photography Style</span>
+      <span style="color:var(--muted);font-size:12px">→</span>
+      <span class="stag" id="rAnimStyle"></span>
+    </div>
+    <div class="pblock">
+      <div class="plabel"><span>🎨</span> Midjourney Prompt</div>
+      <div class="ptxt" id="rMj"></div>
+      <button class="cbtn mj" id="copyMj" onclick="doCopy('mj')">📋 Copy Midjourney Prompt</button>
+    </div>
+    <div class="pdiv"><div class="pdiv-line"></div><span style="font-size:16px;opacity:.5">🎬</span><div class="pdiv-line"></div></div>
+    <div class="pblock">
+      <div class="plabel"><span>🎬</span> Seedance 2.0 Animation Prompt</div>
+      <div class="ptxt anim" id="rSd"></div>
+      <button class="cbtn sd" id="copySd" onclick="doCopy('sd')">📋 Copy Animation Prompt</button>
+    </div>
+    <button class="nbtn" onclick="newStory()">↺ New Story</button>
+  </div>
+
+  <!-- HISTORY -->
+  <div class="hwrap" id="hwrap" style="display:none">
+    <button class="htoggle" onclick="toggleHistory()">
+      <span id="htoggleLabel">🕰 Recent Prompts</span>
+      <span class="harrow" id="harrow">▼</span>
+    </button>
+    <div class="hlist" id="hlist"></div>
+    <button class="clrhbtn" id="clrhbtn" style="display:none" onclick="clearHistory()">✕ Clear history</button>
+  </div>
+
+  <footer class="footer">
+    <div class="fn">@TatianaLychy</div>
+    <div class="fc">© 2026 Tatiana Lychy · All Rights Reserved</div>
+  </footer>
+
+</div><!-- /appPage -->
+</div><!-- /wrap -->
+
+<script>
+/* ═══════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════ */
+function rnd(max){ var a=new Uint32Array(1); crypto.getRandomValues(a); return a[0]%max; }
+function pick(arr){ return arr[rnd(arr.length)]; }
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* ═══════════════════════════════════════
+   STATE
+═══════════════════════════════════════ */
+var tool='seedance';
+var sessCount=0, genHist=[], histOpen=false;
+var curMj='', curSd='';
+var FRAMES=5, SECS=15;
+
+/* ═══════════════════════════════════════
+   STYLE CONSTANTS — THE LAW
+═══════════════════════════════════════ */
+var W = 'watercolour and ink illustration style, soft rosy cheeks, muted blue-grey and warm cream palette, vintage storybook doll-like character, aged paper texture with ink linework';
+var WEND = 'Watercolour and ink illustration style throughout. Soft rosy cheeks, muted blue-grey and warm cream palette, vintage storybook doll-like character, aged paper texture with ink linework.';
+
+/* ═══════════════════════════════════════
+   RANDOM ELEMENTS
+═══════════════════════════════════════ */
+var BOOKS = [
+  'a worn vintage storybook','an old illustrated fairy tale book',
+  'a battered leather-bound folk tale book','a beautiful antique children\'s picture book',
+  'a faded gold-embossed hardcover storybook','a well-loved illustrated nursery book',
+  'an ancient hand-illustrated manuscript book','a delicate vintage picture book with gilt edges'
+];
+var SURFACES = [
+  'a worn oak table','a cold stone floor','a mossy garden stone',
+  'a soft linen tablecloth','a weathered wooden shelf',
+  'a sun-warmed terracotta step','a frosted windowsill',
+  'a patchwork quilt','a polished wooden floor','a rough-hewn pine table'
+];
+var AWAKENINGS = [
+  'Tiny ink cracks spread across the page like frost on glass — then watercolour pigments bleed outward from the illustration, flooding the margins with rippling colour. The page is breathing.',
+  'A warm amber light rises from beneath the paper — the ink lines begin to tremble and glow gold at the edges. The illustration shimmers as if lit from within.',
+  'Watercolour washes of deep colour flood outward from the character like paint dropped into water — the page surface ripples and the ink lines dance.',
+  'The page shimmers like the surface of a pond disturbed by a stone — concentric rings of golden light spread outward from the character\'s heart, then the illustration blooms.',
+  'Ink cracks like ice along the character\'s outline — vivid colour floods through the cracks, pooling and spreading across the cream page surface in warm watercolour waves.',
+  'A single droplet of gold ink falls from above and lands on the page — the ripple it creates spreads outward, and wherever it touches, the illustration comes alive with colour and motion.',
+  'The handwritten text on the page begins to glow and vibrate — the letters lift slightly, then settle back as the illustration absorbs their energy and the character stirs.',
+  'Fine ink lines radiate outward from the character like the spokes of a wheel, each one pulsing with warm amber light — the page glows from within as if a lantern were held beneath it.'
+];
+
+/* ═══════════════════════════════════════
+   THE TALES DATABASE
+   Structure per tale:
+   { tale, century, characters[] }
+   Each character:
+   { name, type:'human'|'animal', animStyle, scenes[] }
+   Each scene:
+   { title, costumes[], actions[], backgrounds[], details[], storyMoments[] }
+   storyMoments = what happens in the animation, specific to this tale scene
+═══════════════════════════════════════ */
+var TALES = [
+
+/* ══════════════════════════════════
+   1. CINDERELLA
+══════════════════════════════════ */
+{
+  tale:'Cinderella', century:'17th century France — Perrault',
+  sounds:['Delicate music box melody rising with warmth.','Gentle orchestral waltz, soft and hopeful.','Quiet piano with strings, tender and unhurried.'],
+  characters:[
+    {
+      name:'Cinderella', type:'human', animStyle:'Pixar 3D style',
+      scenes:[
+        {
+          title:'Sweeping the Cold Kitchen',
+          costumes:[
+            'a long plain grey linen dress with a coarse white apron, hair tucked under a simple grey cloth cap, worn leather shoes',
+            'a long faded blue linen dress with a rough hessian apron, hair loosely pinned under a cotton cap, wooden clogs'
+          ],
+          actions:[
+            'holding a worn wooden broom in both hands, head slightly bowed with patient quiet dignity',
+            'sweeping ash from the cold hearthstone with careful slow strokes, one hand tucking a loose strand of hair back under her cap',
+            'pausing mid-sweep to look up at the small high window with quiet longing, broom resting in both hands'
+          ],
+          backgrounds:[
+            '17th century French peasant kitchen: stone fireplace with dying embers, heavy iron pots on the wall, rough cobblestone floor, a small high window letting in pale cold morning light',
+            '17th century French scullery: cold stone walls, iron hooks with hanging pots, a wooden washboard, a low arched window with grey morning light',
+            '17th century French kitchen at dawn: a great stone hearth with low embers, copper pots stacked on shelves, a heavy oak table, a thin shaft of morning light from a high window'
+          ],
+          details:[
+            'Her expression is patient and gentle, with the quiet dignity of someone who has not yet given up on her dreams',
+            'Her expression is calm and a little weary, but her back is straight — she holds herself with a grace that no dress can diminish',
+            'Her expression is thoughtful and still, lost in a quiet daydream as she works'
+          ],
+          storyMoments:[
+            'she sweeps the cold cobblestones with slow steady rhythm, dust particles rising in the pale light, pausing to look out the small high window toward the distant road with quiet longing — then sighs softly and returns to sweeping, her worn broom moving across the floor with patient grace',
+            'she is on her knees scrubbing the hearth, her coarse apron dusty with ash, when a sound from upstairs makes her pause — she looks up with cautious eyes, waits a moment, then bends back to her work with quiet resignation and absolute dignity',
+            'she sweeps steadily toward the right, her grey dress shifting with each stroke, pausing to look at the pale morning light falling through the small window — her face in that light is the most beautiful thing in the cold kitchen — then she gently tucks a loose strand of hair under her cap and sweeps on'
+          ]
+        },
+        {
+          title:'The Magical Transformation',
+          costumes:[
+            'mid-transformation: her grey dress dissolving upward in silver watercolour washes, a silver and pale blue ballgown emerging, crystal slippers appearing, her hair rising into a soft upswept arrangement with a ribbon',
+            'the transformation beginning: grey linen moving at the hem, worn shoes becoming crystal, rough cap dissolving, her hair curling free and upward'
+          ],
+          actions:[
+            'standing with both hands clasped to her cheeks in pure wonder, watching the magic swirl around her with enormous eyes',
+            'turning slowly in a circle with arms slightly raised as warm light swirls around her entire figure',
+            'looking down at her own hands as the transformation washes over her, mouth slightly open in breathless wonder'
+          ],
+          backgrounds:[
+            'moonlit French garden at night: a kind elderly fairy godmother in a grey cloak raising a wand, a large round golden squash on the cobblestone path beginning to grow and transform into an elegant carriage to the right, tall dark garden hedges, deep blue starry sky, fireflies rising',
+            'night garden: the fairy godmother with her wand raised, the transformation in progress in watercolour washes, the carriage taking shape to the right from the golden squash, stars reflected in a garden pond, roses climbing the stone wall',
+            'French walled garden at midnight: the fairy godmother gesturing with her wand, the transformation in progress, the elegant carriage forming to the right, a full moon above'
+          ],
+          details:[
+            'Her expression is pure breathless wonder — she can barely believe what is happening to her',
+            'Her expression is radiant disbelief transforming into joy — tears of happiness on her rosy cheeks',
+            'Her expression shifts from astonishment to the most complete joy she has ever felt'
+          ],
+          storyMoments:[
+            'the fairy godmother raises her wand and the wand moves with purpose — Cinderella\'s grey apron dissolves completely, her rough cap lifts away and vanishes, her worn shoes move and become crystal slippers, her grey dress transforms into a silver-blue ballgown — she turns in a slow circle watching it all happen, hands at her cheeks, laughing and crying at once — to the right, the large round golden squash stretches and grows into an elegant horse-drawn carriage',
+            'golden watercolour light swirls around Cinderella from feet to crown — her grey linen becomes pale silver silk, her wooden clogs become crystal slippers, her rough cap lifts away and her hair rises into a beautiful soft upswept arrangement — she looks down at her transformed self in radiant disbelief, then looks up at the fairy godmother with eyes full of tears and joy',
+            'the magic moves from ground to sky — crystal slippers appear first, then the ballgown sweeps upward in silver-blue watercolour waves, then the cap dissolves and her hair settles in a beautiful arrangement with a delicate ribbon — Cinderella stands in the moonlit garden completely transformed, arms raised slightly, face upturned with overwhelming wonder and joy, while the elegant carriage gleams behind her to the right'
+          ]
+        },
+        {
+          title:'The Crystal Slipper',
+          costumes:[
+            'a silver and pale moonlight blue ballgown with delicate ink linework on every fold, beautiful soft upswept hair with a delicate ribbon, crystal slippers on her feet',
+            'a pale silver ballgown with soft lace trim, golden upswept hair with a small ribbon, crystal slippers — one extended forward'
+          ],
+          actions:[
+            'sitting gracefully on a low stone step with one foot extended, hands folded in her lap, watching the prince with quiet dignity and recognition',
+            'looking down with quiet joy as the crystal slipper is placed gently on her foot by the kneeling prince',
+            'meeting the prince\'s gaze with gentle dignity and a soft smile as the slipper slides perfectly onto her foot'
+          ],
+          backgrounds:[
+            'grand 17th century French palace entrance: tall marble columns, warm golden candlelight from tall windows, a young prince in deep blue velvet kneeling on one knee holding the crystal slipper with reverence, two overdressed stepsisters standing stiffly to the left with sour expressions, royal footmen at attention',
+            'palace reception hall: ornate carved archways, gilded candlelight, the young prince kneeling, courtiers watching in the background, two stepsisters to the left leaning forward in anxious disbelief',
+            'palace grand staircase: marble steps, ornate columns, the kneeling prince with the slipper, palace officials observing, warm candlelight'
+          ],
+          details:[
+            'Her expression is gentle, quietly hopeful, and full of the quiet dignity of someone who knows who she is',
+            'Her expression is calm recognition and the most tender joy — she has been found',
+            'Her expression is the stillness of someone receiving the most important moment of their life with complete composure'
+          ],
+          storyMoments:[
+            'the prince carefully lifts the crystal slipper and guides it toward her extended foot — it slides on perfectly, a flawless fit — the slipper fits perfectly on her foot — the stepsisters to the left stumble backward in shock — the prince looks up at her face with quiet joy and recognition — Cinderella meets his gaze with the gentlest smile, hands folded, rosy cheeks warm in the warm candlelight — both crystal slippers now ',
+            'the crystal slipper glides onto her foot as if it had always belonged there — the slipper slides onto her foot perfectly — Cinderella looks down with quiet wonder then up at the prince with a smile of recognition — the overdressed stepsisters to the left exchange horrified glances — the prince remains on one knee, head bowed with reverence — a perfect, complete, beautiful moment',
+            'she extends her foot gracefully — the prince receives it with both hands and places the crystal slipper — it fits perfectly — Cinderella rises slowly from the stone step, both slippers visible in the candle — the prince rises to face her — the marble hall is absolutely still around them — she looks directly forward with rosy cheeks warm, a quiet radiant smile, crystal slippers and silver ballgown beautiful in the warm palace light'
+          ]
+        }
+      ]
+    },
+    {
+      name:'Fairy Godmother', type:'human', animStyle:'Pixar 3D style',
+      scenes:[
+        {
+          title:'Appearing in the Garden',
+          costumes:[
+            'a tall slender elegant beautiful woman in a magnificent Victorian gown of deep midnight blue silk with a perfectly fitted corseted bodice, full sweeping skirts, long white kid gloves, her dark hair swept up in an elaborate arrangement with pearl pins, holding a slender silver wand',
+            'a slender elegant beautiful woman in a deep emerald green Victorian silk gown with a corseted waist and full skirts, long fitted sleeves with delicate lace cuffs, a pearl necklace at her throat, her dark hair in a perfect elaborate updo, holding a silver wand with poise'
+          ],
+          actions:[
+            'standing with perfect upright elegance, one long-gloved hand raised with the silver wand, the other held gracefully at her side, her corseted silhouette magnificent, expression of serene beautiful authority',
+            'turning gracefully with her silver wand raised, her full midnight blue skirts sweeping around her in a perfect arc, expression of calm sophisticated power',
+            'leaning forward slightly with the silver wand extended toward the right, her elegant Victorian silhouette perfect, dark upswept hair immaculate, expression of warm refined authority'
+          ],
+          backgrounds:[
+            'moonlit French garden: Cinderella standing in wonder to the left, a large round golden squash on the cobblestone path to the right beginning to transform, tall dark hedges, deep blue starry sky, fireflies',
+            'night garden: roses and dark hedges, moonlight on stone paths, the transformation in progress, the elegant carriage taking shape to the right',
+            'French walled garden at midnight: climbing roses on stone walls, a full moon, Cinderella watching in astonishment, the magic working around them both'
+          ],
+          details:[
+            'Her expression is serene, beautiful and completely authoritative — a magnificent elegant Victorian woman who is also magical',
+            'Her expression is the calm sophisticated confidence of a beautiful woman entirely in command of the situation',
+            'Her expression is warmly amused and deeply kind — elegant, poised, absolutely certain, utterly beautiful'
+          ],
+          storyMoments:[
+            'she raises her silver wand with perfect graceful authority, her full midnight blue skirts sweeping as she turns — she gestures toward the golden squash to the right which begins to transform into an elegant carriage — then turns toward Cinderella and with one long white-gloved hand removes her grey cap with a decisive elegant gesture — her every movement is the movement of a magnificent beautiful Victorian woman entirely in her element',
+            'she stands in the moonlit garden with perfect posture, silver wand raised, her emerald Victorian gown and elaborate dark updo magnificent in the night air — she speaks to Cinderella in a low elegant voice, gesturing with her wand toward the transforming squash to the right — then turns back to Cinderella and surveys her with a beautiful appraising eye — and begins the transformation with a single precise graceful sweep of her wand',
+            'she makes her final gesture — a wide elegant arc of the silver wand — and steps back to regard her completed work with the satisfied expression of a beautiful sophisticated woman who has done something perfectly — the carriage gleaming to the right, Cinderella transformed — the fairy godmother stands in the moonlit garden in her midnight blue Victorian gown, wand in her long white-gloved hand, completely magnificent'
+          ]
+        }
+      ]
+    }
+  ]
+},
+
+/* ══════════════════════════════════
+   2. LITTLE RED RIDING HOOD
+══════════════════════════════════ */
+{
+  tale:'Little Red Riding Hood', century:'17th century France — Perrault',
+  sounds:['Cheerful woodwind melody with birdsong fading to a quieter note.','Warm folk flute with forest ambience.','Light strings turning more watchful toward the end.'],
+  characters:[
+    {
+      name:'Little Red Riding Hood', type:'human', animStyle:'Pixar 3D style',
+      scenes:[
+        {
+          title:'Setting Out Through the Village',
+          costumes:[
+            'a long simple cream linen dress, a bright vivid red hooded cape tied neatly at the collar, a small wicker basket covered with a white cloth on her arm, leather shoes',
+            'a long plain white dress with a short blue bodice, a vivid red hooded cape, leather shoes, a wicker basket with a checked cloth cover'
+          ],
+          actions:[
+            'walking forward with a bright eager expression, basket swinging on her arm, red cape lifting slightly in the morning breeze',
+            'pausing at the garden gate to wave goodbye toward the left with her free hand, basket in the other, red hood bright against the green garden',
+            'stepping cheerfully along the cobblestone path, chin up, eyes bright, basket swinging — entirely without worry on a beautiful morning'
+          ],
+          backgrounds:[
+            '17th century French village at the forest edge: a thatched-roof cottage behind her, cobblestone path leading to the right toward tall oak trees, wildflowers growing along the path, warm sunlit morning',
+            'French village morning: low stone houses, a church tower in the distance, a dirt path leading toward the dark forest edge, sunflowers in a garden to the left, warm morning light',
+            '17th century French countryside: a village square with a well, the forest visible ahead on the right, a cobblestone road, apple trees in blossom, a neighbour waving from a doorway'
+          ],
+          details:[
+            'Her expression is bright and eager, a small happy smile — the world is entirely safe and good this morning',
+            'Her expression is cheerful confidence, eyes sparkling with the adventure ahead',
+            'Her expression is sunny and curious and entirely without concern — she is on her way to grandmother\'s and she loves this walk'
+          ],
+          storyMoments:[
+            'she walks cheerfully to the right along the cobblestone path, her red cape swinging, her wicker basket rocking on her arm — she pauses at the garden gate, turns to wave back to the left with a bright smile, then turns forward and steps through the gate confidently — the forest edge ahead grows larger, green and inviting — birds fly upward from the hedgerow as she passes',
+            'she sets out along the village path to the right, humming to herself, red cape bright against the morning — she stops to examine a wildflower at the path edge, picks it with a smile, then tucks it into her basket — she looks up at the forest ahead and takes a deep breath of morning air, then walks on cheerfully, cape swinging, the village receding behind her',
+            'she steps briskly to the right along the path, wicker basket on her arm, red hood back from her face in the warm morning — she passes the last cottage, nods to a neighbour, then faces the forest path ahead — pauses one moment at the tree line, looking into the green dappled light — then steps forward into the forest with cheerful confidence, her red cape the last bright thing visible as the trees close around her'
+          ]
+        },
+        {
+          title:'Gathering Wildflowers in the Forest',
+          costumes:[
+            'a long cream linen dress, a bright red hooded cape, leather shoes dusty from the path, her wicker basket set on the ground beside her',
+            'a plain white dress with blue bodice, a vivid red hooded cape, her wicker basket forgotten on the mossy forest floor'
+          ],
+          actions:[
+            'crouching among tall wildflowers, reaching to the right to pick a cluster of violet blooms, completely absorbed in delight, forgetting her errand',
+            'standing among tall flowers holding a gathered bunch up to the dappled light to admire it, red hood falling back from her face',
+            'kneeling in the forest flowers with her arms full of gathered stems, adding them carefully to her free arm, eyes bright and distracted'
+          ],
+          backgrounds:[
+            'French forest: tall oak trees with dappled sunlight through the canopy, wildflowers of yellow and violet growing thickly on both sides of the path, a narrow winding dirt path behind her, large mushrooms near tree roots, a butterfly alighting on a nearby flower',
+            'sunlit forest clearing: tall grasses and wildflowers, birch trees filtering the light, her path winding away behind to the left, bees drifting from flower to flower in the warm light',
+            'forest floor with wildflowers: ferns and flowering plants, dappled watercolour light through oak leaves, her basket on the mossy ground, a stream glinting through the trees to the right'
+          ],
+          details:[
+            'Her expression is completely absorbed in delight — she has entirely forgotten where she was going',
+            'Her expression is the pure happiness of a girl who has found more beautiful flowers than she expected',
+            'Her expression is bright and distracted, lips parted in a small enchanted smile — grandmother can wait just a little longer'
+          ],
+          storyMoments:[
+            'she crouches to pick the first wildflower to the right of the path — then another — and another — moving deeper into the flower-filled clearing, her basket now sitting forgotten on the path behind her — she straightens and holds her gathered bunch up to the dappled light with delight — then turns toward the path and pauses, suddenly remembering her errand — a brief guilty look to the left toward grandmother\'s direction — then she tucks the flowers carefully and picks up her basket',
+            'she is deep among the forest flowers, moving slowly to the right, picking carefully — she finds a perfect yellow bloom and holds it up with a happy laugh — then sits down in the flowers to arrange her bouquet, red cape spread around her, completely happy — a butterfly lands on her cape and she goes absolutely still with delight — then she hears a sound in the forest and looks up, alert, suddenly remembering where she was going',
+            'she fills her arm with gathered wildflowers, her basket beside her on the mossy ground — she straightens and looks around the sun-dappled clearing with contentment — then glances along the path ahead to the right and her expression sobers slightly — she picks up her basket, puts the flowers in it carefully, and squares her shoulders — then steps back onto the forest path moving to the right, walking a little more quickly now'
+          ]
+        },
+        {
+          title:'Arriving at Grandmother\'s Cottage',
+          costumes:[
+            'a long cream linen dress, a bright red hooded cape, leather shoes, her wicker basket full of flowers and food, hair slightly windblown from the forest path',
+            'a plain white dress with blue bodice, a vivid red hooded cape, her basket on her arm, rosy cheeks from the walk'
+          ],
+          actions:[
+            'standing before the low cottage door with one small fist raised to knock, head tilted listening for an answer, basket on her arm',
+            'reaching out carefully to the cottage door handle, basket held close to her body, her expression shifting from cheerfulness to puzzled attention',
+            'pressing her ear gently against the cottage door, one hand flat on the old wood, expression of careful listening — something is not quite right'
+          ],
+          backgrounds:[
+            '17th century French forest cottage: a low wooden door with iron hinges, a window with a lace curtain beside the door, climbing roses on the cottage wall, the deep dark forest behind her, amber firelight visible through the lace curtain',
+            'forest cottage entrance: a thatched roof with moss, window boxes with herbs, a worn stone doorstep, the forest path behind, smoke rising from the chimney, afternoon light',
+            'grandmother\'s cottage door: weathered wood with an iron handle, a small window with a checked curtain, stone wall with ivy, the forest deep and dark behind her, the amber firelight through the curtain'
+          ],
+          details:[
+            'Her expression is cheerful and eager, head tilted listening — grandmother is always so happy to see her',
+            'Her expression is bright and curious — but something is very slightly not quite right about the voice from inside',
+            'Her expression shifts from cheerfulness to careful puzzled attention — the voice from inside is strange and she is beginning to notice'
+          ],
+          storyMoments:[
+            'she arrives at the cottage door and knocks briskly, her red cape settling around her, basket on her arm — she calls out cheerfully, tilting her head toward the door — a strange rasping voice answers from within — she pauses, head tilted more deeply to the right, puzzled — calls again, more carefully — the voice replies — she stands very still for a moment, hand resting on the door, something working its way through her expression — then slowly presses down the latch',
+            'she steps up to the cottage door and knocks with her free hand, red hood bright against the dark forest behind her — she calls out grandmother\'s name with a smile — the voice from inside is wrong and she knows it immediately — she freezes with one hand on the door, eyes going very alert — she calls again, more quietly this time — the rasping voice answers — she stands completely still, thinking, rosy cheeks pale — then squares her shoulders and opens the door',
+            'she arrives at the cottage and pauses before the door — the cottage looks the same as always: roses climbing, lace curtain, amber light — but something makes her slow — she knocks carefully and calls — the strange voice answers — she stands with her hand on the door handle for a long moment, her bright eyes steady and alert — a breath — then she opens the door and steps inside'
+          ]
+        }
+      ]
+    },
+    {
+      name:'The Wolf', type:'animal', animStyle:'Beatrix Potter style',
+      scenes:[
+        {
+          title:'Lurking in the Forest',
+          costumes:[
+            'a large grey wolf standing upright, wearing a long dark travelling coat with a wide collar and a broad-brimmed hat pulled low over gleaming eyes',
+            'a large grey wolf on all fours behind a massive oak trunk, ears pricked sharply forward, yellow eyes fixed on the forest path'
+          ],
+          actions:[
+            'standing very still behind a wide oak trunk to the right, watching the forest path with sharp calculating eyes, one paw on the bark',
+            'peering around the edge of a large tree, ears forward, expression of intense calculating patience',
+            'crouching low in the undergrowth just off the path, watching with hooded eyes, absolutely motionless — a master of stillness'
+          ],
+          backgrounds:[
+            'deep French forest: tall dark oak trunks pressing close, dappled light on the narrow path, thick undergrowth, Red Riding Hood\'s red cape barely visible in the distance to the left',
+            'forest shadows: massive tree roots, deep bracken, shafts of light through the canopy, the empty forest path stretching to the left, birdsong overhead',
+            'dark forest interior: crowded tree trunks, deep shadow between them, a patch of sunlit path visible to the left through the trees'
+          ],
+          details:[
+            'His expression is sharp, calculating, and very patient — he has all the time in the world',
+            'His expression is the careful complete stillness of a very clever predator',
+            'His expression is focused and intent — his plan is already fully formed'
+          ],
+          storyMoments:[
+            'he stands frozen behind the great oak watching her red cape pass along the path to the left — she stops to look at a flower and he goes very still, one paw lifting slightly — she moves on and he begins to follow, keeping to the shadows, moving silently from tree to tree to the right, staying ahead of her — he emerges onto the path far ahead and stops, waiting',
+            'he watches her from the deep undergrowth with complete stillness — she is picking flowers and has forgotten entirely about the path — he takes one silent step to the right, then another, keeping low — he circles wide through the dark forest, moving quickly and quietly — he will reach grandmother\'s cottage long before she does',
+            'he crouches in the bracken watching her with gleaming yellow eyes — she moves away down the path to the left — he straightens to his full height and looks to the right where the path runs straight to grandmother\'s cottage — he adjusts his broad-brimmed hat, smooths his long dark coat, and strides off purposefully through the forest, whistling softly to himself'
+          ]
+        },
+        {
+          title:'In Grandmother\'s Bed',
+          costumes:[
+            'a large grey wolf lying in a small wooden bed wearing grandmother\'s white nightgown and frilled lace cap, spectacles perched on his long nose, a patchwork quilt pulled to his chin',
+            'a grey wolf propped on pillows in the cottage bed in a white nightgown and large white sleeping cap, arms folded primly over the quilt, trying very hard to look like a grandmother'
+          ],
+          actions:[
+            'lying in the bed with the quilt at his chin, spectacles on, watching the cottage door with wide eyes barely concealing sharp cunning behind performed illness',
+            'propped on the pillows with the nightcap askew and spectacles sliding down his long nose, arms folded with elaborate grandmotherly primness',
+            'peeking over the edge of the patchwork quilt with enormous yellow eyes, lace cap framing his sharp face, attempting a grandmother\'s smile'
+          ],
+          backgrounds:[
+            '17th century French cottage bedroom: a small carved wooden bed with a patchwork quilt, a bedside table with a tallow candle, a low window with a lace curtain, a braided rug on the floor, grandmother\'s shawl and clothes hung on hooks, a small warm fireplace',
+            'cottage bedroom: a carved wooden headboard, embroidered pillows, a small chest at the foot of the bed, a window with herbs on the sill, warm afternoon light making patterns on the floor',
+            'small French cottage room: low ceiling with exposed beams, a feather bed with patchwork cover, a bedside candle, simple wooden furniture, a fireplace with dying embers, the window with lace curtain'
+          ],
+          details:[
+            'His expression is performed grandmotherly innocence barely masking very sharp cunning — the spectacles keep sliding down his long nose',
+            'His expression is the most elaborate and unconvincing performance of being a grandmother — his ears are far too large for the cap',
+            'His expression is wildly implausible sweet concern — his yellow eyes gleam and his teeth are entirely too large for any grandmother\'s smile'
+          ],
+          storyMoments:[
+            'he lies in the bed with the quilt at his chin and the spectacles askew on his long nose, listening to the knock at the door — he calls out in a rasping voice attempting to sound like grandmother — he adjusts the lace cap over his large grey ears and pulls the quilt higher — he watches the door with gleaming eyes, paws gripping the quilt edge, performing patience — the latch begins to move',
+            'he sits propped on the grandmother\'s pillows in her white nightgown and large lace cap — the cap keeps slipping over one ear — he pushes it back with one grey paw, spectacles flashing — he calls out in his strange hoarse grandmother-voice when the knock comes — he folds his paws primly over the quilt and arranges his expression into something he hopes resembles a sick elderly woman — it does not',
+            'he waits in the cottage bed with the quilt tucked to his chin, lace cap on his head, spectacles on his nose — at the sound of knocking he sinks slightly lower under the quilt and calls out in his rasping voice — he watches the door with absolute focused attention through the spectacles, all his sharp intelligence concentrated on this single moment — his large grey paws grip the quilt edge under the cover'
+          ]
+        }
+      ]
+    },
+    {
+      name:'Grandmother', type:'human', animStyle:'Pixar 3D style',
+      scenes:[
+        {
+          title:'Knitting by the Window',
+          costumes:[
+            'a kind elderly woman in a long dark wool dress with a white lace collar and cuffs, a soft knitted shawl around her shoulders, spectacles on her nose, grey hair in a neat bun',
+            'an elderly woman in a long navy dress with an embroidered collar, a soft cream shawl, silver spectacles, white hair pinned with a small cap, knitting in her lap'
+          ],
+          actions:[
+            'sitting in a carved wooden armchair beside the cottage window, knitting needles clicking contentedly, looking toward the forest path with a warm anticipatory smile',
+            'bent over her knitting in the low chair by the warm fire, spectacles on the end of her nose, a cat sleeping at her feet, entirely and completely content',
+            'pausing her knitting to look out the window at the forest path, spectacles pushed up on her forehead, expression of fond patient anticipation'
+          ],
+          backgrounds:[
+            '17th century French cottage interior: a low window looking out at the sunlit forest path, a spinning wheel in the corner, braided rugs on the floor, a warm fireplace with a kettle, bundles of herbs hanging from the beams, a tabby cat asleep on the hearth',
+            'cottage sitting room: a carved wooden chair with a cushion, a shelf of china cups, a lace curtain at the window, a small crackling fire, afternoon light on the wooden floor, drying flowers in a blue vase',
+            'grandmother\'s cottage interior: warm wooden furniture, a shelf of preserves in glass jars, hanging dried herbs, a pot of tea on the table, a braided rug, the forest visible and peaceful through the window'
+          ],
+          details:[
+            'Her expression is warm and deeply content — she is happy in this small cottage with her fire and her knitting and the knowledge that her granddaughter is coming',
+            'Her expression is gently alert and anticipating — she will hear the footsteps on the path very soon',
+            'Her expression is the peaceful contentment of a long good life, entirely secure and happy'
+          ],
+          storyMoments:[
+            'she sits knitting by the window, needles clicking a steady warm rhythm, glancing often toward the forest path outside — she pauses to look more carefully and smiles, certain she will see the red cape any moment now — she sets her knitting in her lap and smooths her shawl — then picks the needles up again, humming softly to herself, waiting with the patient happiness of someone who is very much looking forward to a visit',
+            'she knits contentedly by the fire, the cat sleeping warm at her feet — she pauses to peer through her spectacles at a difficult stitch — then looks up toward the window and the forest path with an anticipating smile — she rises slowly from her chair, wrapping her shawl, and goes to the window to look out at the path — she stands there watching, hands folded, a warm smile on her wrinkled face',
+            'she is setting out a cup of tea on the table when she hears footsteps on the path — she straightens and looks toward the door with a delighted smile, smoothing her dress and shawl — she goes to the door and opens it, leaning out to look along the forest path with arms slightly spread, ready to welcome her granddaughter'
+          ]
+        }
+      ]
+    }
+  ]
+},
+
+/* ══════════════════════════════════
+   3. KOLOBOK — The Round Bun
+══════════════════════════════════ */
+{
+  tale:'Kolobok', century:'Traditional Russian folk tale',
+  sounds:['Joyful bouncy Russian folk tune on balalaika.','Irresistibly cheerful folk melody with a comic swagger.','Bright spinning folk music that stops with a single comic note.'],
+  characters:[
+    {
+      name:'Kolobok', type:'animal', animStyle:'Beatrix Potter style',
+      scenes:[
+        {
+          title:'Rolling Away from the Cottage',
+          costumes:[
+            'a perfectly round golden bun with a cheerful baked face — two small round eyes and a wide happy mouth baked into the warm golden crust',
+            'a plump perfectly round bread bun with a smiling baked face, its golden crust smooth and warm from the oven'
+          ],
+          actions:[
+            'rolling forward with joyful gathering momentum along the dirt path, motion arcs appearing in the painted dust around it, its happy face bobbing as it turns',
+            'bouncing along the path with irresistible cheerfulness, its wide baked smile appearing and reappearing with each rotation',
+            'rolling at full happy speed past the garden gate, face grinning, small puffs of dust rising from the path behind it'
+          ],
+          backgrounds:[
+            'traditional Russian folk scene: a low wooden cottage with carved window frames and carved shutters behind it, a surprised old grandmother in a blue sarafan leaning out the window to the left with her mouth open, an old grandfather at the cottage door in wide-eyed astonishment, the dirt path winding to the right through a birch forest, spring wildflowers along the fence',
+            'Russian village morning: a log cottage with carved decorations, a carved wooden fence, a birch forest ahead to the right, chickens scattering from the path, the grandmother and grandfather both staring from the doorway in total disbelief',
+            'Russian countryside morning: a thatched cottage, a sunflower garden, the forest path ahead to the right, golden morning light, the old couple watching from behind the garden gate with identical expressions of astonishment'
+          ],
+          details:[
+            'Its expression is irrepressibly happy and completely free — it has never rolled before and it loves it enormously',
+            'Its expression is the pure joy of a bun that has decided to see the world',
+            'Its expression is triumphant cheerfulness — it has escaped and everything is wonderful'
+          ],
+          storyMoments:[
+            'it rolls away from the oven shelf, drops to the floor with a bounce, and begins to roll toward the door — the grandmother reaches for it and misses — it rolls faster, toward the door, toward the path, gaining speed and confidence — it bumps over the doorstep and rolls into the sunlit morning, its happy face spinning, turning to show its smile to the astonished grandparents as it goes — it reaches the gate and rolls through without stopping, into the wide world',
+            'it rolls cheerfully down the cottage path to the right, singing as it goes — the grandmother comes out after it calling but it rolls faster, past the sunflowers, past the fence — the grandfather tries to catch it from the other side but it swerves easily around him with a happy bounce — it reaches the birch forest path and rolls on without hesitation, its happy face turning and turning',
+            'it rolls from the cottage steps with gathering joyful speed, the warm morning sun on its golden crust — it passes the astonished chickens who scatter — it passes the garden fence — it pauses at the forest edge and turns its smiling face back once toward the cottage — then rolls forward into the birch forest, its happy song fading into the trees'
+          ]
+        },
+        {
+          title:'Meeting the Bear',
+          costumes:[
+            'a perfectly round golden bun with a cheerful baked face, slightly dusty from the forest path',
+            'a round golden bread bun with a smiling face, warm and rolling-confident on the forest path'
+          ],
+          actions:[
+            'stopped on the path, facing the large brown bear directly with complete cheerful fearlessness',
+            'rolling in a small confident circle before the bear as if introducing itself, its baked face smiling broadly',
+            'facing the bear squarely and beginning to vibrate slightly — it is about to sing its famous song'
+          ],
+          backgrounds:[
+            'Russian birch forest: white birch trunks in every direction, dappled summer light on the mossy path, a large brown bear standing upright on its hind legs directly in the path ahead blocking the way, wild mushrooms at the tree roots to both sides',
+            'forest path in Russia: birch and pine trees, soft forest floor with ferns and clover, the bear sitting back on its haunches looking down with hungry bafflement, afternoon light through the leaves',
+            'Russian forest clearing: a mossy sunlit path, tall birches, wild strawberries at the path edge, the large bear on all fours leaning toward it with nose twitching hungrily'
+          ],
+          details:[
+            'Its expression is completely cheerful and utterly without fear — it has already met a rabbit and a wolf and this is just a bear',
+            'Its expression is bright confident self-introduction — it has a song and it intends to sing it',
+            'Its expression is joyfully self-satisfied — it has done this twice today and knows exactly what comes next'
+          ],
+          storyMoments:[
+            'the bear blocks the path, leaning down with its large nose twitching at the wonderful smell — Kolobok stops rolling and looks directly up at it with a happy fearless face — the bear opens its mouth — Kolobok begins to sing, its golden form vibrating with the tune — the bear blinks and sits back, confused — the song ends and Kolobok rolls to the right, straight past the bear\'s enormous paw — the bear swipes and misses entirely — Kolobok rolls on, singing, without looking back',
+            'the large brown bear leans down with hungry eyes toward the small golden bun on the path — Kolobok rolls in a small self-pleased circle and puffs up — the bear leans closer — Kolobok sings its full song with enormous self-satisfaction, rolling back and forth with the rhythm — the bear is completely baffled — it reaches out one paw and Kolobok rolls neatly past it to the right — still singing — the bewildered bear watches it disappear into the forest',
+            'the bear stands in the middle of the path looking down at Kolobok with determined hunger — Kolobok faces it directly with its happy painted smile — it sings its song with vibrating enthusiasm — the bear blinks, then reaches forward with both paws — Kolobok spins neatly to the right and rolls past at full speed, its song trailing behind it — the bear turns and watches it go, mouth open, sitting down slowly in the path in bewilderment'
+          ]
+        },
+        {
+          title:'The Fox\'s Flattery',
+          costumes:[
+            'a perfectly round golden bun with a happy baked face, sitting in the forest clearing light',
+            'a round golden bun with a smiling face, sitting proudly in the sunny clearing, beginning to glow with pleased vanity'
+          ],
+          actions:[
+            'facing the red fox with a happy expression that is beginning to glow with pleased vanity at her elaborate flattery',
+            'sitting very still before the fox, its baked face visibly swelling with pride as she admires it extravagantly',
+            'beginning to sing for the fox, vibrating with self-satisfaction, eyes bright — completely unaware of what is about to happen'
+          ],
+          backgrounds:[
+            'Russian birch forest clearing: white birch trunks, warm golden afternoon light slanting through the leaves, soft green grass and yellow wildflowers in the clearing, a beautiful red fox sitting gracefully before it with her head tilted and one delicate paw raised in elaborate theatrical admiration, her magnificent tail curved around her feet',
+            'sunny forest clearing: golden afternoon grass, white birch trees, the fox in a neat red cape sitting opposite with both paws pressed to her heart in performed rapture',
+            'Russian forest afternoon: a sun-dappled clearing, birch trees, wildflowers, the fox with half-closed admiring eyes and one raised paw — a performance of complete overwhelmed admiration'
+          ],
+          details:[
+            'Its expression is beginning to glow with pleased vanity — no one has ever admired it this much before',
+            'Its expression is visibly swelling with pride — it has decided this fox has very good taste',
+            'Its expression is the face of someone about to make a very confident and very final mistake'
+          ],
+          storyMoments:[
+            'the fox sits before Kolobok with head tilted and one paw raised, apparently overcome with admiration — she speaks wonderful flattering words in a low warm voice — Kolobok puffs up noticeably — the fox presses both paws to her heart as if his magnificence is simply too much — Kolobok rolls toward her slightly, pleased — the fox leans in and says she has always dreamed of hearing his famous song — Kolobok begins to sing with enormous self-satisfaction, rolling back and forth — the fox leans closer — and closer — the song ends in a single comic moment of silence',
+            'the red fox sits opposite Kolobok with the most extravagant expression of admiration ever seen in a Russian forest — she gestures toward him with elegant paws — she covers her eyes briefly as if his golden beauty is blinding — Kolobok rolls a small proud circle — she asks to hear his song — Kolobok sings with supreme confidence and vibrating self-satisfaction — the fox\'s ears swivel sharply forward — her eyes open with focused attention — the song continues — and then the clearing is very quiet',
+            'the fox flatters Kolobok with elaborate warmth — he puffs up magnificently — she places one paw on her heart — he rolls in a pleased circle — she asks for his song — he sings the entire thing with maximum self-satisfaction, his golden crust catching the afternoon light beautifully — the fox leans forward very slowly — Kolobok sings the final note — the clearing holds a single beat of perfect dramatic silence — then the forest is still and the fox sits alone, whiskers immaculate, expression of satisfied completion'
+          ]
+        }
+      ]
+    },
+    {
+      name:'The Fox', type:'animal', animStyle:'Beatrix Potter style',
+      scenes:[
+        {
+          title:'Flattering Kolobok',
+          costumes:[
+            'a beautiful red fox sitting gracefully upright, head tilted to one side, one delicate paw raised, wearing a short red cape with a hood, her magnificent bushy tail curved neatly around her feet',
+            'a sleek red fox in a neat red travelling cape, ears pricked forward attentively, tail sweeping gracefully, expression of theatrical admiration'
+          ],
+          actions:[
+            'sitting with head tilted and one paw raised in elaborate theatrical flattery, eyes half-closed in performed admiration at Kolobok before her',
+            'leaning forward with both paws pressed dramatically to her chest, apparently overcome with the magnificence of what she is seeing',
+            'gesturing toward Kolobok with one elegant paw, the other pressed to her heart — the very picture of an admiring audience'
+          ],
+          backgrounds:[
+            'Russian birch forest clearing: golden afternoon light slanting through the leaves, soft grass and yellow wildflowers, white birch trunks around the clearing, Kolobok sitting before her looking increasingly pleased',
+            'sunny clearing in a Russian birch forest: wildflowers, dappled afternoon light, the round golden bun sitting before her beginning to swell with pride',
+            'forest clearing: tall golden grasses, white birch trunks, Kolobok sitting in the centre of the clearing, warm afternoon light on everything'
+          ],
+          details:[
+            'Her expression is the most elaborate and theatrical performance of admiration ever given in a Russian forest — and behind it, very focused, very sharp, very patient attention',
+            'Her expression is performed rapture concealing absolute focused intent — every compliment is precisely calculated',
+            'Her expression is cunning sweetness — every word a trap, every gesture a snare, and Kolobok is walking straight into it with a smile'
+          ],
+          storyMoments:[
+            'she tilts her beautiful head at Kolobok with eyes half-closed in performed admiration — speaks low warm words of flattery — gestures toward him as if his golden beauty is simply too much — presses both paws to her chest — Kolobok rolls a pleased circle — she leans forward with the most sincere expression possible and asks to hear his famous song — her ears rotate sharply forward as he begins — she leans in very slowly — very slowly — the song continues',
+            'she sits before Kolobok with elaborately arranged admiration — she covers her eyes briefly as if his brightness is blinding — opens them to gaze at him with overwhelming appreciation — speaks more warm flattering words — Kolobok rolls toward her slightly — she places one elegant paw on her heart and asks for his song in a voice of utter sincerity — her tail swishes slowly once with contained excitement as he begins to sing',
+            'she performs her admiration with absolute professional calm — every gesture calculated, every word perfectly pitched — Kolobok puffs up magnificently — she asks for his song with eyes full of humble request — he begins to sing with full self-satisfied confidence — she leans forward one centimetre — her half-closed eyes sharpen behind their mask of admiration — Kolobok sings on joyfully — the fox\'s expression does not change at all — she is very good at this'
+          ]
+        }
+      ]
+    }
+  ]
+},
+
+/* ══════════════════════════════════
+   4. UGLY DUCKLING
+══════════════════════════════════ */
+{
+  tale:'The Ugly Duckling', century:'Denmark — H.C. Andersen 1843',
+  sounds:['Quiet gentle cello in the cold.','Spare tender woodwind rising slowly.','Soaring triumphant strings at the end.'],
+  characters:[
+    {
+      name:'The Ugly Duckling', type:'animal', animStyle:'Beatrix Potter style',
+      scenes:[
+        {
+          title:'Rejected at the Farmyard',
+          costumes:[
+            'a large grey fluffy duckling with awkward long legs, a slightly too-large beak, soft grey down, standing alone among yellow ducklings',
+            'a grey downy duckling larger than the rest, with oversized feet and gentle uncertain eyes, standing apart on the muddy farmyard ground'
+          ],
+          actions:[
+            'standing alone in the farmyard with head drooping and wings slightly hunched, watching the other ducklings cluster away to the right',
+            'taking one hopeful step toward the group of yellow ducklings who scatter away — it stands mid-step, one grey foot raised, confused',
+            'sitting alone at the muddy pond edge, looking at its own grey reflection in the still water with quiet puzzled sadness'
+          ],
+          backgrounds:[
+            '19th century Danish farmyard: a group of bright yellow ducklings and a proud white mother duck all turned away to the right, brown hens pecking in the mud, a weathered wooden barn, a muddy pond with bulrushes, a grey overcast sky',
+            'Danish farmyard: a farmhouse in the background, a well, a wooden chicken coop, yellow ducklings clustered together turning their backs, a muddy pond, grey cloudy sky',
+            'farmyard pond edge: muddy brown water, bulrushes and reeds, the grey duckling\'s reflection in the still water, yellow ducklings in the background ignoring it, grey sky above'
+          ],
+          details:[
+            'Its expression is gentle sadness and bewildered hurt — it does not understand what it has done wrong',
+            'Its expression is the quiet sorrow of something that does not yet understand why it is different from everyone else',
+            'Its expression is patient and still, asking a question it cannot put into words'
+          ],
+          storyMoments:[
+            'it waddles hopefully toward the group of yellow ducklings to the right — they scatter away with alarmed peeping — the mother duck gives it a long cold look — it stands completely still in the middle of the farmyard, one foot raised, watching them go — then it lowers its foot and walks slowly to the pond edge, sits down, and looks at its own grey reflection — the reflection looks back — large, different, alone',
+            'it tries again — takes three careful steps toward the yellow ducklings who are clustered by the barn — they shuffle away to the right without looking at it — the hens peck around it and through it as if it is not there — it stands in the centre of the farmyard with wings slightly spread in a gesture of uncertain appeal — nobody turns — it folds its wings and walks to the pond alone',
+            'it stands at the pond edge watching its grey reflection in the muddy water — it looks up at the yellow ducklings behind it who are warm and clustered together — it looks back at its reflection — large grey awkward different — it makes one more attempt to join the group, waddling carefully to the right — the mother duck turns firmly away — it stops, stands very still, then walks quietly away to the far side of the pond and sits down alone in the rushes'
+          ]
+        },
+        {
+          title:'Alone in the Winter Marshes',
+          costumes:[
+            'a large grey duckling huddled in a hollow between frozen reeds, wings pulled tight for warmth, snow settled on its grey back and head',
+            'a grey down-feathered duckling sheltering between ice-rimmed reeds, wings folded close, head slightly bowed into its chest against the cold'
+          ],
+          actions:[
+            'huddled between frozen reeds with wings pulled tight, neck tucked down, looking out at the empty white frozen marsh',
+            'standing in the open frozen marsh with neck stretched upward, watching a flight of white swans pass across the grey winter sky in the distance',
+            'sitting alone between the reeds in the snow, a single grey form in an enormous silent white and grey world'
+          ],
+          backgrounds:[
+            'bleak Danish winter marsh: frozen water between grey-brown reed stems, bare skeletal willow trees in the far distance, snow falling in soft painted dabs, a pale featureless grey winter sky, the white ground stretching empty in every direction',
+            'winter marsh: ice-crusted water, dead reeds and cattails, bare leafless trees at the horizon, heavy grey clouds low overhead, snowflakes drifting down, everything silent and white',
+            'frozen Danish landscape: a river completely frozen, reed beds coated in ice, bare willow trees, a heavy grey sky, snow on every surface, the world reduced to grey and white and silence'
+          ],
+          details:[
+            'Its expression is patient endurance and quiet loneliness — it is very cold and very alone but it will endure',
+            'Its expression is a complex and beautiful thing: loneliness, and underneath it a faint wondering ache that might be a kind of hope it does not yet understand',
+            'Its expression is very still and very quiet — enduring without complaint, with a kind of unconscious dignity'
+          ],
+          storyMoments:[
+            'it shivers once — a small whole-body shudder — and tucks its beak deeper under one wing — snow settles on its back — it lifts its head and looks out across the white frozen marsh in every direction — nothing, no one, just white and cold and silence — it tucks its beak down again — then it hears a distant sound and cranes its neck upward — far above, a formation of large white birds crosses the grey winter sky — it watches them with neck stretched up, something happening in its expression that it cannot name',
+            'it stands in the open frozen marsh in the falling snow, completely still — neck stretched upward, watching the formation of swans pass far above in the grey sky — they are beautiful, enormous, white — something in it responds to them with an ache it has never felt before — it watches until they disappear — then lowers its neck and looks around at the empty white world — then back at the sky where the swans were — standing very still in the snow',
+            'it huddles between the frozen reeds in the deep cold, snow gathering on its grey back — it lifts its head when the snow slows for a moment — looks across the frozen water and bare trees — everything white and still and empty — it stretches its neck up one more time toward the grey sky — then tucks its head down again — patient, enduring, waiting for something it does not know it is waiting for'
+          ]
+        },
+        {
+          title:'Discovering it is a Swan',
+          costumes:[
+            'a large young white swan with magnificent wings just beginning to unfurl, neck arching in a beautiful curve, bending toward its own reflection',
+            'a beautiful white swan in the first fullness of its plumage, neck curved elegantly, wings spreading, discovering itself'
+          ],
+          actions:[
+            'bending its elegant neck toward the mirror-still spring pond to see its reflection — a perfect white swan looking back — expression of pure astonished joy',
+            'lifting its magnificent white head toward three approaching older swans, wings spreading involuntarily in an uncontrolled movement of recognition and joy',
+            'standing at the water\'s edge with wings fully spread, neck arched high, face turned upward — complete arrival, complete homecoming'
+          ],
+          backgrounds:[
+            'beautiful Danish spring pond: mirror-still water reflecting blue sky and white clouds perfectly, green reeds and rushes just emerging, white water lilies floating, three large older swans gliding gracefully toward it with welcoming expressions, warm spring sunshine on everything',
+            'spring river: new willow leaves trailing in the water, water lilies, fresh green reeds, three large white swans approaching across the shining water, deep blue sky above',
+            'Danish spring landscape: a river bend, flowering meadow banks with yellow and white flowers, white swans on the bright water, blue sky with white clouds, warm spring sunlight on everything'
+          ],
+          details:[
+            'Its expression is pure astonished joy and arrival — it finally knows what it is and where it belongs',
+            'Its expression is overwhelmed recognition — the most complete happiness it has ever felt in its short confusing life',
+            'Its expression is the face of someone who has come home after a very long journey through cold and loneliness'
+          ],
+          storyMoments:[
+            'it bends its neck toward the spring water and sees — not a grey ugly duckling — but a white swan, neck arched, elegant, beautiful — it freezes absolutely still, staring — then its wings spread involuntarily, trembling — it looks up and three older swans are gliding toward it across the shining water with welcoming expressions — it looks back at its reflection — then up at the swans — then down again — its wings spread wider — it throws back its head and makes a sound it has never made before',
+            'it stands at the pond edge bending toward its reflection — the reflection shows a white swan looking back — it blinks — straightens — looks down again — the white swan is still there — its wings begin to open on their own, trembling with the effort of containing what it is feeling — the three older swans glide close — one stretches its neck toward it in greeting — it looks from the reflection to the approaching swans and back — and something breaks open in its chest in the most wonderful way',
+            'it sees its own reflection and goes completely still — white, graceful, arched neck, nothing like the grey thing it thought it was — it lifts its head and finds three large white swans surrounding it in the spring water — they bow their necks to it — it looks at them, then at its reflection, then at the bright spring world around it — its wings spread to their full magnificent span — it stands at the water\'s edge in the warm sunshine knowing at last exactly what it is'
+          ]
+        }
+      ]
+    }
+  ]
+},
+
+/* ══════════════════════════════════
+   5. PUSS IN BOOTS
+══════════════════════════════════ */
+{
+  tale:'Puss in Boots', century:'17th century France — Perrault',
+  sounds:['Jaunty swaggering woodwind with a comic flourish.','Confident strutting strings with a playful theme.','Triumphant swaggering melody with a final flourish.'],
+  characters:[
+    {
+      name:'Puss in Boots', type:'animal', animStyle:'Beatrix Potter style',
+      scenes:[
+        {
+          title:'Putting on His Magnificent Boots',
+          costumes:[
+            'an orange tabby cat standing upright on two legs, pulling a tall black leather boot onto one hind leg with both front paws, a wide-brimmed hat with a white feather already perfectly set on its head, a small dark cape, a leather satchel over one shoulder',
+            'a striped ginger cat in tall black boots already on, adjusting a magnificent wide-brimmed feathered hat with both paws, a small dark travelling coat, leather satchel — looking extraordinarily pleased with itself'
+          ],
+          actions:[
+            'standing upright pulling the tall black boot onto its hind leg with intense concentration, the feathered hat tilting with the effort',
+            'stamping one booted foot hard on the mill floor in satisfaction, adjusting the wide-brimmed hat to an absolutely perfect and very dashing angle',
+            'smoothing its small dark cape with brisk efficient paws, patting the satchel, checking that everything is in order — ready for the great scheme to begin'
+          ],
+          backgrounds:[
+            '17th century French flour mill interior: two large millstones, grain sacks stacked against the stone walls, heavy wooden beams and posts, a low doorway letting in bright morning sunlight, a sad young miller\'s son sitting in the corner watching the cat with an expression of complete bewilderment',
+            'interior of a French flour mill: dusty wooden floors, grinding machinery with wooden gears, flour sacks, a low window with morning light, the young master watching with his head in his hands',
+            'mill room: rough stone walls, grain sacks, wooden beams, a small propped mirror against the wall in which the cat is checking its reflection with satisfaction, morning light through a doorway'
+          ],
+          details:[
+            'Its expression is completely confident, magnificently cunning, and extremely self-pleased — this is a cat that knows exactly what it is doing',
+            'Its expression is the face of someone who has an excellent plan and knows it will work perfectly',
+            'Its expression is bright determined authority combined with enormous personal vanity — this hat is exactly right'
+          ],
+          storyMoments:[
+            'it pulls on the first tall black boot with focused concentration, stamps it — perfect — pulls on the second, stamps both — very good — adjusts the wide-brimmed feathered hat to the exact correct angle — tilts it fractionally — yes — smooths the cape with both paws — pats the satchel — turns to look at the miller\'s son in the corner and gives him a single look of absolute authority: trust me — then turns and strides toward the door with both boots ringing on the mill floor, tail up, out into the bright morning',
+            'it examines its reflection in the small propped mirror with complete satisfaction — adjusts the hat brim one last precise fraction — stamps both booted feet once each — turns from the mirror to pace the mill floor with the swagger of someone who has just decided the course of events — the miller\'s son watches in complete bewilderment — it does not explain — it picks up its satchel, sets the hat one more time, and strides to the door',
+            'it pulls on both tall black boots with quick efficient movements — stamps to settle them — lifts the wide-brimmed hat and sets it on its head at the exact right angle — checks the satchel — turns to face the mill door and the morning beyond — one look back at the sorrowful miller\'s son with an expression of calm authority — then walks out the door with every hair perfect, both boots ringing, hat magnificent, into the French morning and the great scheme ahead'
+          ]
+        },
+        {
+          title:'Catching Rabbits for the King',
+          costumes:[
+            'an orange tabby cat in full boot-and-hat regalia, crouching very low between tall wheat stalks with an open burlap sack held wide',
+            'a striped ginger cat in its magnificent boots and feathered hat, flattened in the golden wheat, tail absolutely still, eyes narrowed to focused slits'
+          ],
+          actions:[
+            'crouching between the tall wheat stalks with the burlap sack held open, entire body motionless, eyes fixed on something to the right with intense hunting focus',
+            'frozen in perfect absolute stillness between the wheat, ears rotated forward, not a single whisker moving — the complete stillness of a superior predator',
+            'leaping with the closed sack triumphantly in both paws, hat knocked sideways, tail shooting straight up in pure satisfaction'
+          ],
+          backgrounds:[
+            '17th century French countryside wheat field: tall golden wheat stalks surrounding the cat on all sides, a narrow dirt path through the field, rabbit warrens visible at the field edge to the right, a warm summer sky, a distant royal road where a gilded carriage can just be glimpsed',
+            'French wheat field in summer: golden stalks, red field poppies at the edges, a dirt path, rabbit holes in the hedgerow to the right, summer blue sky, a distant church tower',
+            'countryside field: tall golden wheat, a country road visible far to the right, rabbit warrens in the hedgerow, summer light, the road where the royal carriage passes'
+          ],
+          details:[
+            'Its expression is the concentrated absolute focus of a very serious and very clever hunter — not a whisker moves',
+            'Its expression is perfect predatory stillness — it has become part of the wheat field',
+            'Its expression is magnificent triumphant self-congratulation — everything is going exactly according to plan'
+          ],
+          storyMoments:[
+            'it is motionless in the wheat, sack held open — a rabbit at the field edge TO THE RIGHT creeps toward it, nose twitching — the cat does not move a single hair — the rabbit comes closer — closer — another step — POUNCE — the sack snaps shut — the cat rolls to its feet holding the wriggling sack with both paws triumphantly, hat askew, tail straight up — it adjusts the hat with one paw, checks the sack is secure, and strides off toward the royal road to the right with the confident walk of someone who has delivered many rabbits to many kings',
+            'it crouches in the golden wheat with complete professional stillness — two rabbits emerge from the warren to the right — it watches through half-closed eyes — one rabbit comes close — the other turns back — it waits for the closer one — then pounces with a single efficient movement — sack closed — it stands in the wheat holding its prize, smooths the hat, picks a wheat stalk from its cape, and sets off toward the royal road with the satisfied expression of someone who is very good at their job',
+            'it lies flat between the wheat stalks, sack ready, watching the rabbit warren to the right — the morning is warm and still — a rabbit appears, sniffs the air, takes three hops toward it — the cat is a statue — another hop — it springs, sack snaps shut — it stands holding the sack above its head for one moment of pure triumph, then tucks it under one arm, sets its hat straight, and walks briskly toward the distant royal road where the king\'s carriage passes every morning'
+          ]
+        },
+        {
+          title:'Outwitting the Ogre',
+          costumes:[
+            'a tiny orange tabby cat standing with paws on hips before an enormous ogre, wide-brimmed feathered hat perfectly set, tail straight up, looking directly upward with absolute calm and maximum cheek',
+            'a small striped ginger cat in magnificent boots and hat, facing upward toward a giant twice its height, entirely without fear or doubt'
+          ],
+          actions:[
+            'standing with tiny paws on hips looking directly up at the enormous ogre with complete fearless cunning authority — the smallest creature in the room with all the confidence',
+            'gesturing extravagantly with one paw toward the vast castle around them, apparently making an extremely persuasive and flattering speech to the ogre',
+            'watching in controlled triumph as a very small and confused mouse sits blinking on the cold stone floor where the enormous ogre just stood'
+          ],
+          backgrounds:[
+            '17th century French ogre\'s castle interior: enormous rough stone walls, a vast stone fireplace big enough to roast an ox, massive wooden furniture scaled for a giant, cobwebs and chains on the walls, skulls on the mantelpiece, animal pelts on the floor — the tiny cat a single small confident figure in the vast cold space',
+            'ogre\'s great hall: vaulted stone ceiling lost in shadow, a massive iron chandelier, an enormous oak table, the cat a tiny figure standing in the centre with total authority',
+            'castle interior: cold grey stone, massive bones in the corners, a great fireplace, chains on the walls — the tiny cat standing alone in the vast cold hall with the confidence of someone who owns it'
+          ],
+          details:[
+            'Its expression is absolute fearless cunning — the smallest creature in the room and clearly the most powerful',
+            'Its expression is calm triumphant authority — it has outwitted something ten times its size without breaking a sweat',
+            'Its expression is the magnificent self-satisfaction of a plan that has gone perfectly from beginning to end'
+          ],
+          storyMoments:[
+            'it stands before the enormous ogre with paws on hips, looking directly up with bright cunning eyes — it speaks flattering words in a very persuasive tone, gesturing to the ogre\'s great size — the ogre leans down listening — the cat makes a challenge: surely something so powerful could transform into a lion — the ogre roars and becomes a lion — the cat scrambles up the wall with wide eyes — good, very good — but could it transform into something very small — a mouse, for example — the ogre hesitates — the cat waits with perfect composure — a small mouse appears on the cold stone floor',
+            'it looks up at the enormous ogre with the expression of someone who has all the time in the world — speaks elaborate flattery about the ogre\'s legendary powers of transformation — the ogre swells with pride — the cat leans against the stone wall and examines its claws while asking casually whether the ogre could really become anything at all — the ogre demonstrates — the cat watches each transformation with performed amazement — then asks with maximum casualness whether it could become something truly tiny — the ogre smiles and shrinks — the cat pounces',
+            'it stands in the enormous cold hall looking up at the ogre — speaks carefully arranged flattery — the ogre leans down — the cat asks whether the famous transformation powers extend to very small creatures — a mouse perhaps — the ogre laughs that of course — the cat watches with perfectly composed expression — a mouse sits blinking on the cold floor — the cat is on it in a single efficient movement — it straightens, adjusts its hat, and surveys the now-empty hall with profound satisfaction — the castle is its master\'s now'
+          ]
+        }
+      ]
+    }
+  ]
+},
+
+/* ══════════════════════════════════
+   6. RAPUNZEL
+══════════════════════════════════ */
+{
+  tale:'Rapunzel', century:'Germany — Brothers Grimm',
+  sounds:['Tender wistful violin melody.','Quiet longing flute over the sound of wind.','Soaring joyful strings at last.'],
+  characters:[
+    {
+      name:'Rapunzel', type:'human', animStyle:'Pixar 3D style',
+      scenes:[
+        {
+          title:'Letting Down the Golden Hair',
+          costumes:[
+            'a simple pale cream linen dress with long sleeves, hair in an extraordinarily long golden braid that cascades from the tower window down the stone wall',
+            'a plain white linen dress, her hair — an impossibly long golden braid — falling from her hands over the window ledge in a river of spun light'
+          ],
+          actions:[
+            'leaning forward with both arms on the stone windowsill, golden braid cascading down the tower wall into the darkness below, expression of longing and quiet hope',
+            'slowly unwinding the great golden braid and lowering it over the window ledge, watching it fall with a mixture of hope and vulnerability',
+            'leaning over the windowsill with the golden braid going taut, bracing one foot against the stone, expression of concentrated patient effort'
+          ],
+          backgrounds:[
+            'tall isolated stone tower deep in a German forest: rough grey stone walls rising from dark tree canopy, narrow arched window at great height, moonlit sky with soft stars, the golden braid hanging the full length of the tower in the moonlight',
+            'German forest tower at dusk: rough stone walls, dark forest canopy below, ivy beginning to creep up the stone, pale evening sky, the braid glowing gold against the grey stone',
+            'stone tower in deep forest at night: rough ancient stone, a narrow arched window, the vast dark tree canopy far below, a full moon, the golden braid a cascade of light down the dark wall'
+          ],
+          details:[
+            'Her expression is longing, hope, and a shy uncertain smile — she is choosing to trust',
+            'Her expression is wistful and quietly brave — the face of someone who has decided',
+            'Her expression is tender courage — a little afraid, doing it anyway, her heart very full'
+          ],
+          storyMoments:[
+            'she unwinds the great golden braid from around her waist and lower it over the windowsill — it falls in cascades of warm light down the dark stone tower wall — she watches it fall with held breath — she braces her feet against the stone and leans forward, holding the braid, watching the forest far below — the braid goes taut — she steadies herself against the stone with her whole body, face forward, expression of concentrated quiet effort and hope mixed in equal measure',
+            'she drapes the great braid over the windowsill and lets it fall — it catches the moonlight as it goes, wave after wave of gold against the dark stone — she leans forward watching it, hands gripping the cold stone — it reaches the forest floor and lies still — she waits, leaning out, her golden hair lit by the moon — the braid begins to move — she braces herself and grips it, her whole weight shifting to hold it, her face bright with nervous hope',
+            'she stands at the window unwinding the enormous braid and feeds it down the stone wall in shining loops — it falls and falls, impossibly long, a river of gold in the night — she leans far out the window watching it descend — it reaches the bottom — she holds the end looped twice around her wrists, braces her feet against the stone, and settles into a careful still waiting posture — face forward, golden braid catching moonlight all the way down the dark tower wall below her'
+          ]
+        },
+        {
+          title:'Singing at the Tower Window',
+          costumes:[
+            'a simple pale cream linen dress, hair in its great golden braid coiled beside her on the stone ledge, sitting sideways in the deep arched window',
+            'a plain white linen dress, her golden braid draped over the window ledge and falling outside, sitting with one knee drawn up, face upturned'
+          ],
+          actions:[
+            'sitting sideways in the deep stone window with one knee drawn up, face upturned in song, eyes half-closed in quiet joy',
+            'leaning on the window ledge with her chin in her hands, gazing out at the blue sky with a song just ending on her lips',
+            'turning her face toward the forest below, one hand on the stone, voice rising into the silent green world beneath'
+          ],
+          backgrounds:[
+            'stone tower interior: rough stone walls, a small oil lamp warmthing warmly on a shelf, bunches of dried herbs hanging from iron hooks, a simple wooden spindle, the deep arched window opening onto a bright blue sky with soft clouds, swallows circling the tower outside',
+            'tower room interior: cold stone walls, a wooden loom with half-finished cloth, a shelf of books, a small hearth with a low fire, the open window with blue sky and swallows beyond',
+            'tower interior: grey stone, a narrow bed with a patchwork cover, a mirror, a candle in a holder, the window open to wind and birdsong and an enormous blue sky'
+          ],
+          details:[
+            'Her expression is peaceful and wistful — the quiet beauty of someone who has made a world of a single room',
+            'Her expression is tender longing — she sings to the birds and the sky because there is no one else',
+            'Her expression is the still contemplative face of someone who has learned to find everything she needs in a very small space — and who knows it is not enough'
+          ],
+          storyMoments:[
+            'she sits in the stone window with her golden braid coiled beside her and sings into the blue air — swallows circle and a few land on the window ledge near her — she holds out one finger and a swallow lands on it — she sings on quietly, the swallow tilting its head — she pauses, looking down at the forest far below, the song dying on her lips — then she hears something — she tilts her head — is it just the wind — she leans forward, listening',
+            'her voice fills the tower room and floats out the window into the blue air — the swallows spiral around the tower in response — she turns her face toward the sky and sings more freely — her golden braid shifts beside her — she sings to the clouds, to the swallows, to the forest below — then she stops mid-note and leans forward, listening — a sound from the base of the tower — she is very still, one hand on the cold stone',
+            'she sings sitting sideways in the window, one knee up, golden braid in her lap, face serene — the forest below is very still and green and silent except for her voice — she pauses and leans on the ledge looking down at the tiny circle of ground visible far below — then looks up at the sky — then down again — then she begins to sing again, more quietly, to herself, watching the swallows'
+          ]
+        },
+        {
+          title:'Free in the Open Meadow',
+          costumes:[
+            'a simple pale cream dress, hair now cut short and curling softly around her face in the breeze, running with arms outstretched through a wide sunlit meadow',
+            'a plain white dress, hair short and free and curling in the wind, running for the first time across an open field of wildflowers'
+          ],
+          actions:[
+            'running with arms outstretched to the right across the meadow, face upturned to the enormous sky, expression of pure exhilarating freedom',
+            'spinning in the centre of the meadow with arms raised, short hair flying, expression of overwhelming joy — she is laughing and crying at once',
+            'standing still in the middle of the wide meadow, arms at her sides, face lifted upward, the sky enormous above her, expression of complete arrival'
+          ],
+          backgrounds:[
+            'wide German meadow in warm sunshine: tall golden grass and wildflowers swaying, a bright blue sky with soft white clouds, the dark forest behind her receding to the left, butterflies rising from the grass around her feet, the world wide open in every direction',
+            'open German countryside: a wide meadow of wildflowers, a river glinting in the distance, the sky enormous overhead, birds flying, the dark tower barely visible in the forest far behind to the left',
+            'sunlit meadow: golden grass, cornflowers and poppies, the wide blue sky, the forest far behind, freedom in every direction, the world opening outward and outward'
+          ],
+          details:[
+            'Her expression is pure exhilarating joy — the face of someone experiencing the open world for the first time after years in a single room',
+            'Her expression is overwhelmed radiant happiness — the world is too large and too beautiful and she is laughing and crying at the same time',
+            'Her expression is complete arrival — she is here, she is free, the sky is real and the grass is real and she is real in it'
+          ],
+          storyMoments:[
+            'she emerges from the forest into the meadow and stops — looks at the wide open sky — then runs, arms out, to the right across the grass, faster and faster — she runs until she stops and spins with arms raised, her short hair flying around her flushed rosy face, laughing — she falls into the tall grass and lies looking up at the enormous blue sky — then sits up and puts her hands flat in the grass and feels it, looking at her own hands in the sunshine',
+            'she steps into the open meadow and looks around — sky in every direction — she takes one experimental step onto the grass, then another — then she runs to the right with arms spread and face upturned, her short curls bouncing — she spins until she is dizzy and falls into the grass laughing — she lies there looking up at the sky and the clouds moving — then sits up with her arms around her knees and watches the butterflies moving through the wildflowers',
+            'she walks into the meadow and simply stops and stands — face upturned to the wide sky, arms at her sides, short hair lifting in the breeze — she is crying and smiling — she turns in a slow full circle taking in the meadow, the forest behind, the river, the sky — everything she could see from the window is now real and here around her — she opens her arms wide to all of it'
+          ]
+        }
+      ]
+    }
+  ]
+},
+
+/* ══════════════════════════════════
+   7. SNOW WHITE
+══════════════════════════════════ */
+{
+  tale:'Snow White', century:'Germany — Brothers Grimm',
+  sounds:['Quiet gentle piano with soft strings.','Tender lullaby on solo piano.','Quiet wondering music under winter light.'],
+  characters:[
+    {
+      name:'Snow White', type:'human', animStyle:'Pixar 3D style',
+      scenes:[
+        {
+          title:'Discovering the Tiny Cottage',
+          costumes:[
+            'a young girl with short black hair and pale skin in a yellow and blue court bodice dress with a white collar and short puffed sleeves, dusty from running through the forest',
+            'a pale-skinned girl with black hair in a yellow bodice and blue skirt, white collar, leather shoes dusty from the forest floor'
+          ],
+          actions:[
+            'bending forward to peer through the low cottage doorway, one hand on the doorframe, expression of cautious enchanted wonder',
+            'standing inside the tiny cottage and looking slowly around at seven tiny chairs, seven tiny bowls, seven tiny beds — turning in a circle with growing delight',
+            'sitting gently in the largest of the seven tiny chairs with a long sigh of exhausted relief, hands folded, expression of peaceful wondering tiredness'
+          ],
+          backgrounds:[
+            'deep German forest clearing: a tiny perfectly thatched cottage with flower boxes at miniature windows, seven tiny chairs and a table set with seven tiny bowls visible through the open door, moss on the cottage path, tall dark pine trees surrounding the clearing, afternoon light',
+            'tiny forest cottage interior: miniature wooden furniture in seven matching sets, a small stone hearth, seven tiny beds visible in the next room, warm amber lamplight',
+            'cottage clearing in the dark forest: the tiny house with roses growing on the walls, a small kitchen garden, dark pine trees pressing close, shafts of golden afternoon light'
+          ],
+          details:[
+            'Her expression is wide-eyed wonder and cautious curious delight — everything is tiny and perfect',
+            'Her expression is enchanted amazement deepening to warmth — she has found something wonderful',
+            'Her expression is the quiet peace of someone who has run a long way and found somewhere safe at last'
+          ],
+          storyMoments:[
+            'she peers through the low cottage door into the tiny perfect room — she pushes it open and steps inside, ducking her head — she turns slowly around taking in the seven tiny chairs, the table with seven tiny bowls, the shelf with seven tiny cups — she touches a tiny spoon with one careful finger — she examines a tiny embroidered pillow — she looks into the next room at seven tiny beds all in a row — she sits on the edge of the largest and puts her face in her hands and cries very quietly with relief',
+            'she stands in the doorway of the tiny cottage with one hand on the doorframe, looking in — then steps over the threshold and moves slowly through the room — she picks up a tiny wooden spoon and holds it up, then puts it down carefully — she tastes something from a tiny bowl with one careful finger — she opens a tiny cupboard and closes it — she sits in each of the seven tiny chairs in turn until she finds the one that fits — sits there with her hands in her lap and her eyes closing with exhaustion',
+            'she enters the tiny cottage and moves through it in wonder — the tiny furniture, the tiny plates, the tiny everything — she sits down at the tiny table and rests her head on her arms — then lifts it again and looks around — she is safe here, for now — she goes through to the tiny bedroom and tries the first bed — too hard — the second — too soft — she tries each one — the seventh is just right — she lies down and pulls the quilt up and is asleep almost instantly, rosy cheeks flushed, black hair spread on the white pillow'
+          ]
+        },
+        {
+          title:'The Poisoned Apple',
+          costumes:[
+            'a young girl with black hair and pale skin in a yellow and blue court dress with white collar, standing at the cottage doorstep reaching toward a bright red apple',
+            'Snow White in her yellow bodice and blue skirt, open trusting face, hands reaching forward to accept the offered fruit'
+          ],
+          actions:[
+            'reaching out her small pale hand toward the vivid red apple offered by the hunched old woman, expression completely open and trusting and kind',
+            'holding the beautiful red apple in both hands and gazing at it with innocent admiration, the old woman stepping back into the forest shadow',
+            'looking down at the apple in her hands with eyes beginning to grow drowsy and heavy, fingers curling around it'
+          ],
+          backgrounds:[
+            '17th century German cottage doorstep: the low cottage door open behind her with warm amber light, a hunched old woman in a dark grey cloak extending the vivid red apple with a trembling hand, the dark forest behind the old woman, roses climbing the cottage wall',
+            'forest cottage exterior: thatched roof, climbing roses, the open cottage door with warmth visible within, the old woman stepping back into the forest shadow with the apple extended',
+            'cottage doorstep: worn stone step, the old woman\'s gnarled hand holding the vivid red apple, the cottage door warm behind Snow White, the dark forest ahead'
+          ],
+          details:[
+            'Her expression is trusting and kind — entirely open, entirely without suspicion',
+            'Her expression is innocent admiration for the beautiful apple — it is the most perfect red apple she has ever seen',
+            'Her expression is beginning to grow drowsy, brow slightly furrowed, the enchantment beginning — she looks confused'
+          ],
+          storyMoments:[
+            'the old woman extends the vivid red apple in both trembling hands — Snow White looks at it with kind open eyes — she reaches out and takes it carefully — it glows a deep impossible red in the afternoon light — she thanks the old woman with genuine warmth — the old woman watches with hooded eyes — Snow White raises the apple toward her mouth — pauses to look at it once more with admiring eyes — then bites — and goes perfectly still — and slowly begins to sink',
+            'the old woman extends the apple with a wrinkled hand and a humble smile — Snow White looks at the old woman with immediate kind concern and reaches out to take it — she holds it up in both hands — it is beautiful, perfectly round, deeply red — she looks toward the forest path to invite the old woman to stay — but the old woman has gone — Snow White looks at the apple in her hands — bites — her eyes widen briefly — then grow heavy and confused — she reaches for the door frame',
+            'the old woman holds out the apple and Snow White accepts it with both hands and genuine grateful warmth — she admires it — turns it in the light — the old woman has already melted back into the forest shadow — Snow White bites the apple — immediately her expression changes — she looks confused, then heavy — she takes one slow step toward the cottage door — then stops — and sits down slowly on the doorstep with the apple still in her hand — and closes her eyes'
+          ]
+        },
+        {
+          title:'Sleeping in the Glass Coffin',
+          costumes:[
+            'Snow White lying peacefully in a glass coffin in her yellow and blue court dress, hands folded on her chest, eyes closed in deep enchanted sleep',
+            'a pale girl with black hair in a yellow and blue dress lying still inside a glass case on a mossy stone plinth, as perfectly beautiful asleep as she was awake'
+          ],
+          actions:[
+            'lying perfectly still in the glass coffin with hands folded gently on her chest, eyes closed, expression of the most perfect peaceful sleep',
+            'visible through the glass — black hair spread on a white cushion, rosy cheeks warmly glowing despite the enchantment, a faint smile',
+            'surrounded by seven small devoted figures standing with bowed heads — she the still quiet centre of their loving vigil'
+          ],
+          backgrounds:[
+            'German forest hilltop: the glass coffin on a mossy stone plinth, seven small stout figures in miners\' clothing with leather belts and tools standing around it with heads bowed in sorrowful devotion, tall dark pines surrounding them, soft overcast light, wildflowers planted at the base of the plinth',
+            'mossy forest hilltop: the glass case on stone, the seven small devoted figures in a circle around it, wildflowers at the base, afternoon light through pine trees',
+            'forest hilltop clearing: the glass coffin in the soft light, the seven small figures standing in silent devoted vigil, wildflowers and ferns around the stone plinth, pale sky'
+          ],
+          details:[
+            'Her expression through the glass is perfectly peaceful — the most beautiful sleep in the world',
+            'Her expression is warmly alive despite everything — rosy cheeks, the ghost of a smile, as if she might open her eyes at any moment',
+            'Her expression is the complete stillness of a story that is waiting for its last page'
+          ],
+          storyMoments:[
+            'she lies in the glass coffin in perfect stillness — her black hair on the white cushion, her rosy cheeks warmly glowing, hands folded, the faintest possible smile — the seven small figures stand around her with bowed heads — one reaches out a rough small hand and rests it on the glass very gently — the soft light through the pine trees shifts and falls across the glass, making it glow — she sleeps on, perfectly beautiful, perfectly still, in her yellow and blue dress',
+            'the glass coffin catches the soft afternoon light and scatters it across the mossy hilltop — she is visible inside, perfectly arranged, perfectly peaceful — the seven small figures in their mining clothes stand around her in devoted silence — one has placed a wildflower on top of the glass — another stands with cap in both hands, head bowed — she lies in her yellow and blue dress with hands folded, rosy cheeks warm, black hair spread, a dream within a dream',
+            'pale light falls through the pine trees onto the glass coffin — inside, Snow White sleeps in absolute peace — her yellow and blue dress arranged perfectly, hands folded, rosy cheeks warm with colour despite the enchantment — the seven small figures stand guard around her in complete devoted stillness — the forest is silent — the glass is visible — she sleeps'
+          ]
+        }
+      ]
+    }
+  ]
+},
+
+/* ══════════════════════════════════
+   8. SLEEPING BEAUTY
+══════════════════════════════════ */
+{
+  tale:'Sleeping Beauty', century:'17th century France — Perrault',
+  sounds:['Slow suspended harp melody.','Haunting beautiful lullaby on solo harp.','Quietly soaring strings awakening from absolute silence.'],
+  characters:[
+    {
+      name:'Sleeping Beauty', type:'human', animStyle:'Pixar 3D style',
+      scenes:[
+        {
+          title:'Reaching for the Spindle',
+          costumes:[
+            'a young princess in a beautiful pale pink silk court dress with lace trim and short puffed sleeves, hair in a soft loose arrangement with a small pearl circlet, one finger reaching slowly toward a spinning wheel',
+            'a princess in pale rose silk with a white collar, a small pearl circlet, soft upswept hair, drawn helplessly toward the old spinning wheel in the shadowy tower'
+          ],
+          actions:[
+            'standing before an old wooden spinning wheel in a dusty tower room, one finger reaching slowly and helplessly toward the sharp spindle tip, expression entirely entranced',
+            'staring at her own fingertip touching the spindle, expression shifting from trance to drowsy confused surprise, eyes going heavy',
+            'sinking slowly onto the stone window seat, eyes closing, head falling gently back against the cold wall, arms falling to her sides in slow motion'
+          ],
+          backgrounds:[
+            '17th century French palace tower room: dusty stone walls, a single high arched window with pale afternoon light, cobwebs in the corners, an old wooden spinning wheel with an iron spindle, dust motes hanging in the air, old faded tapestries on the walls',
+            'tower room in a French palace: stone steps leading up, an arched window, dust and neglect, the old spinning wheel and its sharp spindle catching the pale light, low stone seat by the window',
+            'palace tower: cold stone, a narrow window, the spinning wheel, ancient tapestries, a shaft of pale afternoon light from the high arched window making a column of dust'
+          ],
+          details:[
+            'Her expression is helplessly entranced — she cannot stop herself, she has been walking toward this moment her whole life',
+            'Her expression is the beginning of the enchantment — drowsy confusion, eyes going heavy, brow slightly furrowed',
+            'Her expression is perfect peaceful sleep — the enchantment complete, her face beautiful and still'
+          ],
+          storyMoments:[
+            'she stands before the spinning wheel, drawn to it as if pulled by an invisible thread, her hand rising on its own — her finger reaches the sharp spindle tip and rests there for one moment — then a tiny bright point of red appears — she stares at it, blinking slowly — her eyes grow heavy — she sways — turns slowly to the right and takes two slow dreaming steps to the stone window seat — sits down with infinite slowness — head tilting back against the cold stone — eyes closing — the enchantment is complete',
+            'she circles the old spinning wheel slowly, one hand reaching out — her fingertip rests on the spindle — she looks at it with drowsy curiosity — her eyes begin to close — she pulls her hand back but her eyes are already too heavy — she turns to the right toward the window seat — walks in slow dreaming steps — sits — her pearl circlet catches the pale light as her head tilts back against the stone — her hands fall open in her lap — she is asleep',
+            'she approaches the spinning wheel and her hand rises toward the spindle of its own accord — touches it — looks at her fingertip with heavy confused eyes — the enchantment washes over her in visible waves — she turns slowly toward the window seat to the right — her feet carry her there in a dreaming walk — she sits and leans against the cold stone wall — the pale afternoon light falls across her sleeping face through the high arched window'
+          ]
+        },
+        {
+          title:'The Enchanted Palace Sleeps',
+          costumes:[
+            'the princess in her pale pink silk court dress, pearl circlet, sleeping peacefully in the centre of the great hall as the entire palace sleeps around her',
+            'Sleeping Beauty in pale rose silk, hands loose in her lap, head gently to one side, the still quiet centre of the enchanted palace'
+          ],
+          actions:[
+            'lying asleep in a grand carved chair in the centre of the great hall, hands loose in her lap, head to one side, expression of perfect peaceful beauty',
+            'sleeping as the rose vines slowly creep through the palace windows and begin to climb the stone columns around her',
+            'the still centre of the enchanted palace — sleeping courtiers at the table, sleeping guards at their posts — she the most peacefully beautiful of all'
+          ],
+          backgrounds:[
+            '17th century French palace great hall: long oak tables with courtiers slumped asleep in their chairs, a cook asleep at the fire, guards frozen at their posts, dogs asleep at their masters\' feet, climbing rose vines pushing through the tall palace windows in pink and green watercolour, amber candlelight frozen mid-flicker',
+            'palace banqueting hall: sleeping figures at the long table, candles frozen in their amber light, rose vines threading slowly through every window and up the carved columns',
+            'palace hall: carved stone columns, sleeping figures at the feast table, frozen amber candlelight, rose vines beginning their slow beautiful invasion through every opening'
+          ],
+          details:[
+            'Her expression is perfectly peaceful — the most beautiful sleep in the world, the still heart of the enchanted palace',
+            'Her expression is completely serene — she does not know she is waiting, she simply sleeps',
+            'Her expression is the quiet beauty of someone preserved in enchantment — warm, alive, waiting without knowing it'
+          ],
+          storyMoments:[
+            'the palace is absolutely still — sleeping figures at the feast table, frozen candles, sleeping dogs — and the princess asleep in the carved chair at the centre, hands loose in her lap, expression perfectly peaceful — very slowly the rose vines begin to move through the tall windows, inching upward along the stone columns — rose petals fall softly onto the sleeping figures and onto the table — onto her pale pink dress — she sleeps on through all of it',
+            'the enchanted palace holds its breath — the cook frozen mid-stir, the courtiers slumped over their cups, the guards standing in fixed poses at their posts — the princess in her chair at the centre of it all, pearl circlet catching the frozen candlelight, expression of perfect beautiful sleep — the rose vines move in slow silent procession through the windows, climbing the columns, hanging roses above every sleeping head',
+            'the rose vines have grown through every window now — they frame the columns, drape over the sleeping courtiers, hang blossoms above the frozen feast table — petals drift down in slow motion — the princess sits in her carved chair at the centre of this sleeping flowering world, hands open in her lap, pearl circlet, rosy cheeks warm — completely still, completely beautiful, waiting in the deep enchanted sleep'
+          ]
+        },
+        {
+          title:'Awakening',
+          costumes:[
+            'the princess in pale pink silk, pearl circlet, lying on a rose-petal-covered daybed, eyes just beginning to open heavy with a hundred years of sleep',
+            'Sleeping Beauty in pale rose silk, hair soft and loose around her face, eyes opening for the first time in a century'
+          ],
+          actions:[
+            'lying on the daybed with eyes opening very slowly, blinking in warm golden morning light, one hand rising to her cheek in bewildered confusion',
+            'sitting up slowly on the rose petals, pressing one hand into them, looking around the palace chamber with dawning bewildered wonder',
+            'sitting upright with face turned toward the golden morning light flooding through the parted rose vines, expression of pure overwhelming wonder and arrival'
+          ],
+          backgrounds:[
+            '17th century French palace chamber: the rose vines parted at the windows letting in warm golden morning light for the first time in a hundred years, a young prince standing at a respectful distance, rose petals drifting in the warm light, the palace slowly beginning to stir around them',
+            'palace bedchamber at dawn: the rose vines drawn back from wide windows, brilliant morning light flooding in, the prince standing quietly, rose petals moving in the warm air',
+            'palace chamber: wide windows open to morning, deep blue sky becoming gold with dawn, the prince watching with reverence, rose petals everywhere, warm light filling every corner'
+          ],
+          details:[
+            'Her expression is utterly bewildered and tender and beautiful — waking after a hundred years',
+            'Her expression shifts from deep heavy sleepiness to dawning wonder as the world floods back in',
+            'Her expression is pure complete joy and wonder — she is here, she is awake, the world is real and warm and golden'
+          ],
+          storyMoments:[
+            'her eyes open slowly — heavy, confused, blinking in warmth and light — she raises one hand to her cheek — looks up at the warm light flooding through the parted rose vines — looks around the chamber slowly — at the rose petals everywhere, at the palace walls, at the morning sky — then she sees the prince standing quietly at a distance and goes very still — they look at each other — she slowly sits up on the daybed, hands pressing into rose petals — expression of complete bewildered wonder',
+            'she blinks into warm golden morning light — sits up slowly with one hand pressing into the rose petals on the daybed — she looks around the awakening palace chamber with the expression of someone putting a world back together — at the rose vines parted at the windows, the morning sky, the petals everywhere — she sees the prince standing at a respectful distance — she looks at him for a long moment, expression of wondering recognition — then looks down at her own hands in her lap, then up at the morning light',
+            'she opens her eyes in golden morning light — sits up among the rose petals — looks at the wide windows flooded with dawn, the palace ceiling, her own hands — she is here — she is real — she is awake — tears on her rosy cheeks — she turns her face toward the golden morning light streaming through the parted rose vines and closes her eyes again briefly, feeling the warmth on her face for the first time — then opens them and smiles'
+          ]
+        }
+      ]
+    }
+  ]
+},
+
+/* ══════════════════════════════════
+   9. THE FROG PRINCESS
+══════════════════════════════════ */
+{
+  tale:'The Frog Princess', century:'Ancient Russian folk tale',
+  sounds:['Ancient Russian folk melody on balalaika.','Quiet wondering folk strings.','Soaring triumphant Russian folk music.'],
+  characters:[
+    {
+      name:'Ivan Tsarevich', type:'human', animStyle:'Pixar 3D style',
+      scenes:[
+        {
+          title:'Finding the Frog with His Arrow',
+          costumes:[
+            'a young prince in a long embroidered Russian kaftan of deep red and gold with a sable-trimmed collar, tall black leather boots, a simple princely cap, holding an arrow',
+            'a young Russian tsarevich in a richly embroidered red kaftan with gold trim, tall boots, a fur-trimmed princely cap, arrow in hand'
+          ],
+          actions:[
+            'crouching at the edge of the swamp to look at a green frog sitting on a mossy log with his arrow in its mouth, expression of complete astonishment',
+            'sitting back hard on his heels with both hands pressed to his cheeks in total staggering disbelief, staring at the frog and its arrow',
+            'crouching at the swamp edge with hands resting quietly on his knees, expression shifting from bewilderment toward reluctant wondering acceptance'
+          ],
+          backgrounds:[
+            'ancient Russian swamp: dark muddy water, mossy logs, tall reeds, twisted willow trees, lily pads on the water, morning mist rising, a distant Russian birch forest of white trunks',
+            'Russian marshland: reed beds thick on both sides, dark water between them, twisted alder trees, morning mist, the frog on its mossy log holding the arrow very properly',
+            'swamp clearing: dark water between moss-covered logs, bulrushes, a white birch forest beyond the reeds, morning light filtering through the mist'
+          ],
+          details:[
+            'His expression is complete astonishment — he has been shooting arrows since he was a boy and this has never happened before',
+            'His expression is pure staggering disbelief — a frog is holding his arrow in its mouth and looking at him with great composure',
+            'His expression is the beginning of reluctant acceptance — something extraordinary is happening and he is going to have to be part of it'
+          ],
+          storyMoments:[
+            'he finds his arrow in the mouth of a small green frog sitting very properly on a mossy log — he stares — the frog stares back with calm intelligent eyes — he reaches out for the arrow — the frog does not move — he leans forward further — the frog looks at him steadily — he sits back on his heels and puts his hands on his knees and looks at the frog for a long moment — the frog looks at him — he reaches toward his cap and removes it and puts it back on — looks at the frog again',
+            'he sees the frog with his arrow and goes completely still — then very slowly crouches down to the swamp edge — the frog on its mossy log holds the arrow and waits — he reaches out his hand — the frog makes a sound — he pulls his hand back — they regard each other — he sits back on his heels — speaks to the frog carefully — the frog responds in a clear composed voice — he rocks backward completely',
+            'he crouches at the swamp edge staring at the frog with his arrow — the frog regards him with steady calm intelligent eyes — he tries to take the arrow — the frog speaks — he sits back hard — looks at the swamp, at the frog, at his arrow, at the frog again — puts his head in his hands briefly — lifts it — looks at the frog — the frog waits with perfect patient composure — he nods slowly, once'
+          ]
+        }
+      ]
+    },
+    {
+      name:'Vasilisa the Beautiful', type:'human', animStyle:'Pixar 3D style',
+      scenes:[
+        {
+          title:'Dancing at the Royal Feast',
+          costumes:[
+            'a young woman of extraordinary beauty in a magnificent deep crimson Russian sarafan with gold embroidery, a high ornate kokoshnik headdress encrusted with pearls and gems, long dark hair flowing as she dances',
+            'a beautiful young woman in deep red and gold Russian court dress, pearl and gem kokoshnik headdress, long dark hair, arms raised in a traditional dance'
+          ],
+          actions:[
+            'arms raised gracefully in a traditional Russian dance, crimson sarafan swirling in wide arcs, pearl headdress gleaming with reflected light, expression of proud radiant joy',
+            'spinning in the climax of her dance with both arms raised, crimson silk billowing, expression of magnificent freedom and absolute power',
+            'standing in a final perfect dance pose — one arm raised elegantly to the right, the other at her heart, expression of complete triumphant pride'
+          ],
+          backgrounds:[
+            '10th century Russian royal banqueting hall: long oak tables with feasting guests in rich clothes all frozen in astonishment, tall tallow candles in iron holders, carved wooden beams and painted columns, Ivan Tsarevich to the left watching with overwhelmed recognition and joy, the tsar and tsarina watching from the high table',
+            'Russian feast hall at night: carved wooden columns with painted designs, a long table of astonished courtiers, tall tallow candles, the tsar watching from the high table, Ivan standing to the left with his hands at his heart',
+            'royal hall: a grand interior of carved and painted wood, embroidered wall hangings, feasting guests frozen in amazement, golden candlelight on everything and on her'
+          ],
+          details:[
+            'Her expression is proud, radiant, and completely magnificent — this is the truest version of herself',
+            'Her expression is the power of someone claiming their rightful place in the world after being hidden too long',
+            'Her expression is the most complete and triumphant beauty — she knows exactly who she is and she is dancing it for everyone to see'
+          ],
+          storyMoments:[
+            'she enters the great hall and the feasting stops entirely — she moves to the centre and begins to dance — the crimson sarafan swirls outward in wide painted arcs — her pearl headdress gleams with every candle in the hall — she raises both arms and spins — courtiers at the table lean forward, mouths open — the tsar and tsarina sit forward on their thrones — Ivan to the left presses both hands to his heart, tears on his face — she spins faster, her dark hair flying, her expression the most magnificent pride',
+            'she walks into the centre of the great hall and raises her arms — the music begins and she dances — her crimson silk describes wide watercolour arcs — her dark hair swings — her pearl kokoshnik moves — the feasting hall has gone completely silent — every face is turned to her — she turns and turns, arms rising higher, expression of absolute radiant power — Ivan stands to the left watching with overwhelmed recognition — she dances for him and for herself and for all the years she was hidden',
+            'she dances in the great hall with her arms raised and her crimson sarafan swirling — the guests are motionless around the feast table — the candles burn in the hall — she moves to the right, then back, then spins — turns to face Ivan to the left — her expression shifts for one moment to something private and direct — then she raises her arms and finishes in a final perfect pose, one arm upward, headdress gleaming, dark hair settled around her face — the hall is absolutely still'
+          ]
+        },
+        {
+          title:'Burning the Frog Skin',
+          costumes:[
+            'Vasilisa appearing in her true form — beautiful, in a simple white linen dress with a blue ribbon in her dark hair — standing where the frog skin just burned in the fireplace',
+            'a beautiful young woman in a white dress with a ribbon, hair loose and dark around her face, looking at Ivan with love and sorrow across the room'
+          ],
+          actions:[
+            'standing in the palace chamber in her true form as the last of the frog skin burns, looking at Ivan with an expression of love and sorrow — he acted too soon',
+            'turning toward Ivan with an expression of grief and love and the terrible unchangeable fact that he could not wait three more days',
+            'beginning to fade — becoming translucent at the edges — reaching one hand toward Ivan before she must go'
+          ],
+          backgrounds:[
+            '10th century Russian palace chamber at night: a stone fireplace with the last ash of the frog skin still there in the flames, tallow candles casting warm light, carved wooden furniture, embroidered wall hangings, Ivan Tsarevich standing in horror to the left',
+            'palace room at night: fireplace with dying embers where the skin burned, carved wooden furniture, Ivan frozen in anguish, the chamber suddenly vast and empty',
+            'Russian palace interior: candlelight, carved wood, the fireplace with its dying embers, Ivan to the left in horror, the chamber holding the weight of what cannot be undone'
+          ],
+          details:[
+            'Her expression is love and sorrow and the acceptance of something that cannot be changed — she loves him still',
+            'Her expression is the most heartbreaking tenderness — she is not angry, only sorrowful',
+            'Her expression is love and loss and quiet courage — she will wait for him to find her, because she knows he will try'
+          ],
+          storyMoments:[
+            'she stands in the palace chamber in her true form for the first time — beautiful, real, in her white dress with dark hair — she looks across the room at Ivan who has gone white with the realisation of what he has done — she speaks to him quietly, her expression love and sorrow in equal measure — she needed three more days and they are gone — she begins to fade at the edges as the enchantment reasserts itself — she holds his gaze until the last moment',
+            'the frog skin has burned — she stands in the room in her white dress, real and herself, looking at Ivan with an expression of love that contains all her sorrow — she tells him quietly what he has done — he steps toward her — she raises one hand, not in anger but in gentle stop — the edges of her begin to move and grow transparent — she looks at him directly with eyes full of love and grief — then she is gone',
+            'she stands fully herself in the warm candlelight — dark hair, white dress, real and present — she looks at Ivan with an expression of perfect heartbreaking love — she tells him gently: he needed only three more days — he reaches for her — she reaches back — their fingertips almost touch — and then she begins to fade, becoming first translucent, then light, then nothing — and the room is very empty and the candles burn on'
+          ]
+        }
+      ]
+    },
+    {
+      name:'The Frog', type:'animal', animStyle:'Beatrix Potter style',
+      scenes:[
+        {
+          title:'Sitting Properly on the Mossy Log',
+          costumes:[
+            'a small round green frog sitting very properly upright on a mossy log in the swamp, holding an arrow carefully in its mouth, a tiny gold crown tilted on its head',
+            'a round green frog on a mossy log, a small golden crown, holding the arrow with careful proprietorial composure, intelligent eyes regarding the astonished prince'
+          ],
+          actions:[
+            'sitting very still and properly on the mossy log, holding the arrow, regarding the astonished prince with calm composed intelligent eyes',
+            'tilting its small head very slightly to one side with the arrow still in its mouth, watching the prince with a patient and considering expression',
+            'releasing the arrow from its mouth with great propriety and setting it carefully on the log beside it, looking at the prince with quiet expectation'
+          ],
+          backgrounds:[
+            'Russian swamp: dark water, mossy logs, thick reed beds, morning mist, twisted willows, the astonished prince crouching at the water\'s edge staring',
+            'swampland: lily pads on dark water, bulrushes on both sides, morning mist over the water, the prince in his red kaftan staring from the bank',
+            'marsh edge: mossy ground and logs, dark water, reeds, a birch forest in the painted distance, the prince kneeling at the bank'
+          ],
+          details:[
+            'Its expression is the calm intelligence of something that is not at all what it appears to be',
+            'Its expression is patient royal dignity — it knows exactly who it is, even though no one else does yet',
+            'Its expression is composed and watchful — it has been waiting for this moment and it is entirely prepared'
+          ],
+          storyMoments:[
+            'it sits on the mossy log with the arrow and waits for the prince to stop being astonished — its tiny gold crown tilts slightly as it holds the arrow with great care — it watches the prince with steady calm eyes — the prince reaches for the arrow and it holds it more firmly — the prince speaks and it listens — then it speaks clearly in return — the prince falls backward entirely — the frog waits on its log with perfect royal composure for him to recover',
+            'it holds the arrow in its mouth and regards the kneeling prince with intelligent composure — the tiny gold crown on its head catches the morning light — it waits while the prince goes through his full range of astonishment — then it speaks in a clear composed voice — the prince\'s mouth falls open — the frog waits — speaks again — the prince sits back on his heels and looks at it for a very long time — the frog waits on its log in the morning light with royal patience',
+            'it sits on the mossy log in the mist, holding the arrow, wearing its tiny crown — the prince has found it and is crouching at the water\'s edge in complete astonishment — it regards him steadily — the prince speaks uncertainly — it speaks back clearly — the prince goes very still — it places the arrow carefully on the log in front of it — the prince looks at the arrow, then at the frog, then at the arrow again — the frog waits on its log with absolute composed patience'
+          ]
+        }
+      ]
+    }
+  ]
+},
+
+/* ══════════════════════════════════
+   10. ALADDIN
+══════════════════════════════════ */
+{
+  tale:'Aladdin', century:'Traditional — One Thousand and One Nights',
+  sounds:['Quiet wondering Middle Eastern woodwind melody.','Soaring magical oud and strings.','Warm triumphant Middle Eastern orchestral theme.'],
+  characters:[
+    {
+      name:'Aladdin', type:'human', animStyle:'Pixar 3D style',
+      scenes:[
+        {
+          title:'Finding the Magic Lamp in the Cave',
+          costumes:[
+            'a young boy of about twelve in simple worn Middle Eastern street clothes — a loose cream linen tunic, wide trousers, a simple cloth turban, worn leather sandals',
+            'a street boy in a patched cream tunic and baggy trousers, a simple white cloth turban, bare feet dusty from the cave floor'
+          ],
+          actions:[
+            'crouching in the dark treasure cave with one hand reaching carefully toward an ancient oil lamp that glows with an impossible soft warm light among the heaped treasures',
+            'picking up the lamp carefully in both hands and turning it in the warm light, its warmth glowing on his upturned face',
+            'standing in the cave holding the lamp at chest height, face bathed in its golden glow, expression of alert wondering excitement — something is about to happen'
+          ],
+          backgrounds:[
+            'ancient Middle Eastern treasure cave: heaps of gold coins and jewels in muted painted tones, carved stone pillars, hanging stalactites, a narrow shaft of light from a crack far above, old iron chests with broken locks, the ancient oil lamp at the centre glowing with an warmth',
+            'treasure cave interior: carved stone columns, gold heaped in the shadows in muted tones, a narrow shaft of daylight from above, gems that catch the lamp\'s warm light',
+            'underground cave: ancient stone columns, treasure in every corner, the lamp sitting at the centre of the cave, the only warm light in the cold stone room'
+          ],
+          details:[
+            'His expression is wide-eyed wonder and very careful reaching curiosity',
+            'His expression is the alert intelligence of a street boy who knows when something matters',
+            'His expression is wonder and growing excitement — he does not know what this is but he knows it is important'
+          ],
+          storyMoments:[
+            'he moves through the treasure cave with enormous careful eyes, touching nothing — the heaped gold and gems are muted, unimportant — but the lamp at the centre glows with a warm impossible light that is entirely different — he crouches before it and reaches out slowly — his fingers close around it — the warmth is real and alive — he lifts it carefully and holds it up in the shaft of light from above — turns it — traces the engraving with one finger — something is written on it — his thumb begins to move across the surface',
+            'he spots the lamp among the treasure and goes straight to it, ignoring the gold and gems — he picks it up with both hands and it is warm in a way that is entirely wrong for a cave — he holds it up to the thin shaft of light from above and examines it carefully, turning it — he rubs a thumb across the side to see the markings better — the lamp shudders very slightly under his thumb — he feels it and goes very still — then rubs again more deliberately',
+            'he picks up the lamp from among the treasure — it glows with warm warm light that comes from nowhere — he holds it at chest height in both hands and looks at it with complete focused attention — then looks around the treasure cave, then back at the lamp — then very carefully, with the attention of someone who has spent his life reading situations, he turns the lamp over in his hands and examines every surface — and his thumb rubs across it — once'
+          ]
+        },
+        {
+          title:'The Genie Appears',
+          costumes:[
+            'a young street boy in worn patched cream tunic and simple white turban, stumbling backward in the hot desert, staring upward at something enormous',
+            'Aladdin in his worn street clothes, fallen backward into the hot sand, face upturned in absolute staggering amazement'
+          ],
+          actions:[
+            'stumbling backward in astonishment as an enormous blue-gold genie billows from the small lamp, expression of complete physical shock',
+            'pushing himself upright from the hot sand with both hands, staring up at the vast genie with astonishment shifting toward the beginning of a very exciting idea',
+            'standing on the hot sand with the lamp in one hand looking up at the vast genie — small, ordinary, in worn street clothes — but his expression is the beginning of something'
+          ],
+          backgrounds:[
+            'hot desert outside the cave: golden sand, a bright blue sky, the cave entrance behind, the small oil lamp on the sand, vast blue-gold painted smoke billowing upward filling the scene, an enormous friendly genie presence forming in the upper portion of the page',
+            'desert exterior: hot sand, hot blue sky, the lamp on the ground, the genie\'s blue and gold smoke filling the air above in wide watercolour washes',
+            'open desert: sand dunes, the bright sun, the lamp on the ground, the vast impossible genie above, the desert stretching in all directions'
+          ],
+          details:[
+            'His expression is pure physical shock rapidly becoming wonder',
+            'His expression shifts from complete disbelief to the dawning of a plan that is growing very quickly',
+            'His expression is wonder and the beginning of confidence — he is beginning to understand what this means for him'
+          ],
+          storyMoments:[
+            'the lamp shakes in his hands and he drops it — blue-gold smoke pours from the spout and he backs away — the smoke grows — expands — a vast friendly form takes shape above him — he stumbles backward and falls into the hot sand — stares upward — the genie smiles down at him with the warmth of something that has been waiting a very long time — Aladdin pushes himself up slowly on his hands in the sand — looks at the lamp on the ground — looks up at the genie — looks at his own hands — looks up again',
+            'he rubs the lamp and drops it immediately as blue-gold smoke erupts from it — he scrambles backward in the hot sand as the smoke expands into the enormous friendly figure of the genie above him — he goes completely still on his back in the sand, staring straight up — the genie looks down at him with a smile of enormous patience — Aladdin sits up slowly, brushing sand from his hair, never taking his eyes off the genie — then he clears his throat and says, very carefully: hello',
+            'the genie fills the sky above him with vast blue-gold friendliness — Aladdin stands in the hot sand below, small and ordinary in his worn tunic, the lamp in his hand — he looks up for a very long moment — then he squares his shoulders, and in his expression you can see a street boy who has spent his whole life assessing situations very quickly doing exactly that — looking from the lamp to the genie and back — and beginning to smile'
+          ]
+        },
+        {
+          title:'The Impossible Palace',
+          costumes:[
+            'a young boy now in magnificent embroidered Middle Eastern court clothes — a rich deep blue kaftan with gold embroidery, a tall jewelled turban, fine leather boots',
+            'Aladdin transformed in deep blue and gold court dress, jewelled turban, fine boots — but still the same bright quick street-boy eyes beneath the splendour'
+          ],
+          actions:[
+            'standing on a soaring marble palace terrace with arms outstretched in proud welcome, a princess to the left looking at the impossible palace with amazed admiration',
+            'turning to the princess with an expression of proud presentation that slips briefly to show the street boy underneath — still amazed himself',
+            'standing beside the princess looking out over the vast city far below, one arm raised slightly showing her the impossible view, expression of quiet complete happiness'
+          ],
+          backgrounds:[
+            'impossible Middle Eastern palace terrace: soaring white marble arches, golden domes catching sunlight, carved marble columns, a vast city of domes and minarets spread far below, a deep blue sky with a crescent moon appearing, fountains in the palace gardens',
+            'palace terrace: marble balustrade, golden domes overhead and all around, the city of a thousand rooftops far below, blue sky, a princess standing at the railing in wonder',
+            'palace rooftop: carved marble, golden domes, the city below in warm painted tones, mountains beyond in the distance, a perfect blue sky, impossible and magnificent'
+          ],
+          details:[
+            'His expression is proud — but underneath, still the street boy\'s amazed delight at what he has made real',
+            'His expression is the quiet pride of someone who has turned nothing into everything — and who is still a little unable to believe it',
+            'His expression is completely, quietly happy — and still, just slightly, the face of someone who cannot quite believe this is his life'
+          ],
+          storyMoments:[
+            'he stands on the marble terrace with arms spread showing the princess the impossible palace — she turns in a slow circle looking at the golden domes, the marble columns, the city far below — she turns to him with wide eyes — he spreads his arms wider with a grin of genuine pride — then the grin softens and something more real shows beneath it — he looks at the palace himself as if seeing it for the first time — looks back at her — and what passes between them is the recognition that the palace is not what matters',
+            'he shows the princess the view from the marble terrace — she leans on the balustrade looking at the city below in wonder — he stands beside her and points out the minarets, the river, the mountains in the distance — she turns to him with a question in her expression — he looks back at her and the proud presentation drops away for one honest moment — she sees the boy underneath — and nods, recognising something — they stand side by side at the railing looking out',
+            'they stand together on the marble terrace in the warm afternoon light — his blue and gold kaftan, her golden dress — looking out at the vast impossible city below — he glances at her sideways — she is smiling at the view — he looks back at the city — at the palace around them — at his own hands in the fine embroidered sleeves — and his expression is the complete quiet happiness of someone who has arrived somewhere he never thought he would be'
+          ]
+        }
+      ]
+    }
+  ]
+},
+
+/* ══════════════════════════════════
+   11. THE LITTLE MERMAID
+══════════════════════════════════ */
+{
+  tale:'The Little Mermaid', century:'Denmark — H.C. Andersen 1837',
+  sounds:['Tender aching cello over the sound of waves.','Quiet heartbreaking beauty — underwater strings rising slowly.','All the joy and all the pain in a single melody.'],
+  characters:[
+    {
+      name:'The Little Mermaid', type:'human', animStyle:'Pixar 3D style',
+      scenes:[
+        {
+          title:'Watching the Prince\'s Ship',
+          costumes:[
+            'a young mermaid with long flowing copper-red hair and a gleaming silver-green tail, resting her arms on a sea rock at the surface, the upper body of a girl and the tail of a fish',
+            'a mermaid with long red hair and a silver-blue tail, sitting on a wet rock in the moonlit sea, looking toward a distant sailing ship'
+          ],
+          actions:[
+            'resting her arms on the wet sea rock with her chin in her hands, gazing at the distant sailing ship with consuming longing and wonder',
+            'rising on her arms to lean further toward the ship, her silver-green tail rising behind her out of the water, expression of overwhelming longing',
+            'sitting wrapped in her own arms on the rock in the moonlight, face turned toward the ship, the most complete longing'
+          ],
+          backgrounds:[
+            '19th century Danish sea at night: dark deep blue water, white foam around the wet rock, a full moon reflecting on the water, a tall three-masted sailing ship in the distance with warm lights burning in every porthole, stars in the deep blue sky, other mermaids glimpsed as dark shapes in the water below',
+            'moonlit sea: dark water, the ship\'s warm lights in the distance, the moon\'s reflection broken by small waves, white sea foam, the vast night ocean stretching away',
+            'ocean at night: dark blue water, a full moon, a sailing ship on the horizon, stars, white-crested waves, the sea enormous and endless'
+          ],
+          details:[
+            'Her expression is pure consuming longing and wonder — she has never wanted anything as much as she wants what is on that ship',
+            'Her expression is the longing that has already become love for something she has barely seen',
+            'Her expression is the quietest most complete kind of longing — the kind that has made a decision without knowing it'
+          ],
+          storyMoments:[
+            'she rests on the wet rock at the sea surface in the moonlight and looks at the distant ship — the warm lights in its portholes, the figures moving on the deck — her chin in her hands, her silver-green tail below the water surface — then laughter from the ship carries across the dark water and she lifts her head and leans forward on her arms — a figure on the deck, young, moving with confidence — she watches him with an expression that is too large for her to contain',
+            'she surfaces on the wet rock and sees the ship — sees the figures on deck — sees him — and goes completely still — the full moon reflects in the dark water around her — she rises on her arms and leans forward, her silver-green tail rising behind her, her face forward, her expression the consuming impossible longing of something that cannot be — the ship passes slowly across the dark water and she watches every second of it',
+            'she sits on the rock in the moonlight, silver-green tail in the water, arms wrapped around herself, and watches the ship — it comes closer — she can see the warm lights, the figures, him — she watches until it passes — watches until the lights are small on the horizon — then sits alone on the wet rock in the dark sea with the moon above her and the enormous ocean all around — and she already knows what she is going to do'
+          ]
+        },
+        {
+          title:'The Sea Witch\'s Bargain',
+          costumes:[
+            'a young mermaid with long red hair and silver-green tail floating upright in a dark underwater cave, expression frightened and brave and completely decided',
+            'the Little Mermaid in her silver-green tail, hair loose in the dark current, facing the sea witch with frightened eyes that do not look away'
+          ],
+          actions:[
+            'floating before the enormous sea witch in her dark cave, small and frightened and absolutely decided, one hand clasped to her heart',
+            'reaching out one small pale hand toward the tiny glass phial of silver-blue liquid extended by the sea witch — desperate hope and terrible cost',
+            'turning away from the cave with the phial clasped in both hands, swimming upward toward the distant light above, never looking back'
+          ],
+          backgrounds:[
+            'sea witch\'s underwater lair: dark cave walls covered in slowly waving sea polyps in dark painted greens and purples, chains of bubbles rising from the cave floor, skulls and bones on the cave floor, a dark stone cauldron bubbling with something that glows faintly, the enormous grotesque sea witch filling the upper part of the cave',
+            'underwater cave: dark stone walls, sea polyps waving their tentacles, bones and shells on the floor, the cauldron casting greenish light, the witch vast in the shadows',
+            'deep underwater cave: dark water, waving sea anemones, chains of bubbles, the glowing cauldron, the witch looming over the small figure of the mermaid'
+          ],
+          details:[
+            'Her expression is frightened and brave and absolutely decided — she will do this',
+            'Her expression is desperate hope balanced precisely against terrible cost — she knows the price and she is paying it',
+            'Her expression is the quiet irreversible courage of someone who has made the most important choice of their life'
+          ],
+          storyMoments:[
+            'she floats before the sea witch in the dark cave — the polyps wave around her, the cauldron bubbles — she speaks clearly despite her fear — the witch listens with hooded eyes — then reaches into the cauldron and lifts out a tiny phial of silver-blue liquid — holds it between two enormous fingers — names the price — the mermaid\'s expression shows that she heard the price and considered it and is paying it — she reaches out her small hand — takes the phial — looks at it once — then turns and swims upward without looking back',
+            'she faces the sea witch in the dark cave with clasped hands and a clear steady voice — the polyps wave all around them — the witch examines her with calculating eyes — names her terms slowly — the mermaid\'s expression moves through fear and cost and grief and arrives at decision — she holds out her hand — the witch places the tiny phial in it — the mermaid closes her fingers around it — looks at it once — turns toward where the surface must be and begins to swim upward, fast',
+            'she stands before the sea witch and speaks her request in a voice that does not shake — the witch listens, then smiles, and names the price — the mermaid goes very still for one full moment, her expression showing everything: the cost, the grief, the love, the decision — then she nods — the witch prepares the draught — gives it to her in a tiny phial — the mermaid takes it in both hands, looks at the witch once, and turns upward toward the distant light'
+          ]
+        },
+        {
+          title:'Dancing on the Shore',
+          costumes:[
+            'a young girl with long copper-red hair in a simple white linen dress, bare feet in the wet sand, her mermaid tail gone — she is human now',
+            'a girl with red hair in a plain white dress, standing on a beach at dawn, bare feet in the sand, the sea behind her'
+          ],
+          actions:[
+            'standing on the beach with arms raised, face upturned, dancing slowly in the wet sand despite the pain — each step costs something and is worth it',
+            'walking along the waterline with slow careful steps, looking down at her own bare footprints in the wet sand with wondering tenderness',
+            'standing perfectly still at the water\'s edge facing the open sea, arms fallen gently to her sides, face toward the horizon, all the joy and all the pain held together'
+          ],
+          backgrounds:[
+            'Danish seashore at pale dawn: pink and pale gold dawn sky reflected in the wet sand, white foam washing in and out, a sailing ship on the horizon, seabirds flying, sea grass moving, the vast open sea',
+            'dawn beach: pale sky over dark water, wet sand, white waves, the ship on the horizon, gulls overhead, the sea going on forever',
+            'seashore at first light: pale morning sky, wet sand, white-crested waves, the horizon turning gold with dawn, the sea stretching away, her bare footprints in the sand behind her'
+          ],
+          details:[
+            'Her expression holds simultaneous joy and pain — she is dancing and it hurts and she chose this and she would choose it again',
+            'Her expression is the most complex and completely human feeling — love that costs everything and is worth everything',
+            'Her expression is all joy and all pain held together without resolution and without regret — she is here, she chose this, she is complete'
+          ],
+          storyMoments:[
+            'she stands at the water\'s edge and looks at her own bare feet in the wet sand — feet, not a tail — she looks up at the pale dawn sky, then down at her feet again — she takes a step — and another — the pain is real — she keeps walking — then she begins to dance, slowly, in the wet sand, her white dress swaying — each step costs her but she dances because she is here, because the sky is real, because the sand is real under her feet',
+            'she walks along the waterline looking down at her own footprints in the wet sand behind her — she stops and crouches and puts her hand in a footprint and then looks at her own hand — she stands and looks at the sea — at the horizon where the ship has gone — she takes a deep breath of sea air — then turns and walks to the right along the shore, her white dress catching the pale dawn light, leaving footprints in the wet sand',
+            'she stands at the water\'s edge with the dawn behind her, the sea in front, her white dress still, her bare feet in the cold wet sand — she looks at the horizon for a long time — then looks down at her own feet — then closes her eyes — and when she opens them her expression is the most complex and complete thing: all the joy and all the pain of the choice she made, held together, without regret, at the edge of the sea at dawn'
+          ]
+        }
+      ]
+    }
+  ]
+},
+
+/* ══════════════════════════════════
+   12. MOROZKO — Father Frost
+══════════════════════════════════ */
+{
+  tale:'Morozko', century:'Ancient Russian folk tale',
+  sounds:['Quiet spare winter folk melody — a few piano notes.','Tender Russian winter music — warm bells in the cold.','Gentle triumphant folk melody at dawn.'],
+  characters:[
+    {
+      name:'Nastenka', type:'human', animStyle:'Pixar 3D style',
+      scenes:[
+        {
+          title:'Left Alone in the Winter Forest',
+          costumes:[
+            'a young girl in a long simple Russian peasant sarafan of faded blue, a warm white shawl pulled close around her shoulders, simple leather boots in the snow',
+            'a peasant girl in a blue wool sarafan, a thick white shawl wrapped tightly around her, snow settling on her shoulders and on the path behind her'
+          ],
+          actions:[
+            'sitting very still under a great snow-covered fir tree with hands folded in her lap, back straight with quiet dignity, looking calmly ahead',
+            'pulling her white shawl more firmly around her shoulders with patient quiet hands, her breath making small white puffs in the frozen air',
+            'lifting her face toward the grey winter sky above the fir trees with an expression of patient waiting and quiet undimmed courage'
+          ],
+          backgrounds:[
+            'deep Russian winter forest: enormous snow-covered fir trees pressing close on all sides, deep snowdrifts, a pale grey winter sky visible between the treetops, her footprints in the snow leading from the right to where she sits, complete frozen silence in every direction',
+            'Russian taiga in deep winter: great dark spruce trees loaded with snow, a frozen path, grey sky through the branches, deep white silence, the world reduced to dark green and white',
+            'winter forest: dark fir trees, white ground, grey sky, absolute stillness, her small still figure a single point of warmth in a vast white world'
+          ],
+          details:[
+            'Her expression is patient, quiet, entirely uncomplaining — cold but not despairing, still but not defeated',
+            'Her expression is quiet dignity — she will not beg, she will not cry out, she will simply be exactly who she is',
+            'Her expression is still and brave and warm in a way the cold cannot reach — there is something inside her the winter has no power over'
+          ],
+          storyMoments:[
+            'she sits under the great fir tree in the deep snow and does not move — she folds her hands in her lap and straightens her back and sits with complete quiet dignity in the absolute cold — snow falls around her and settles on her shawl — her breath makes tiny white clouds in the air — she does not complain, does not call out — she simply sits and endures with a quality that is not resignation but something more like steadiness — a sound from deep in the forest to the right — she listens, very still',
+            'she pulls her white shawl tighter with patient hands and breathes slowly in the cold — the forest around her is vast and silent and white — she sits very straight under the fir tree, hands folded, the snow settling on her shoulders — she is cold but she does not show it and does not ask for help — she looks up at the grey sky through the snow-heavy branches — then a crackling of frost from somewhere deep in the forest, a sound that is not wind — she goes very still and listens',
+            'she sits in the snow with absolute patient composure — the cold is deep and real — snowflakes settle on her shawl and eyelashes — she looks at her own folded hands for a moment, then looks straight ahead into the white forest — she hears the crackling approach of something enormous — the temperature drops further — she straightens her back one last time and sits perfectly still, her expression quiet and warm and unafraid — waiting'
+          ]
+        },
+        {
+          title:'Meeting Father Frost',
+          costumes:[
+            'a young girl in a faded blue sarafan and white shawl, small and still in the snowy forest clearing, looking up at Father Frost with calm respectful eyes',
+            'a peasant girl in blue wool and white shawl, standing quietly in the deep snow before the enormous ancient winter spirit'
+          ],
+          actions:[
+            'standing in the snowy clearing answering Father Frost\'s cold testing questions with warmth and complete quiet composure',
+            'reaching up with both hands to receive the magnificent white fur coat that Father Frost extends to her with grateful quiet dignity',
+            'standing in the moonlit clearing in the new white fur coat with hands clasped at her heart, expression of genuine deep gratitude'
+          ],
+          backgrounds:[
+            'Russian winter forest clearing at night: deep blue moonlit shadow between the trees, bright moonlight on the snow, ice crystals forming on every branch around Father Frost\'s presence, Father Frost himself an enormous figure with a long white beard and a silver staff filling the upper portion of the scene, cold stars between the bare branches',
+            'moonlit winter clearing: snow, ice-covered trees catching moonlight, Father Frost vast and ancient and white filling the scene above, a chest of treasures gleaming in the snow beside him',
+            'Russian winter night: moonlight and deep shadow, snow, frozen forest, Father Frost towering above, ice crystals in the moonlight in every direction'
+          ],
+          details:[
+            'Her expression is calm and warm and respectful — a small warm thing meeting something enormous and cold without flinching',
+            'Her expression is quiet grateful dignity — she receives the reward with the same composure she received the cold',
+            'Her expression is the gentle happiness of someone who was always going to be exactly who she is — and that was always going to be enough'
+          ],
+          storyMoments:[
+            'Father Frost asks her in a cracking frost-voice: are you warm, little girl? — she looks up at the enormous white-bearded figure with complete composure — yes, grandfather, I am warm — he cracks his fingers and ice crystals fly — are you warm? — warmer still, grandfather — he stares at her — something in this small warm girl\'s unbroken composure reaches through the old spirit\'s cold testing heart — he reaches slowly into his great white coat and brings out the magnificent white fur — extends it toward her',
+            'Father Frost stands over her, vast and cold, testing her with his icy voice — are you cold? — she answers each question with quiet warmth and steady eyes, neither flinching nor flattering — he leans down closer with his great white beard, sending ice crystals across the snow — she does not move back — she meets his ancient eyes with calm direct warmth — he straightens slowly — looks at her for a long moment — then opens his great coat and brings out gifts',
+            'she stands before Father Frost in the moonlit clearing and answers his tests with exactly who she is — quiet, warm, without complaint or performance — he asks his cold questions and she answers with composure and warmth every time — he is very still for a long moment, this enormous ancient spirit who has frozen so many — then he reaches into his coat and brings out first the fur coat, then the chest of treasures, and places them before her one by one with great careful hands'
+          ]
+        },
+        {
+          title:'Returning Home Rich',
+          costumes:[
+            'a young girl transformed — in a magnificent white fur coat with silver embroidery and a white fur hat, seated upright in a beautiful carved wooden sledge with a treasure chest beside her',
+            'Nastenka in splendid white furs, rosy cheeks flushed, sitting straight in the sledge as a white horse pulls her through the village'
+          ],
+          actions:[
+            'sitting perfectly upright in the carved sledge as the white horse pulls it through the winter village, expression of quiet composed contentment',
+            'stepping down from the sledge before her cottage with graceful quiet dignity, white fur coat magnificent, one hand resting on the sledge',
+            'standing before her cottage in the pale winter dawn, white furs beautiful in the early light, hands clasped quietly at her heart'
+          ],
+          backgrounds:[
+            'Russian winter village at pale winter dawn: low wooden log cottages with carved window frames, snow heavy on the roofs, birch trees, a pale gold and white winter sky, the sledge tracks leading through the village, villagers appearing at windows and doors in astonishment',
+            'Russian village in winter: log houses with carved decorations, carved wooden gates, a church with a blue onion dome and snow on it, snow-covered paths, neighbours appearing in doorways staring',
+            'winter village at dawn: wooden houses, birch trees, fresh fallen snow, the pale gold morning sky, the white horse standing still, the treasure chest gleaming'
+          ],
+          details:[
+            'Her expression is quietly and completely content — patience and goodness rewarded, and she carries it without triumph',
+            'Her expression is the composed happiness of someone who was always going to be herself — and that turned out to be exactly right',
+            'Her expression is warm and still and entirely at peace — she is home, and everything is as it should be'
+          ],
+          storyMoments:[
+            'the white horse pulls the sledge through the snowy village streets and she sits upright in the magnificent white fur coat with the treasure chest beside her — villagers appear at windows and gates staring — she looks straight ahead with quiet composed happiness, not triumphant, not proud, simply complete — the sledge stops before her cottage — her stepmother appears at the door and stares — she steps down from the sledge carefully, one hand on the side, and stands in the pale dawn light in her white furs',
+            'the sledge moves through the village and she sits in it straight-backed and still, the white furs beautiful, the treasure chest gleaming — she looks at her own village as it passes: the familiar cottages, the church, the well — and her expression is simple warm homecoming — the sledge stops at her gate — neighbours have come out to stare — she climbs down carefully, smoothing the white fur coat with quiet hands, and opens the gate',
+            'she stands before her cottage in the white winter dawn — magnificent white furs, the treasure chest at her feet, the white horse standing patient behind her — her stepmother in the doorway with an open mouth — she looks at her home, at the door, at the pale gold dawn sky — and her expression is the quietest and most complete kind of happiness: she is exactly herself, she came through the cold exactly as she was, and it was enough, it was always going to be enough'
+          ]
+        }
+      ]
+    },
+    {
+      name:'Father Frost', type:'human', animStyle:'Pixar 3D style',
+      scenes:[
+        {
+          title:'Moving Through the Winter Forest',
+          costumes:[
+            'an enormous ancient old man in a magnificent long white fur coat to his feet, an enormous white beard, white fur cap, carrying a great silver staff that sends ice crystals outward with every step',
+            'Father Frost — a vast winter spirit in white and silver furs, ancient beyond counting, white beard and hair filling the scene, a staff of clear ice'
+          ],
+          actions:[
+            'striding through deep snow, his silver staff striking the ground and sending ice crystals outward in all directions, expression of cold ancient power',
+            'standing at the edge of the clearing with his silver staff raised, ice crystals raining from it across the snow, looking toward a small figure under a fir tree',
+            'leaning slowly down with his enormous staff toward the small girl sitting under the fir tree, his great white-bearded face filling the upper portion of the scene'
+          ],
+          backgrounds:[
+            'deep Russian winter forest at night: snow-loaded fir trees bowing under their weight, deep snowdrifts, a moonlit path, ice crystals forming on every surface he passes, the forest bowing before him in the cold',
+            'winter forest clearing: moonlight on snow, the trees standing with ice on every branch, his enormous white form filling the scene above the dark trees',
+            'Russian winter taiga: dark fir trees, white ground, a full moon, ice crystals hanging in the air, the forest cold and vast and completely his'
+          ],
+          details:[
+            'His expression is the cold ancient power of winter itself — impartial, vast, testing',
+            'His expression is the vast calm of something older than any living thing — genuinely curious about this small warm girl who does not flinch',
+            'His expression shifts very slowly — ancient impartial winter beginning to feel something that might, eventually, be kindness'
+          ],
+          storyMoments:[
+            'he moves through the winter forest with each step sending ice crystals outward from his silver staff — the trees bow before him, frost forming on the branches as he passes — he comes to the clearing and sees the small girl sitting under the fir tree — he stops and looks at her for a long moment — then approaches slowly, his great white fur coat sweeping the snow, his silver staff crackling with cold — he looms over her and asks his question in a voice like cracking ice',
+            'he strides through the deep snow with his silver staff, vast and cold and completely certain of himself — ice crystals fly from the staff with each step — he comes to the clearing and finds the small girl sitting in the snow with her hands folded — he tilts his enormous head and looks at her — leans down with his staff sending ice crystals across the snow toward her — she looks back at him with quiet warm eyes and does not move back — he is interested',
+            'he stands in the moonlit clearing with his silver staff and looks down at the small girl sitting under the fir tree — he asks if she is cold, this enormous winter spirit — she answers with quiet warmth — he asks again — she answers again — he leans closer, his great white beard hovering above her, ice crystals raining around her — she sits perfectly still and answers a third time with the same quiet warmth — he is very still — then something changes in the ancient face'
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+]; // END TALES
+
+/* ═══════════════════════════════════════
+   PROMPT BUILDERS
+═══════════════════════════════════════ */
+function buildMj(char, scene, costume, action, bg, detail) {
+  var book = pick(BOOKS), surface = pick(SURFACES);
+  var page = Math.random() > 0.5 ? 'left' : 'right';
+  return 'Flat lay photography style. '
+    + 'Top-down view, looking straight down at ' + book + ' lying open flat on ' + surface + '. '
+    + 'On the ' + page + ' page of the open book — a flat printed illustration of ' + char.name + ': '
+    + costume + ', ' + action + ', '
+    + 'the character is drawn flat on the page as part of the book illustration, not a 3D object, not standing in real space — just a beautiful flat printed drawing on the book page, '
+    + W + '. '
+    + 'The illustration on the page also shows — ' + bg + '. '
+    + detail + '. '
+    + 'The book lies flat on the surface. Warm diffused light from above, soft shadows on the book surface. '
+    + '--ar 9:16 --v 7';
+}
+
+function buildSd(tale, char, scene, costume, action, bg, detail, storyMoment, f, s, t) {
+  var awakening = pick(AWAKENINGS);
+  var animStyle = char.animStyle;
+  var isAnimal = char.type === 'animal';
+  var sound = pick(tale.sounds);
+  var dir1 = pick(['LEFT','RIGHT','TOWARD camera']);
+  var dir2 = pick(['RIGHT','LEFT','AWAY from camera']);
+  var p = '';
+
+  // Fixed 5 timecodes — 0-2 static, 2-5 awakening, 5-8 alive, 8-11 climax, 11-15 closing
+  var tc = ['[0s\u20132s]','[2s\u20135s]','[5s\u20138s]','[8s\u201311s]','[11s\u201315s]'];
+
+  // Frame 1 [0s–2s] — completely static flat illustration
+  p += tc[0] + ' STATIC OPENING. ';
+  p += 'Top-down flat lay shot looking straight down at an open ' + pick(BOOKS) + ' lying flat on ' + pick(SURFACES) + '. ';
+  p += 'On the page — a completely flat printed illustration of ' + char.name + ': ';
+  p += costume + ', ' + action + '. ';
+  p += 'The character is drawn flat on the page — a printed book illustration, utterly motionless, not a 3D object. ';
+  p += 'Around the character — ' + bg + ', all drawn as part of the flat book illustration. ';
+  p += 'Warm diffused light from above. Camera holds perfectly still. ';
+  p += WEND + ' ' + animStyle + '.\n\n';
+
+  // Frame 2 [2s–5s] — the page awakens, first movement
+  p += tc[1] + ' THE PAGE AWAKENS. ';
+  p += awakening + ' ';
+  p += char.name + ' stirs — a first breath of movement within the illustration. ';
+  p += isAnimal
+    ? 'Paws shift, ears flicker, eyes blink open — staying completely within the watercolour style. The background — ' + bg + ' — begins to breathe around the character. '
+    : 'Fingers curl, fabric ripples, eyes open with recognition — staying completely within the watercolour style. The background — ' + bg + ' — comes alive around the character. ';
+  p += 'Camera begins a slow gentle push IN toward the illustration. ';
+  p += WEND + ' ' + animStyle + '.\n\n';
+
+  // Frame 3 [5s–8s] — fully alive, action begins, direction specified
+  p += tc[2] + ' CHARACTER FULLY ALIVE. ';
+  p += char.name + ' \u2014 ' + costume + ' \u2014 is completely alive and moving as a living watercolour illustration. ';
+  p += 'The scene from ' + tale.tale + ': ' + storyMoment + ' ';
+  p += 'Movement direction: ' + dir1 + '. ';
+  p += detail + '. ';
+  p += 'Watercolour washes of colour bloom outward like paint dropped in water. Ink lines trail behind every movement. ';
+  p += 'Camera angle: gentle low angle shot. ';
+  p += WEND + ' ' + animStyle + '.\n\n';
+
+  // Frame 4 [8s–11s] — peak action, most dynamic moment
+  p += tc[3] + ' PEAK ACTION \u2014 THE CLIMAX. ';
+  p += 'The most energetic and dynamic moment of the scene. ';
+  p += char.name + ' \u2014 ' + costume + ' \u2014 at the absolute peak of the action: ' + storyMoment + ' ';
+  p += 'Movement direction: ' + dir2 + '. ';
+  p += 'Ink lines explode outward, colour splashes fill the frame, the illustrated background is in full motion. ';
+  p += 'Maximum expression on the character\'s face. Camera angle shifts dramatically \u2014 wide shot, all movement visible. ';
+  p += WEND + ' ' + animStyle + '.\n\n';
+
+  // Frame 5 [11s–15s] — beautiful expressive closing frame
+  p += tc[4] + ' ' + buildClosingFrame(char, costume, detail, animStyle, storyMoment) + '\n\n';
+
+  p += WEND + ' ' + animStyle + '. ' + sound;
+  return p.trim();
+}
+
+function buildClosingFrame(char, costume, detail, animStyle, storyMoment) {
+  var closings = [
+    'CLOSING FRAME. The action settles into its most beautiful moment. ' + char.name + ' \u2014 ' + costume + ' \u2014 holds a final expressive pose, facing TOWARD camera. ' + detail + '. A single ink detail drifts through the frame \u2014 a falling petal, a drifting feather, a floating spark of gold. Soft watercolour light bathes the entire illustrated world. Camera pulls back slowly to reveal the full open book glowing on the surface. ' + WEND + ' ' + animStyle + '.',
+    'CLOSING FRAME. ' + char.name + ' pauses at the peak of their story moment \u2014 ' + storyMoment + ' \u2014 in a magnificent expressive pose, turning slightly RIGHT. ' + costume + '. ' + detail + '. The watercolour background glows with warmth, ink lines settle into beautiful stillness. Camera holds steady, then pulls gently back. ' + WEND + ' ' + animStyle + '.',
+    'CLOSING FRAME. A breath of stillness after the peak action. ' + char.name + ' \u2014 ' + costume + ' \u2014 stands in a radiantly composed pose, arms open, face alive with emotion from the story. ' + detail + '. The illustrated world around the character holds its most vivid colour moment. Camera holds wide, revealing the full scene within the storybook page. ' + WEND + ' ' + animStyle + '.',
+    'CLOSING FRAME. The scene finds its final form. ' + char.name + ' \u2014 ' + costume + ' \u2014 in the most expressive pose of the animation, facing TOWARD camera, expression full of story. ' + detail + '. Soft watercolour light falls across everything with absolute warmth and beauty. A single golden ink line traces across the frame like a signature. Camera slowly pulls back to reveal the full open book. ' + WEND + ' ' + animStyle + '.'
+  ];
+  return pick(closings);
+}
+
+/* ═══════════════════════════════════════
+   SETTINGS
+═══════════════════════════════════════ */
+function setTool(t) {
+  tool = t;
+  document.getElementById('tool-sd').classList.toggle('on', t==='seedance');
+  document.getElementById('tool-kl').classList.toggle('on', t==='kling');
+}
+
+/* ═══════════════════════════════════════
+   NAV
+═══════════════════════════════════════ */
+function enterApp() {
+  document.getElementById('coverPage').style.display='none';
+  document.getElementById('appPage').style.display='block';
+}
+
+/* ═══════════════════════════════════════
+   CURRENT TALE STATE
+═══════════════════════════════════════ */
+var curTale = null;
+var curChar = null;
+
+/* ═══════════════════════════════════════
+   NEW STORY — picks a new random tale+char
+═══════════════════════════════════════ */
+function newStory() {
+  curTale = pick(TALES);
+  curChar = pick(curTale.characters);
+  generateFromCurrent();
+}
+
+/* ═══════════════════════════════════════
+   GENERATE — same tale+char, new combination
+═══════════════════════════════════════ */
+function generate() {
+  // First time — pick a tale
+  if (!curTale) {
+    curTale = pick(TALES);
+    curChar = pick(curTale.characters);
+  }
+  generateFromCurrent();
+}
+
+function generateFromCurrent() {
+  var btn = document.getElementById('genBtn');
+  var loading = document.getElementById('loading');
+  var card = document.getElementById('rcard');
+  btn.disabled=true; loading.classList.add('vis'); card.classList.remove('vis');
+
+  setTimeout(function(){
+    var scene = pick(curChar.scenes);
+    var costume    = pick(scene.costumes);
+    var action     = pick(scene.actions);
+    var bg         = pick(scene.backgrounds);
+    var detail     = pick(scene.details);
+    var storyMoment = pick(scene.storyMoments);
+
+    curMj = buildMj(curChar, scene, costume, action, bg, detail);
+    curSd = buildSd(curTale, curChar, scene, costume, action, bg, detail, storyMoment, FRAMES, SECS, tool);
+
+    document.getElementById('rTale').textContent = curTale.tale.toUpperCase() + ' \u00b7 ' + curTale.century;
+    document.getElementById('rTitle').textContent = scene.title;
+    document.getElementById('rHero').textContent = curChar.name;
+    var badge = document.getElementById('rBadge');
+    badge.className = 'tbadge ' + curChar.type;
+    badge.textContent = curChar.type==='animal' ? '\uD83D\uDC3E Animal character' : '\uD83D\uDC64 Human character';
+    document.getElementById('rAnimStyle').textContent = curChar.animStyle;
+    document.getElementById('rMj').textContent = curMj;
+    document.getElementById('rSd').textContent = curSd;
+
+    var mjb = document.getElementById('copyMj'), sdb = document.getElementById('copySd');
+    mjb.textContent='\uD83D\uDCCB Copy Midjourney Prompt'; mjb.classList.remove('copied');
+    sdb.textContent='\uD83D\uDCCB Copy Animation Prompt'; sdb.classList.remove('copied');
+
+    sessCount++; document.getElementById('sessCount').textContent=sessCount;
+    addHistory(curTale.tale, scene.title, curChar.name, curChar.type, curMj, curSd);
+
+    // Show current tale label
+    var lbl = document.getElementById('curTaleLabel');
+    var nm = document.getElementById('curTaleName');
+    nm.textContent = curTale.tale + ' — ' + curChar.name;
+    lbl.style.display = 'block';
+
+    loading.classList.remove('vis'); btn.disabled=false; card.classList.add('vis');
+    setTimeout(function(){ card.scrollIntoView({behavior:'smooth',block:'start'}); }, 100);
+  }, 700);
+}
+
+/* ═══════════════════════════════════════
+   COPY
+═══════════════════════════════════════ */
+function doCopy(type) {
+  var text = type==='mj' ? curMj : curSd;
+  var btnId = type==='mj' ? 'copyMj' : 'copySd';
+  var label = type==='mj' ? '\uD83D\uDCCB Copy Midjourney Prompt' : '\uD83D\uDCCB Copy Animation Prompt';
+  copyText(text, document.getElementById(btnId), label);
+}
+function copyText(text, btn, resetLabel) {
+  var ta = document.createElement('textarea');
+  ta.value=text; ta.style.cssText='position:fixed;left:0;top:0;opacity:0;pointer-events:none';
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  try { document.execCommand('copy'); btn.textContent='\u2713 Copied!'; btn.classList.add('copied'); setTimeout(function(){ btn.textContent=resetLabel; btn.classList.remove('copied'); },2000); }
+  catch(e){ btn.textContent='\u26A0 Select text above'; }
+  document.body.removeChild(ta);
+}
+
+/* ═══════════════════════════════════════
+   HISTORY
+═══════════════════════════════════════ */
+function addHistory(tale, title, hero, type, mj, sd) {
+  genHist.unshift({tale:tale,title:title,hero:hero,type:type,mj:mj,sd:sd,expanded:false});
+  if (genHist.length>20) genHist.pop();
+  renderHistory();
+}
+function toggleHistory() {
+  histOpen=!histOpen;
+  document.getElementById('hlist').classList.toggle('vis',histOpen);
+  document.getElementById('harrow').classList.toggle('open',histOpen);
+  document.getElementById('clrhbtn').style.display=histOpen?'block':'none';
+  document.getElementById('htoggleLabel').textContent='\uD83D\uDD70 Recent Prompts ('+genHist.length+')';
+}
+function renderHistory() {
+  var wrap=document.getElementById('hwrap'), list=document.getElementById('hlist');
+  wrap.style.display=genHist.length>0?'block':'none';
+  document.getElementById('htoggleLabel').textContent='\uD83D\uDD70 Recent Prompts ('+genHist.length+')';
+  list.innerHTML='';
+  genHist.forEach(function(item,idx){
+    var ico=item.type==='animal'?'\uD83D\uDC3E':'\uD83D\uDCDA';
+    var d=document.createElement('div'); d.className='hitem';
+    d.innerHTML='<div class="hitem-top"><span class="hitem-ico">'+ico+'</span><span class="hitem-title">'+esc(item.tale)+' \u2014 '+esc(item.title)+'</span></div>'
+      +'<div class="hitem-meta">'+esc(item.hero)+' \u00b7 '+(item.type==='animal'?'Beatrix Potter Style':'Pixar 3D Style')+'</div>'
+      +'<button class="hexpbtn" id="hexp'+idx+'">'+(item.expanded?'Hide prompts \u25b2':'Show prompts \u25bc')+'</button>'
+      +'<div class="hprompts'+(item.expanded?' vis':'')+'" id="hpr'+idx+'">'
+        +'<div class="hpbox"><div class="hplabel">\uD83C\uDFA8 Midjourney Prompt</div><div class="hptxt">'+esc(item.mj)+'</div><button class="hcbtn mj" id="hmj'+idx+'">Copy MJ Prompt</button></div>'
+        +'<div class="hpbox"><div class="hplabel">\uD83C\uDFAC Animation Prompt</div><div class="hptxt">'+esc(item.sd)+'</div><button class="hcbtn sd" id="hsd'+idx+'">Copy Anim Prompt</button></div>'
+      +'</div>';
+    list.appendChild(d);
+    document.getElementById('hexp'+idx).onclick=function(){
+      item.expanded=!item.expanded;
+      document.getElementById('hpr'+idx).classList.toggle('vis',item.expanded);
+      document.getElementById('hexp'+idx).textContent=item.expanded?'Hide prompts \u25b2':'Show prompts \u25bc';
+    };
+    document.getElementById('hmj'+idx).onclick=function(){ copyText(item.mj,document.getElementById('hmj'+idx),'Copy MJ Prompt'); };
+    document.getElementById('hsd'+idx).onclick=function(){ copyText(item.sd,document.getElementById('hsd'+idx),'Copy Anim Prompt'); };
+  });
+}
+function clearHistory(){ genHist=[]; renderHistory(); }
+
+/* INIT — nothing needed */
+</script>
+</body>
+</html>
