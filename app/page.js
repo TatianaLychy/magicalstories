@@ -220,7 +220,7 @@ export default function Page() {
               <div style={{ position: "absolute", top: -12, left: "50%", transform: "translateX(-50%)", background: "#d4af37", color: "#0a1a0e", padding: "4px 12px", borderRadius: 999, fontSize: 11, letterSpacing: ".18em", textTransform: "uppercase", whiteSpace: "nowrap" }}>Best Value</div>
               <div style={{ color: "#d4af37", opacity: 0.78, textTransform: "uppercase", letterSpacing: ".28em", fontSize: 12, marginBottom: 14 }}>Yearly</div>
               <div style={{ fontSize: 54, lineHeight: 1, fontStyle: "italic" }}>$90</div>
-              <div style={{ color: "#a8c5a0", fontStyle: "italic", marginTop: 4 }}>per year · $7.50 / month</div>
+              <div style={{ color: "#a8c5a0", fontStyle: "italic", marginTop: 4 }}>per year · $11.99 / month</div>
               <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 16, color: "#d4af37", border: "1px solid rgba(212,175,55,.28)", borderRadius: 999, padding: "4px 12px", fontSize: 12 }}>• 3-day free trial</div>
               <ul style={{ paddingLeft: 18, color: "#a8c5a0", lineHeight: 1.9, fontStyle: "italic", margin: "22px 0" }}>
                 <li>Everything in Monthly</li>
