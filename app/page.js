@@ -153,7 +153,7 @@ export default function Page() {
           <div style={{ textAlign: "center", marginBottom: 34 }}>
             <div style={{ color: "#d4af37", opacity: 0.65, letterSpacing: ".35em", textTransform: "uppercase", fontSize: 12, marginBottom: 14 }}>✦ The Collection ✦</div>
             <h2 style={{ fontSize: "clamp(1.8rem, 4vw, 2.5rem)", fontWeight: 400, margin: 0 }}>The <span style={{ color: "#d4af37", fontStyle: "italic" }}>Generators</span></h2>
-            <p style={{ color: "#a8c5a0", fontStyle: "italic", marginTop: 12 }}>Three professional tools are live now, with more added every month.</p>
+            
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(250px,1fr))", gap: 20 }}>
             {generators.map((gen) => (
