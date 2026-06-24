@@ -205,7 +205,7 @@ export default function Page() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 22, maxWidth: 760, margin: "0 auto" }}>
             <div style={{ background: "rgba(13,32,22,.75)", border: "1px solid rgba(212,175,55,.18)", borderRadius: 22, padding: 28 }}>
               <div style={{ color: "#d4af37", opacity: 0.78, textTransform: "uppercase", letterSpacing: ".28em", fontSize: 12, marginBottom: 14 }}>Monthly</div>
-              <div style={{ fontSize: 54, lineHeight: 1, fontStyle: "italic" }}>$9.99</div>
+              <div style={{ fontSize: 54, lineHeight: 1, fontStyle: "italic" }}>$11.99</div>
               <div style={{ color: "#a8c5a0", fontStyle: "italic", marginTop: 4 }}>per month</div>
               <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 16, color: "#d4af37", border: "1px solid rgba(212,175,55,.28)", borderRadius: 999, padding: "4px 12px", fontSize: 12 }}>• 3-day free trial</div>
               <ul style={{ paddingLeft: 18, color: "#a8c5a0", lineHeight: 1.9, fontStyle: "italic", margin: "22px 0" }}>
