@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Artist's Vision · by Tatiana Lychy</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-deep:    #0a1a0e;
+            --bg-mid:     #1a3a1f;
+            --bg-light:   #2d5a27;
+            --gold:       #d4af37;
+            --gold-dim:   rgba(212,175,55,0.35);
+            --gold-glow:  rgba(212,175,55,0.12);
+            --cream:      #f0e6c8;
+            --sage:       #a8c5a0;
+            --sage-dim:   #6a9e62;
+            --panel:      rgba(13,32,22,0.72);
+            --border:     rgba(212,175,55,0.18);
+        }
+
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            min-height: 100vh;
+            background:
+                linear-gradient(160deg, #0a1a0e 0%, #1a3a1f 35%, #2d5a27 65%, #1a3a1f 85%, #0a1a0e 100%);
+            background-attachment: fixed;
+            overflow-x: hidden;
+            color: var(--cream);
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 10%, rgba(212,175,55,0.055) 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 90%, rgba(212,175,55,0.045) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 50%, rgba(45,90,39,0.2) 0%, transparent 65%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── LAYOUT ── */
+        .page {
+            position: relative;
+            z-index: 1;
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 0 1.25rem 4rem;
+        }
+
+        /* ── COPYRIGHT ── */
+        .copyright {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(10,26,14,0.82);
+            backdrop-filter: blur(14px);
+            padding: 0.38rem 0.9rem;
+            border-radius: 0.45rem;
+            border: 1px solid var(--gold-dim);
+            z-index: 999;
+            color: var(--gold);
+            font-size: 0.76rem;
+            font-style: italic;
+            letter-spacing: 0.04em;
+        }
+
+        /* ── HEADER ── */
+        .header {
+            text-align: center;
+            padding: 3.5rem 0 2.5rem;
+        }
+
+        .header-ornament {
+            display: block;
+            color: var(--gold);
+            font-size: 0.85rem;
+            letter-spacing: 0.55em;
+            margin-bottom: 1.4rem;
+            opacity: 0.7;
+        }
+
+        .header-title {
+            font-size: 3rem;
+            font-weight: normal;
+            color: var(--cream);
+            letter-spacing: 0.06em;
+            line-height: 1.15;
+            text-shadow: 0 2px 24px rgba(212,175,55,0.2);
+            margin-bottom: 0.3rem;
+        }
+
+        .header-title em {
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        .header-sub {
+            font-size: 0.95rem;
+            color: var(--sage);
+            font-style: italic;
+            letter-spacing: 0.06em;
+            margin-top: 0.75rem;
+        }
+
+        .thin-rule {
+            width: 120px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+            margin: 1.5rem auto;
+        }
+
+        /* ── MAIN PANEL ── */
+        .panel {
+            background: var(--panel);
+            backdrop-filter: blur(20px);
+            border-radius: 1.5rem;
+            border: 1px solid var(--border);
+            padding: 2.25rem 2rem;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.45), inset 0 1px 0 rgba(212,175,55,0.08);
+            margin-bottom: 2rem;
+        }
+
+        .field-label {
+            display: block;
+            font-size: 0.7rem;
+            color: rgba(212,175,55,0.55);
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+
+        /* ── TEXTAREA ── */
+        .scene-input {
+            width: 100%;
+            min-height: 110px;
+            background: rgba(0,0,0,0.32);
+            color: var(--cream);
+            border: 1px solid rgba(212,175,55,0.22);
+            border-radius: 0.75rem;
+            padding: 1rem 1.2rem;
+            font-family: Georgia, serif;
+            font-size: 1rem;
+            font-style: italic;
+            line-height: 1.7;
+            resize: vertical;
+            transition: border-color 0.25s, box-shadow 0.25s;
+            letter-spacing: 0.02em;
+            margin-bottom: 1.75rem;
+        }
+
+        .scene-input::placeholder {
+            color: rgba(168,197,160,0.38);
+            font-style: italic;
+        }
+
+        .scene-input:focus {
+            outline: none;
+            border-color: rgba(212,175,55,0.45);
+            box-shadow: 0 0 0 3px rgba(212,175,55,0.08);
+        }
+
+        /* ── SELECT ── */
+        .select-wrap {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .artist-select {
+            width: 100%;
+            padding: 0.95rem 2.8rem 0.95rem 1.2rem;
+            background: rgba(0,0,0,0.32);
+            color: var(--cream);
+            border: 1px solid rgba(212,175,55,0.22);
+            border-radius: 0.75rem;
+            font-family: Georgia, serif;
+            font-size: 1rem;
+            font-style: italic;
+            letter-spacing: 0.02em;
+            cursor: pointer;
+            appearance: none;
+            transition: border-color 0.25s, box-shadow 0.25s;
+        }
+
+        .artist-select:focus {
+            outline: none;
+            border-color: rgba(212,175,55,0.45);
+            box-shadow: 0 0 0 3px rgba(212,175,55,0.08);
+        }
+
+        .artist-select option { background: #0d2016; color: var(--cream); font-style: normal; }
+        .artist-select optgroup { background: #0d2016; color: var(--gold); }
+
+        .select-chevron {
+            position: absolute;
+            right: 1.1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gold);
+            font-size: 0.75rem;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        /* Artist info line */
+        .artist-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem 1rem;
+            background: rgba(45,90,39,0.1);
+            border-radius: 0.5rem;
+            border: 1px solid rgba(212,175,55,0.08);
+            margin-top: 0.75rem;
+            min-height: 2.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .info-flag { font-size: 1.2rem; flex-shrink: 0; }
+        .info-text { font-size: 0.85rem; color: var(--sage); font-style: italic; }
+        .info-years { font-size: 0.8rem; color: rgba(212,175,55,0.55); margin-left: auto; flex-shrink: 0; }
+
+        /* ── GENERATE BUTTON ── */
+        .generate-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            padding: 1.1rem 2rem;
+            background: linear-gradient(135deg, #253f21 0%, #3a6e32 50%, #253f21 100%);
+            color: var(--cream);
+            border: 1px solid rgba(212,175,55,0.4);
+            border-radius: 9999px;
+            font-family: Georgia, serif;
+            font-size: 1.05rem;
+            font-style: italic;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.4), inset 0 1px 0 rgba(212,175,55,0.12);
+        }
+
+        .generate-btn:hover:not(:disabled) {
+            transform: translateY(-2px) scale(1.015);
+            border-color: rgba(212,175,55,0.6);
+            color: var(--gold);
+            box-shadow: 0 8px 28px rgba(0,0,0,0.5), 0 0 18px rgba(212,175,55,0.15);
+        }
+
+        .generate-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+        .btn-icon { font-size: 1.2rem; }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .spinning { animation: spin 0.85s linear infinite; display: inline-block; }
+
+        /* ── RESULTS ── */
+        .results { display: none; }
+        .results.show { display: block; }
+
+        .results-intro {
+            display: flex;
+            align-items: baseline;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .results-artist {
+            font-size: 1.3rem;
+            color: var(--cream);
+            font-weight: normal;
+        }
+
+        .results-scene {
+            font-size: 0.9rem;
+            color: var(--sage);
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        /* Prompt cards */
+        .prompts { display: flex; flex-direction: column; gap: 1.1rem; }
+
+        .prompt-card {
+            background: rgba(10,26,14,0.6);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 10px 32px rgba(0,0,0,0.35);
+            animation: fadeUp 0.45s ease both;
+        }
+
+        .prompt-card:nth-child(1) { animation-delay: 0.04s; }
+        .prompt-card:nth-child(2) { animation-delay: 0.13s; }
+        .prompt-card:nth-child(3) { animation-delay: 0.22s; }
+
+        .card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.9rem;
+        }
+
+        .card-num {
+            font-size: 0.68rem;
+            color: rgba(212,175,55,0.5);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .card-badge {
+            font-size: 0.75rem;
+            color: var(--sage);
+            font-style: italic;
+            background: rgba(45,90,39,0.18);
+            padding: 0.25rem 0.7rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(168,197,160,0.18);
+        }
+
+        .prompt-text {
+            font-family: 'Courier New', monospace;
+            font-size: 0.84rem;
+            line-height: 1.85;
+            color: #ddeedd;
+            background: rgba(0,0,0,0.28);
+            padding: 0.9rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(255,255,255,0.05);
+            margin-bottom: 0.9rem;
+            word-wrap: break-word;
+        }
+
+        .copy-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.7rem;
+            background: linear-gradient(135deg, #253f21, #3a6e32);
+            color: var(--cream);
+            border: 1px solid rgba(212,175,55,0.22);
+            border-radius: 0.45rem;
+            font-family: Georgia, serif;
+            font-size: 0.88rem;
+            font-style: italic;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            letter-spacing: 0.03em;
+        }
+
+        .copy-btn:hover { background: linear-gradient(135deg, #3a6e32, #4a8e3f); transform: translateY(-1px); }
+        .copy-btn.done { background: rgba(20,60,20,0.6); color: var(--sage); }
+
+        /* ── FOOTER ── */
+        .footer {
+            text-align: center;
+            padding: 2rem 0 1rem;
+            color: var(--sage-dim);
+            font-style: italic;
+            font-size: 0.88rem;
+            line-height: 2;
+        }
+
+        .footer-quote { font-size: 1rem; color: var(--sage); }
+        .footer-copy { font-size: 0.74rem; color: rgba(212,175,55,0.38); letter-spacing: 0.05em; margin-top: 0.5rem; }
+
+        @media (max-width: 580px) {
+            .header-title { font-size: 2.1rem; }
+            .panel { padding: 1.5rem 1.1rem; }
+            .copyright { position: static; display: block; margin: 1rem auto 0; text-align: center; width: fit-content; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="copyright">© 2026 Tatiana Lychy</div>
+
+<div class="page">
+
+    <!-- HEADER -->
+    <header class="header">
+        <span class="header-ornament">✦ &nbsp; ✦ &nbsp; ✦</span>
+        <h1 class="header-title">The Artist's <em>Vision</em></h1>
+        <div class="thin-rule"></div>
+        <p class="header-sub">Describe any scene · See it through a Master's eyes</p>
+    </header>
+
+    <!-- MAIN PANEL -->
+    <div class="panel">
+
+        <label class="field-label" for="scene-input">✦ &nbsp; Your scene</label>
+        <textarea
+            class="scene-input"
+            id="scene-input"
+            placeholder="Describe any scene — a morning kitchen, a cat by the window, a rainy street, a child in a garden…"
+            oninput="onInputChange()"
+        ></textarea>
+
+        <label class="field-label" for="artist-select">✦ &nbsp; Choose a Master</label>
+        <div class="select-wrap">
+            <select class="artist-select" id="artist-select" onchange="onArtistChange()">
+                <option value="" disabled selected>— Select an artist —</option>
+
+                <optgroup label="✦ Renaissance">
+                    <option value="davinci">Leonardo da Vinci</option>
+                    <option value="michelangelo">Michelangelo</option>
+                    <option value="raphael">Raphael</option>
+                    <option value="botticelli">Sandro Botticelli</option>
+                    <option value="durer">Albrecht Dürer</option>
+                    <option value="bruegel">Pieter Bruegel the Elder</option>
+                    <option value="bosch">Hieronymus Bosch</option>
+                    <option value="eyck">Jan van Eyck</option>
+                </optgroup>
+
+                <optgroup label="✦ Mannerism">
+                    <option value="elgreco">El Greco</option>
+                </optgroup>
+
+                <optgroup label="✦ Baroque">
+                    <option value="caravaggio">Caravaggio</option>
+                    <option value="rembrandt">Rembrandt van Rijn</option>
+                    <option value="velazquez">Diego Velázquez</option>
+                    <option value="vermeer">Johannes Vermeer</option>
+                </optgroup>
+
+                <optgroup label="✦ Neoclassical & Academic">
+                    <option value="bouguereau">William-Adolphe Bouguereau</option>
+                </optgroup>
+
+                <optgroup label="✦ Romanticism">
+                    <option value="delacroix">Eugène Delacroix</option>
+                    <option value="friedrich">Caspar David Friedrich</option>
+                    <option value="goya">Francisco Goya</option>
+                    <option value="turner">William Turner</option>
+                    <option value="aivazovsky">Ivan Aivazovsky</option>
+                    <option value="dore">Gustave Doré</option>
+                </optgroup>
+
+                <optgroup label="✦ Realism">
+                    <option value="manet">Édouard Manet</option>
+                    <option value="courbet">Gustave Courbet</option>
+                    <option value="corot">Camille Corot</option>
+                    <option value="repin">Ilya Repin</option>
+                    <option value="shishkin">Ivan Shishkin</option>
+                    <option value="homer">Winslow Homer</option>
+                </optgroup>
+
+                <optgroup label="✦ Pre-Raphaelite">
+                    <option value="waterhouse">John William Waterhouse</option>
+                    <option value="rossetti">Dante Gabriel Rossetti</option>
+                    <option value="millais">John Everett Millais</option>
+                </optgroup>
+
+                <optgroup label="✦ Impressionism">
+                    <option value="monet">Claude Monet</option>
+                    <option value="renoir">Pierre-Auguste Renoir</option>
+                    <option value="degas">Edgar Degas</option>
+                    <option value="pissarro">Camille Pissarro</option>
+                    <option value="cassatt">Mary Cassatt</option>
+                    <option value="morisot">Berthe Morisot</option>
+                    <option value="zorn">Anders Zorn</option>
+                </optgroup>
+
+                <optgroup label="✦ Post-Impressionism">
+                    <option value="vangogh">Vincent van Gogh</option>
+                    <option value="cezanne">Paul Cézanne</option>
+                    <option value="gauguin">Paul Gauguin</option>
+                    <option value="seurat">Georges Seurat</option>
+                    <option value="toulouse">Henri de Toulouse-Lautrec</option>
+                </optgroup>
+
+                <optgroup label="✦ Fauvism">
+                    <option value="matisse">Henri Matisse</option>
+                </optgroup>
+
+                <optgroup label="✦ Expressionism">
+                    <option value="munch">Edvard Munch</option>
+                </optgroup>
+
+                <optgroup label="✦ Symbolism">
+                    <option value="redon">Odilon Redon</option>
+                    <option value="moreau">Gustave Moreau</option>
+                    <option value="vrubel">Mikhail Vrubel</option>
+                    <option value="roerich">Nicholas Roerich</option>
+                    <option value="nesterov">Mikhail Nesterov</option>
+                </optgroup>
+
+                <optgroup label="✦ Art Nouveau & Modernisme">
+                    <option value="klimt">Gustav Klimt</option>
+                    <option value="mucha">Alphonse Mucha</option>
+                    <option value="beardsley">Aubrey Beardsley</option>
+                    <option value="gaudi">Antoni Gaudí</option>
+                    <option value="morris">William Morris</option>
+                    <option value="jmking">Jessie M. King</option>
+                    <option value="clarke">Harry Clarke</option>
+                    <option value="sterrett">Virginia Frances Sterrett</option>
+                </optgroup>
+
+                <optgroup label="✦ Lyrical Landscape">
+                    <option value="levitan">Isaac Levitan</option>
+                    <option value="kuindzhi">Arkhip Kuindzhi</option>
+                    <option value="polenov">Vasily Polenov</option>
+                </optgroup>
+
+                <optgroup label="✦ Fairy Tale & Folk Tale Art">
+                    <option value="vasnetsov">Viktor Vasnetsov</option>
+                    <option value="bilibin">Ivan Bilibin</option>
+                    <option value="kustodiev">Boris Kustodiev</option>
+                    <option value="larsson">Carl Larsson</option>
+                    <option value="bauer">John Bauer</option>
+                    <option value="crane">Walter Crane</option>
+                    <option value="fordhj">Henry Justice Ford</option>
+                    <option value="kittelsen">Theodor Kittelsen</option>
+                    <option value="munthe">Gerhard Munthe</option>
+                    <option value="polenova">Elena Polenova</option>
+                    <option value="malyutin">Sergei Malyutin</option>
+                    <option value="zvorykin">Boris Zworykin</option>
+                    <option value="narbut">Georgy Narbut</option>
+                </optgroup>
+
+                <optgroup label="✦ Storybook Illustration">
+                    <option value="potter">Beatrix Potter</option>
+                    <option value="rackham">Arthur Rackham</option>
+                    <option value="dulac">Edmund Dulac</option>
+                    <option value="greenaway">Kate Greenaway</option>
+                    <option value="goble">Warwick Goble</option>
+                    <option value="jwsmith">Jessie Willcox Smith</option>
+                    <option value="pyle">Howard Pyle</option>
+                    <option value="crobinson">Charles Robinson</option>
+                    <option value="whrobinson">William Heath Robinson</option>
+                    <option value="anneanderson">Anne Anderson</option>
+                    <option value="tenniel">John Tenniel</option>
+                    <option value="beskow">Elsa Beskow</option>
+                    <option value="monvel">Maurice Boutet de Monvel</option>
+                </optgroup>
+
+                <optgroup label="✦ Ukiyo-e Woodblock Print">
+                    <option value="hokusai">Katsushika Hokusai</option>
+                    <option value="hiroshige">Hiroshige</option>
+                    <option value="utamaro">Utamaro</option>
+                    <option value="koson">Ohara Koson</option>
+                </optgroup>
+            </select>
+            <span class="select-chevron">▼</span>
+        </div>
+
+        <div class="artist-info" id="artist-info">
+            <span class="info-flag" id="info-flag">🎨</span>
+            <span class="info-text" id="info-text">Select a master to see their style</span>
+            <span class="info-years" id="info-years"></span>
+        </div>
+
+        <div class="thin-rule" style="margin: 1.75rem auto;"></div>
+
+        <button class="generate-btn" id="gen-btn" onclick="generate()" disabled>
+            <span class="btn-icon" id="btn-icon">✦</span>
+            <span id="btn-label">Enter a scene and choose an artist</span>
+        </button>
+
+    </div>
+
+    <!-- RESULTS -->
+    <div class="results" id="results">
+        <div class="results-intro">
+            <span class="results-artist" id="res-artist"></span>
+            <span class="results-scene" id="res-scene"></span>
+        </div>
+        <div class="prompts" id="prompts-container"></div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p class="footer-quote">Every ordinary moment deserves a masterpiece</p>
+        <p>🌿 Created with love by Tatiana Lychy</p>
+        <p class="footer-copy">© 2026 Tatiana Lychy · All Rights Reserved · For personal use only</p>
+    </footer>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════
+// ARTIST DATABASE — rich, specific, technique-forward
+// ═══════════════════════════════════════════════
+const A = {
+    monet: {
+        name:'Claude Monet', flag:'🇫🇷', years:'1840–1926', info:'Impressionism · light, gardens, water, atmosphere',
+        style:'Claude Monet impressionist oil painting',
+        technique:'loose feathery broken brushstrokes of pure colour placed side by side without blending, forms dissolved into vibrating light and atmosphere, no hard outlines anywhere, colours shift and shimmer across the surface, plein air natural light observed at a specific fleeting moment, reflections painted as pure abstract colour patches',
+        palette:'soft lavender, warm rose pink, shimmering aquamarine, dappled sage green, golden cream, lilac shadow, sky blue highlight',
+        mood:'luminous, serene, trembling on the edge of dissolving into pure light'
+    },
+    renoir: {
+        name:'Pierre-Auguste Renoir', flag:'🇫🇷', years:'1841–1919', info:'Impressionism · joy, people, dappled warmth',
+        style:'Pierre-Auguste Renoir impressionist oil painting',
+        technique:'soft feathery brushwork, warm shadows in violet and blue rather than black, rounded soft forms without sharp edges, every surface bathed in warm ambient light, dappled light rendered as broken colour patches',
+        palette:'warm peach, rose blush, cream, dappled leaf green, soft violet shadow, golden afternoon, warm white',
+        mood:'warm, sensuous, overflowing with everyday joy and human tenderness'
+    },
+    cezanne: {
+        name:'Paul Cézanne', flag:'🇫🇷', years:'1839–1906', info:'Post-Impressionism · structure, geometry, permanence',
+        style:'Paul Cézanne post-impressionist oil painting',
+        technique:'short parallel diagonal brushstrokes building form through colour modulation rather than line, geometric simplification of all forms into cylinders spheres and cones, multiple simultaneous viewpoints in a single image, solid architectural weight beneath the surface colour, no atmospheric blurring — everything has mass and permanence',
+        palette:'warm ochre earth, slate blue-grey, terracotta red, sage green, cream highlight, muted olive, warm umber shadow',
+        mood:'still, monumental, the eternal geometric structure beneath the visible surface of the world'
+    },
+    toulouse: {
+        name:'Henri de Toulouse-Lautrec', flag:'🇫🇷', years:'1864–1901', info:'Post-Impressionism · Paris cabaret, poster, bold line',
+        style:'Henri de Toulouse-Lautrec post-impressionist painting and lithograph style',
+        technique:'bold flat areas of colour with strong expressive ink outlines, Japanese woodblock compositional flatness, abbreviated gestural marks catching movement and character, dramatic artificial lighting from below, acid colour contrasts, cardboard texture showing through thin paint, psychological observation in every mark',
+        palette:'deep carmine red, flat black, warm ochre, cream, olive drab, vivid acid yellow-green accent, cool grey',
+        mood:'theatrical, sharply observant, capturing the beauty and melancholy of artificial light'
+    },
+    gauguin: {
+        name:'Paul Gauguin', flag:'🇫🇷', years:'1848–1903', info:'Post-Impressionism · tropics, symbolism, bold flat colour',
+        style:'Paul Gauguin Synthetist post-impressionist oil painting',
+        technique:'bold flat areas of vivid non-naturalistic colour separated by dark outlines, decorative two-dimensional pattern with no modelling or shadow, symbolic colour choices entirely — colour used as meaning not description, deliberate rejection of European perspective, raw spiritual directness in every mark',
+        palette:'deep cadmium yellow, burnt sienna, cobalt blue, vivid emerald green, raw umber, hot coral pink, flat black outline',
+        mood:'primal, symbolic, spiritually charged — colour used as pure meaning not description'
+    },
+    seurat: {
+        name:'Georges Seurat', flag:'🇫🇷', years:'1859–1891', info:'Pointillism · scientific colour, stillness, luminosity',
+        style:'Georges Seurat pointillist chromoluminarist oil painting',
+        technique:'thousands of tiny pure colour dots applied separately, optical mixing occurring in the viewer\'s eye rather than on canvas, complementary colour dots placed side by side to create vibrating luminosity, figures rendered with monumental stillness and classical calm, edges shimmer with a coloured halo of tiny dots',
+        palette:'pure spectral primaries in tiny dots — cadmium yellow, cerulean blue, vermilion, emerald, violet, white ground',
+        mood:'luminous, still, scientific — form held motionless in vibrating coloured light'
+    },
+    manet: {
+        name:'Édouard Manet', flag:'🇫🇷', years:'1832–1883', info:'Realism · modern life, bravura brushwork, flat tones',
+        style:'Édouard Manet realist oil painting',
+        technique:'bold alla prima wet-into-wet brushwork, flat tonal areas with sharp abrupt tonal jumps instead of gradual transitions, strong black used as a positive colour not a shadow, confident decisive strokes that do not blend, abbreviated background suggesting depth without rendering it, paint applied with bravura directness',
+        palette:'vivid black, crisp white, warm cream, fresh leaf green, grey, bold colour accent used with confidence',
+        mood:'modern, direct, painterly — life observed without sentiment and without apology'
+    },
+    degas: {
+        name:'Edgar Degas', flag:'🇫🇷', years:'1834–1917', info:'Impressionism · movement, pastel, cropped angles',
+        style:'Edgar Degas impressionist pastel and oil painting',
+        technique:'pastel hatching in multiple layered colours building luminous surface, unusual camera-like cropped compositions cutting forms at the frame edge, artificial lighting from below creating upward warm golden glow, figures caught in unrehearsed private movement, diagonal composition lines creating dynamic tension',
+        palette:'soft rose, pale cerulean, warm cream, coral pink, grey-green, golden amber stage light, lavender blue shadow',
+        mood:'intimate, caught in the unrepeatable instant, softly lit from unexpected angles'
+    },
+    courbet: {
+        name:'Gustave Courbet', flag:'🇫🇷', years:'1819–1877', info:'Realism · nature, sea, heavy impasto, raw power',
+        style:'Gustave Courbet realist oil painting',
+        technique:'heavy palette knife impasto building thick physical paint surface, dark earthy ground with vivid colour lights pushed into it, dramatic raking natural light without sentimentality, paint applied with physical force, dense shadow areas contrasting sharply with brilliant lit passages',
+        palette:'dark umber ground, bottle green, charcoal grey, warm ochre, brilliant white highlight, deep Prussian shadow, raw sienna',
+        mood:'powerful, earthy, unromantic — nature as a vast physical force indifferent to human feeling'
+    },
+    pissarro: {
+        name:'Camille Pissarro', flag:'🇫🇷', years:'1830–1903', info:'Impressionism · village life, seasons, rural warmth',
+        style:'Camille Pissarro impressionist oil painting',
+        technique:'broken colour brushwork with warm rural observation, figures integrated naturally into their surroundings, seasonal light changes carefully observed and recorded, intimate human scale, broken colour patches suggesting movement of light throughout the surface',
+        palette:'warm ochre, grey-green, dusty rose, pale sky blue, harvest gold, soft winter white, warm brown earth',
+        mood:'gentle, seasonal, domestic — the quiet beauty of ordinary life observed with warm affection'
+    },
+    matisse: {
+        name:'Henri Matisse', flag:'🇫🇷', years:'1869–1954', info:'Fauvism · pure colour, pattern, decorative joy',
+        style:'Henri Matisse fauvist oil painting',
+        technique:'flat pure unmixed colour applied boldly without shading or modelling, decorative pattern layered against pattern, colour used for emotional and decorative effect entirely rather than realistic description, expressive confident line drawing, joy expressed through chromatic intensity',
+        palette:'vivid cadmium red, cobalt blue, chrome yellow, emerald green, flat black outline, coral orange, pure white',
+        mood:'joyful, decorative, liberating — colour as pure sensation and happiness'
+    },
+    vangogh: {
+        name:'Vincent van Gogh', flag:'🇳🇱', years:'1853–1890', info:'Post-Impressionism · emotional colour, swirling energy, impasto',
+        style:'Vincent van Gogh post-impressionist oil painting',
+        technique:'thick impasto paint applied with urgent force and directional energy, swirling brushstrokes that follow and amplify the inner energy of each form, colour intensified far beyond reality to carry emotional weight, halos of contrasting colour surrounding light sources, everything rendered as if vibrating with inner life',
+        palette:'vivid chrome yellow, intense cobalt blue, deep Prussian blue, cadmium orange, viridian green, raw sienna, purple shadow',
+        mood:'passionate, urgent, trembling with emotion — everything alive with an almost unbearable inner energy'
+    },
+    rembrandt: {
+        name:'Rembrandt van Rijn', flag:'🇳🇱', years:'1606–1669', info:'Dutch Golden Age · chiaroscuro, psychological depth, golden light',
+        style:'Rembrandt van Rijn Dutch Golden Age oil painting',
+        technique:'dramatic chiaroscuro — vast areas of warm brown-black shadow from which lit forms emerge in warm golden light, thick impasto highlights of pale paint on illuminated surfaces, thin transparent glazes in deep shadow areas, warm amber and golden ochre light source, psychological intensity conveyed through handling of light and shadow alone',
+        palette:'warm amber gold, deep umber brown, velvet black shadow, cream highlight, warm flesh ochre, deep Venetian red, ivory',
+        mood:'intimate, psychologically profound — ordinary forms elevated to the sacred by a single warm light'
+    },
+    vermeer: {
+        name:'Johannes Vermeer', flag:'🇳🇱', years:'1632–1675', info:'Dutch Golden Age · window light, quiet interiors, optical luminosity',
+        style:'Johannes Vermeer Dutch Golden Age oil painting',
+        technique:'cool diffused light falling from one direction across a quiet interior, camera obscura-like optical precision with pointillist pearl highlights on surfaces, serene compositional stillness, ultramarine blue and warm yellow as signature colour opposition, absolute silence and composure in every mark',
+        palette:'cool ultramarine blue, warm golden yellow, white linen, terracotta tile, pearl highlight, warm shadow brown, cream wall',
+        mood:'hushed, luminous, perfectly still — a held breath of beauty caught in cool northern light'
+    },
+    bruegel: {
+        name:'Pieter Bruegel the Elder', flag:'🇧🇪', years:'~1525–1569', info:'Northern Renaissance · panoramic seasons, peasant life',
+        style:'Pieter Bruegel the Elder Early Netherlandish oil painting',
+        technique:'high bird\'s-eye panoramic viewpoint, meticulous observation rendered in precise detail at every scale, moralising narrative hidden in accumulated observed detail, figures small against overwhelming landscape scale, vast receding space, Flemish precision in every mark',
+        palette:'grey-brown winter, pale frozen sky, fresh spring green, harvest golden ochre, terracotta, cold blue distance, bare silhouette',
+        mood:'panoramic, teeming with life, the whole turning world observed from above with warm irony'
+    },
+    bosch: {
+        name:'Hieronymus Bosch', flag:'🇳🇱', years:'~1450–1516', info:'Early Netherlandish · fantastical allegory, hybrid imagination',
+        style:'Hieronymus Bosch Early Netherlandish oil painting',
+        technique:'luminous jewel-like glazed surface, tiny intricate marks building fantastical imagery, dreamlike spatial logic ignoring normal perspective, allegorical symbolic content in every detail, pale luminous sky contrasting with dark earthly scenes, hybrid forms rendered with the same precise oil technique as realistic objects',
+        palette:'jewel emerald, luminous sky blue, rose pink, pale gold, ivory white, rich crimson, luminous pale horizon',
+        mood:'dreamlike, fantastical, luminous and profoundly strange — paradise and nightmare sharing the same space'
+    },
+    eyck: {
+        name:'Jan van Eyck', flag:'🇧🇪', years:'1390–1441', info:'Early Netherlandish · jewel-like oil glazing, crystalline precision',
+        style:'Jan van Eyck Early Netherlandish oil painting',
+        technique:'revolutionary transparent oil glazing building luminosity through many layers, microscopic detail rendered with a brush of single hairs, crystalline window light, symbolic objects each precisely rendered, convex mirror reflections showing the whole space, absolute devotional precision in every mark',
+        palette:'deep royal crimson, cobalt blue, burnished gold, rich emerald, pearl white, warm ivory, shadow brown',
+        mood:'crystalline, precious, devotional — every visible surface rendered as sacred text'
+    },
+    klimt: {
+        name:'Gustav Klimt', flag:'🇦🇹', years:'1862–1918', info:'Vienna Secession · gold leaf, ornamental mosaic, symbolic decoration',
+        style:'Gustav Klimt Vienna Secession Art Nouveau oil and gold painting',
+        technique:'gold leaf applied to flat ornamental areas contrasting with realistically modelled faces and hands, geometric and spiral mosaic patterns covering all surfaces, Byzantine decorative influence, flat decorative space surrounding volumetric facial features, pattern on pattern layering throughout',
+        palette:'burnished 24-karat gold, flat black, jewel emerald, deep burgundy, ivory skin, cobalt blue, silver, rich ochre',
+        mood:'opulent, erotic, symbolic — all surfaces transformed into living gold and ornament'
+    },
+    durer: {
+        name:'Albrecht Dürer', flag:'🇩🇪', years:'1471–1528', info:'Northern Renaissance · engraving precision, botanical observation',
+        style:'Albrecht Dürer Northern Renaissance watercolour and engraving',
+        technique:'extraordinary precision of engraving line translated into painting, crosshatching to build form and tonal range, geometric mathematical perspective construction, every surface approached as a scientific and spiritual investigation, watercolour washes of precise local colour over precise ink underdrawing',
+        palette:'precise naturalistic local colour, warm golden portrait tone, brown ink line, soft watercolour wash, warm parchment ground',
+        mood:'exact, reverent, intellectual — every observed detail an act of devotion'
+    },
+    friedrich: {
+        name:'Caspar David Friedrich', flag:'🇩🇪', years:'1774–1840', info:'Romanticism · sublime nature, Rückenfigur, spiritual vastness',
+        style:'Caspar David Friedrich German Romantic oil painting',
+        technique:'Rückenfigur compositional device — a solitary back-view figure small against a vast landscape, atmospheric perspective dissolving distance into luminous mist and light, precise foreground detail giving way to soft aerial haze, horizon glowing with spiritual light, monumental stillness throughout',
+        palette:'cold Prussian blue mist, pale amber horizon glow, silhouette black foreground, grey rock, warm umber, snow white, luminous pale gold',
+        mood:'vast, solitary, spiritually yearning — the human soul contemplating infinity'
+    },
+    gaudi: {
+        name:'Antoni Gaudí', flag:'🇪🇸', years:'1852–1926', info:'Catalan Modernisme · organic forms, trencadís mosaic, biomimetic',
+        style:'Antoni Gaudí Catalan Modernisme architectural and decorative style',
+        technique:'all forms derived from and flowing into natural structures, no straight lines or right angles anywhere, surfaces entirely covered in trencadís broken ceramic mosaic iridescent fragments, parabolic and catenary arch forms throughout, stained glass colour flooding interior spaces, structure and ornament completely inseparable',
+        palette:'iridescent ceramic tile — cobalt blue, golden ochre, cream white, terracotta red, vivid mosaic colour against stone grey',
+        mood:'dreamlike, organic, ecstatic — every surface alive with colour and natural flowing form'
+    },
+    goya: {
+        name:'Francisco Goya', flag:'🇪🇸', years:'1746–1828', info:'Romanticism · portraiture, social observation, dark imagination',
+        style:'Francisco Goya Spanish Romantic oil painting',
+        technique:'bravura loose gestural brushwork growing increasingly free and expressive, warm golden light against dark backgrounds, rich impasto on lit surfaces with thin transparent darks, raw psychological exposure through paint handling alone',
+        palette:'warm ochre, velvet black, crimson lake, gold, cream flesh, deep shadow brown, silver grey',
+        mood:'vivid, psychologically penetrating — vanity and dignity observed with compassionate irony'
+    },
+    elgreco: {
+        name:'El Greco', flag:'🇪🇸', years:'1541–1614', info:'Mannerism · spiritual intensity, elongated proportion, supernatural light',
+        style:'El Greco Spanish Mannerist oil painting',
+        technique:'dramatic vertical elongation of all forms stretching toward the spiritual, cold acid colour contrasts, flickering supernatural light from no earthly source, Byzantine icon influence in gold highlights and frontal intensity, paint applied with nervous urgent energy',
+        palette:'cold acid yellow-green, stormy blue-grey, crimson lake, ice white, deep shadow, silver highlight, Spanish black',
+        mood:'spiritually intense, otherworldly — reality stretched thin by the pressure of the divine'
+    },
+    velazquez: {
+        name:'Diego Velázquez', flag:'🇪🇸', years:'1599–1660', info:'Spanish Golden Age · atmospheric realism, silvery tone, painterly distance',
+        style:'Diego Velázquez Spanish Golden Age oil painting',
+        technique:'loose gestural broken brushwork that resolves into perfect illusion at viewing distance, silvery atmospheric tonality, compressed brushstrokes suggesting texture without literally rendering it, grey and black achieving extraordinary chromatic subtlety, illusionistic spatial depth',
+        palette:'silver grey, velvet black, ivory, warm flesh ochre, deep wine red, gold thread, cool white, atmospheric grey-blue distance',
+        mood:'dignified, atmospheric, profoundly human — truth observed with total respect and no sentimentality'
+    },
+    davinci: {
+        name:'Leonardo da Vinci', flag:'🇮🇹', years:'1452–1519', info:'High Renaissance · sfumato, ideal beauty, scientific curiosity',
+        style:'Leonardo da Vinci High Renaissance oil painting',
+        technique:'sfumato — all edges dissolved in atmospheric smoke-like haze with absolutely no hard outlines, chiaroscuro modelling from deep shadow into warm light, aerial perspective making distance blue-grey and misty, paint built in transparent glazes of extraordinary delicacy',
+        palette:'warm umber shadow, soft golden warm light, dark ground, cool blue-grey misty distance, olive green, warm amber, smoky atmospheric haze',
+        mood:'mysterious, ideally beautiful, intellectually curious — the world observed with divine patient detachment'
+    },
+    botticelli: {
+        name:'Sandro Botticelli', flag:'🇮🇹', years:'1445–1510', info:'Early Renaissance · flowing line, mythology, graceful melancholy',
+        style:'Sandro Botticelli Early Renaissance tempera painting',
+        technique:'elegant flowing calligraphic line defining graceful elongated forms, gold leaf accents on edges and details, tempera paint building luminous surface in transparent layers, pale luminous tones against darker grounds, decorative linear rhythm throughout the composition',
+        palette:'pale rose, soft sky blue, sage olive green, pale ivory, gold leaf accent, cream, soft coral, dark rich ground',
+        mood:'graceful, gently melancholic — ideal beauty tinged with a longing it cannot name'
+    },
+    raphael: {
+        name:'Raphael', flag:'🇮🇹', years:'1483–1520', info:'High Renaissance · perfect harmony, pyramidal composition, grace',
+        style:'Raphael High Renaissance fresco and oil painting',
+        technique:'pyramidal groupings achieving perfect compositional harmony, warm golden ambient light suffusing the whole surface, sfumato atmospheric edges, ideal proportion conveyed through graceful measured marks, figures arranged with mathematical clarity and emotional warmth',
+        palette:'warm golden light, rich lapis lazuli blue, rose madder, warm cream, soft green, soft sky blue, warm flesh ochre',
+        mood:'serene, harmonious, perfectly resolved — grace and divinity in perfect equilibrium'
+    },
+    caravaggio: {
+        name:'Caravaggio', flag:'🇮🇹', years:'1571–1610', info:'Baroque · tenebrism, dramatic light, raw realism',
+        style:'Caravaggio Italian Baroque tenebrism oil painting',
+        technique:'extreme tenebrism — absolute impenetrable darkness from which a single raking light source carves forms with surgical precision, paint applied directly onto dark ground without underdrawing, rich immediate paint surface, psychological intensity conveyed entirely through stark light and shadow contrast, no atmospheric middle tones',
+        palette:'absolute pitch black, vivid warm light, crimson, warm ochre, cool white highlight, deep earth brown, dramatic spotlight',
+        mood:'dramatic, raw, morally urgent — the sacred erupting without warning into ordinary darkness'
+    },
+    michelangelo: {
+        name:'Michelangelo', flag:'🇮🇹', years:'1475–1564', info:'High Renaissance · monumental form, Sistine ceiling, sculpted figures',
+        style:'Michelangelo High Renaissance fresco painting',
+        technique:'monumental superhuman forms viewed from far below in extreme foreshortening, sculptural musculature defined through colour modelling, figures in dynamic contrapposto tension, architectural framing integrating painted and real space, the entire surface conceived as relief sculpture translated into colour',
+        palette:'warm terracotta, soft sky blue, gold ochre, sage green, rose, warm ivory, deep umber shadow, architectural grey',
+        mood:'monumental, heroic, sublime — humanity stretched to its absolute limits and found magnificent'
+    },
+    shishkin: {
+        name:'Ivan Shishkin', flag:'🇷🇺', years:'1832–1898', info:'Russian Realism · precision, monumental scale, botanical accuracy',
+        style:'Ivan Shishkin Russian realist oil painting',
+        technique:'meticulous precision in every brushstroke building precise surface textures, shafts of warm golden light rendered through carefully controlled tonal contrast between dark interior passages and luminous openings, monumental vertical scale achieved through careful proportion, air itself made luminous with controlled glazing, rich dark ground contrasting with brilliant lit areas',
+        palette:'deep bottle green, warm golden shaft of light, sandy ochre ground, dark umber shadow, pale sky blue opening, rich dark shadow green',
+        mood:'majestic, still, devotional — monumental scale and meticulous precision creating a cathedral of light'
+    },
+    levitan: {
+        name:'Isaac Levitan', flag:'🇷🇺', years:'1860–1900', info:'Russian lyrical landscape · mood, tonal harmony, poetic atmosphere',
+        style:'Isaac Levitan Russian lyrical landscape oil painting',
+        technique:'mood and emotional atmosphere prioritised over descriptive accuracy, tonal harmony of muted greys and golds throughout the surface, wide open sky given dominant weight in the composition, still water surfaces rendered as perfect tonal mirror, broken colour suggesting seasonal light, melancholic poetic atmosphere built through tone not line',
+        palette:'golden yellow, blue-grey mirror water, silver-white vertical, soft overcast grey sky, amber warmth, pale spring lime, quiet village brown',
+        mood:'lyrical, gently melancholic, infinite — the landscape as the inner weather of the soul'
+    },
+    repin: {
+        name:'Ilya Repin', flag:'🇷🇺', years:'1844–1930', info:'Russian Realism · psychological portraiture, historical narrative',
+        style:'Ilya Repin Russian realist oil painting',
+        technique:'virtuoso oil technique with rich warm colour and confident varied brushwork, psychological penetration of character through precise observation of gesture and expression, monumental narrative compositions with complex crowd dynamics, individual faces rendered with biographical specificity even in large groups',
+        palette:'warm golden brown, rich dark tones, dramatic natural light, vivid accent in costume, warm interior candlelight, expressive flesh colour',
+        mood:'powerful, deeply human, socially engaged — every surface a complete psychological biography'
+    },
+    vasnetsov: {
+        name:'Viktor Vasnetsov', flag:'🇷🇺', years:'1848–1926', info:'Russian Romanticism · Slavic fairy tale, folk mythology, epic scale',
+        style:'Viktor Vasnetsov Russian Romantic fairy tale oil painting',
+        technique:'epic monumental compositional scale, decorative ornamental detail rendered with precise care, dark atmospheric depth contrasting with glowing supernatural light, golden glow emanating from magical elements, wide open horizontal landscape giving way to epic vertical figures',
+        palette:'deep forest shadow, gold and crimson ornament, steel grey, wide open sky, dark silhouette, ochre ground, supernatural orange-gold glow',
+        mood:'epic, mythological — the ancient Slavic world alive again with magic and heroic spirit'
+    },
+    vrubel: {
+        name:'Mikhail Vrubel', flag:'🇷🇺', years:'1856–1910', info:'Russian Symbolism · crystal facets, iridescent surface, mosaic',
+        style:'Mikhail Vrubel Russian Symbolist oil and mosaic painting',
+        technique:'crystal-like faceted brushwork breaking all surfaces into iridescent angular fragments, each facet a separate colour value like mosaic or stained glass, Byzantine and Oriental decorative influence throughout, jewel-like colour separated into luminous fragments that shift and shimmer, no smooth transitions — only faceted colour planes',
+        palette:'iridescent blue-violet, crystal silver, deep purple, peacock emerald, gold fragment, lilac, dark teal, shimmering white highlight',
+        mood:'visionary, iridescent, symbolic — reality fractured into jewel-fragments of hidden meaning'
+    },
+    bilibin: {
+        name:'Ivan Bilibin', flag:'🇷🇺', years:'1876–1942', info:'Russian fairy tale illustration · precise outline, flat colour, folk ornament',
+        style:'Ivan Bilibin Russian fairy tale book illustration style',
+        technique:'precise black ink contour line of absolutely consistent weight enclosing flat unmodulated colour areas with no shading, folk ornament borders framing every composition, pattern derived from embroidery and woodcarving traditions, flat colour areas with no modelling or shadow — only line and flat tone',
+        palette:'flat earthy ochre, deep forest green, sky blue, crimson red, flat black outline, gold ornament, cream background',
+        mood:'ornamental, precise, enchanted — a world of pattern and ancient folk magic made visible'
+    },
+    kustodiev: {
+        name:'Boris Kustodiev', flag:'🇷🇺', years:'1878–1927', info:'Russian Folk Realism · vibrant colour, folk festivals, abundant life',
+        style:'Boris Kustodiev Russian folk realist oil painting',
+        technique:'vivid saturated folk-festival colour applied with confident decorative brushwork, wide open winter sky contrasting with warm colourful foreground activity, decorative folk pattern on surfaces treated with loving detail, celebration and abundance expressed through chromatic richness',
+        palette:'vivid carmine red, warm gold, bright sky blue, snow white, rich warm flesh, folk pattern colour, church dome gold, carnival colour',
+        mood:'vivid, celebratory, abundant — life in its most colourful and joyful hour'
+    },
+    roerich: {
+        name:'Nicholas Roerich', flag:'🇷🇺', years:'1874–1947', info:'Russian Symbolism · Himalayas, ancient Rus, spiritual landscape',
+        style:'Nicholas Roerich Russian Symbolist tempera painting',
+        technique:'flat colour planes with almost no modelling or atmospheric perspective, forms simplified to pure silhouette and colour mass, tempera on board creating jewel-like matte surface, spiritual symbolic composition with strong horizontal bands of colour, distance and sky rendered as pure flat colour shapes',
+        palette:'deep violet mountain, cobalt spiritual blue, pure gold horizon, terracotta ancient stone, snow white peak, luminous pale sky, sacred fire orange',
+        mood:'spiritual, luminous, ancient — the world seen from a great elevation of consciousness'
+    },
+    nesterov: {
+        name:'Mikhail Nesterov', flag:'🇷🇺', years:'1862–1942', info:'Russian Symbolism · spirituality, quiet contemplation, lyrical nature',
+        style:'Mikhail Nesterov Russian Symbolist oil painting',
+        technique:'lyrical silver-green tonal harmony throughout the surface, solitary figures integrated into their surroundings as naturally as any natural element, still water surfaces as tonal mirrors, white architectural forms against pale sky, landscape carrying spiritual feeling without explicit religious iconography, gentle broken colour suggesting seasonal light',
+        palette:'silver-green, pale blue sky, white form against pale ground, gentle umber, soft grass green, quiet grey water, pale gold',
+        mood:'quiet, contemplative, spiritual — the soul at peace within the silence of its native landscape'
+    },
+    mucha: {
+        name:'Alphonse Mucha', flag:'🇨🇿', years:'1860–1939', info:'Art Nouveau · decorative poster, floral ornament, graceful line',
+        style:'Alphonse Mucha Art Nouveau poster and painting style',
+        technique:'graceful organic flowing line used for both figure and ornament, circular decorative halos of geometric and botanical ornament surrounding central forms, flat stylised decorative pattern, warm cream and rose palette with gold accents, Byzantine and Japanese influences combined in organic ornamental system',
+        palette:'warm cream, dusty rose, sage green, muted gold, pale lilac, terracotta, soft blue, rich ornamental border colour',
+        mood:'elegant, sensuous, decorative — the world blooming into living Art Nouveau ornament'
+    },
+    potter: {
+        name:'Beatrix Potter', flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', years:'1866–1943', info:'English watercolour illustration · animals, cozy domesticity, botanical',
+        style:'Beatrix Potter English watercolour book illustration',
+        technique:'delicate English watercolour washes with fine ink outline, warm cozy domestic scale, soft natural light without drama, precise botanical observation rendered with loving accuracy, warm interior amber light contrasting with cool exterior greens, gentle humour expressed through careful observation',
+        palette:'warm ochre, sage green, dusty rose, cream, mouse brown, sky blue, warm interior amber, flower garden colour',
+        mood:'gentle, cozy, quietly humorous — the natural world observed with tender botanical affection'
+    },
+    rackham: {
+        name:'Arthur Rackham', flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', years:'1867–1939', info:'Golden Age illustration · fairy tale, gnarled organic forms, twilight',
+        style:'Arthur Rackham Golden Age watercolour illustration',
+        technique:'sinuous flowing pen and ink outline of consistent weight with transparent watercolour washes layered over, organic gnarled forms everywhere, dusk and twilight lighting creating mysterious atmosphere, scale contrast between tiny and enormous elements, earth-toned washes with soft atmospheric misting in distance',
+        palette:'earthy umber, soft moss green, grey-brown, misty blue, parchment cream, golden dusk, dark shadow, autumn russet',
+        mood:'enchanted, slightly uncanny, twilit — the fairy world glimpsed at the edge of the ancient forest'
+    },
+    dulac: {
+        name:'Edmund Dulac', flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', years:'1882–1953', info:'Golden Age illustration · Eastern fairy tale, jewel colour, night',
+        style:'Edmund Dulac Golden Age gouache illustration',
+        technique:'jewel-saturated opaque gouache, night scenes lit by lantern and moonlight, rich deep colour pushed to maximum richness and saturation, decorative border pattern surrounding central image, Oriental decorative pattern throughout',
+        palette:'midnight cobalt blue, jade emerald, burnished gold, deep crimson, ivory, rich purple, silver moonlight, lantern amber',
+        mood:'jewel-bright, dreamlike, deep colour and wonder'
+    },
+    waterhouse: {
+        name:'John William Waterhouse', flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', years:'1849–1917', info:'Pre-Raphaelite · mythology, botanical lushness, water reflection',
+        style:'John William Waterhouse Pre-Raphaelite oil painting',
+        technique:'lush botanical Pre-Raphaelite detail rendered with warm painterly oil technique, water surfaces reflecting surrounding colour, vegetation rendered with loving botanical precision, warm fluid oil technique, archaeological accuracy in setting details',
+        palette:'deep rose, sage green, cobalt pool blue, warm ochre, ivory, poppy red, water reflection colour, warm stone',
+        mood:'romantic, lush, mythological — beauty trembling on the edge of legend'
+    },
+    rossetti: {
+        name:'Dante Gabriel Rossetti', flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', years:'1828–1882', info:'Pre-Raphaelite Brotherhood · medieval symbolism, close portrait intensity',
+        style:'Dante Gabriel Rossetti Pre-Raphaelite oil painting',
+        technique:'close portrait cropping emphasising a single iconic face, symbolic objects each rendered with allegorical precision, jewel-bright colour against dark velvet background, rich detailed surface texture, intense psychological presence through close viewpoint and direct gaze',
+        palette:'jewel emerald, deep crimson, burnished gold, ivory skin, auburn copper, dark velvet ground, bright symbolic flower colour',
+        mood:'intense, symbolic, obsessive — beauty as a form of spiritual ecstasy bordering on anguish'
+    },
+    millais: {
+        name:'John Everett Millais', flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', years:'1829–1896', info:'Pre-Raphaelite · plein air botanical precision, emotional narrative',
+        style:'John Everett Millais Pre-Raphaelite oil painting',
+        technique:'extraordinary plein air precision — every surface painted directly from nature with obsessive fidelity, rich autumnal and floral colour built in careful layers, narrative moment frozen at its most emotionally charged instant, equal botanical attention to figures and natural surroundings',
+        palette:'rich autumnal amber, river brown, vivid poppy red, water reflection green, Pre-Raphaelite flower colour, cream, wet grass green',
+        mood:'precise, narrative, emotionally charged — nature at a moment of human significance'
+    },
+    turner: {
+        name:'William Turner', flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', years:'1775–1851', info:'Romanticism · light as subject, atmospheric dissolution, sublime',
+        style:'J.M.W. Turner English Romantic watercolour and oil painting',
+        technique:'vortex of atmospheric light dissolving all solid forms into colour and luminosity, transparent glazes building radiant light, golden and silver light creating radiating chromatic halos, steam mist spray and fog all treated as light rather than matter, forms suggested rather than stated, overwhelming atmospheric sensation',
+        palette:'golden amber light, silver white, pale luminous blue, storm grey, fiery orange-red, sea green, atmospheric white mist',
+        mood:'sublime, atmospheric, overwhelming — light consuming the material world until only sensation remains'
+    },
+    hokusai: {
+        name:'Katsushika Hokusai', flag:'🇯🇵', years:'1760–1849', info:'Ukiyo-e · woodblock, bold graphic forms, dynamic tension',
+        style:'Katsushika Hokusai Japanese ukiyo-e woodblock print',
+        technique:'bold Prussian blue outlines enclosing flat colour areas, dynamic graphic forms following natural energy patterns, flat colour printing with no shading or modelling, strong graphic tension between large and small elements, Japanese linear perspective with high horizon, precise registration of multiple colour blocks',
+        palette:'Prussian blue, cream white, grey, red-orange accent, flat black outline, indigo, foam white',
+        mood:'dynamic, elemental, perfectly balanced — graphic tension between force and stillness'
+    },
+    hiroshige: {
+        name:'Hiroshige', flag:'🇯🇵', years:'1797–1858', info:'Ukiyo-e · travel, rain, seasonal poetry, atmospheric woodblock',
+        style:'Hiroshige Japanese ukiyo-e woodblock print',
+        technique:'vertical format with diagonal rain lines as strong graphic element, atmospheric sky gradation from dark at top to pale at horizon, seasonal mood evoked through flat colour and graphic pattern rather than modelling, framing elements creating depth, woodblock colour gradation building atmospheric light',
+        palette:'deep blue, warm ochre, green, grey rain diagonal lines, snow white, lantern amber, indigo sky gradation, blossom pink',
+        mood:'poetic, seasonal, atmospheric — each image a haiku in colour about weather and moment'
+    },
+    utamaro: {
+        name:'Utamaro', flag:'🇯🇵', years:'1753–1806', info:'Ukiyo-e · bijin-ga, close portrait, textile pattern, elegance',
+        style:'Utamaro Japanese ukiyo-e woodblock bijin-ga print',
+        technique:'close-cropped viewpoint with mica shimmer background, intricate textile pattern rendered with woodblock precision, psychological intimacy of the close viewpoint, delicate line of consistent weight, seasonal natural accompaniment rendered with botanical precision',
+        palette:'soft rose, ivory, indigo, coral, patterned silk colour, mica silver shimmer background, delicate grey, kimono pattern colour',
+        mood:'elegant, intimate, refined — pure aesthetic form observed with close and reverent attention'
+    },
+    munch: {
+        name:'Edvard Munch', flag:'🇳🇴', years:'1863–1944', info:'Expressionism · emotional colour, psychological landscape, inner life',
+        style:'Edvard Munch Norwegian Expressionist oil painting',
+        technique:'long undulating colour waves following emotional rhythm of the composition rather than visual contours, colour chosen for psychological rather than descriptive effect, forms simplified to emotional essences, curving and flowing with inner psychological energy, paint applied with urgent emotional directness',
+        palette:'deep blood red, fjord blue-green, yellow-gold, purple shadow, black silhouette, anxiety orange, pale sickly green',
+        mood:'emotionally charged, psychologically intense — landscape and figure vibrating with inner human feeling'
+    },
+    homer: {
+        name:'Winslow Homer', flag:'🇺🇸', years:'1836–1910', info:'American Realism · sea, coastal nature, bold direct observation',
+        style:'Winslow Homer American realist watercolour and oil painting',
+        technique:'bold direct observation translated into confident abbreviated brushwork, strong natural light without sentimentality, watercolour painted rapidly with fresh confident washes, dramatic tonal contrast between lit and shadow surfaces, vigorous paint handling matching the physical energy of the subject',
+        palette:'deep sea green-blue, storm grey, warm sand ochre, white foam crest, vivid sky, dark wet rock, fresh watercolour wash',
+        mood:'direct, powerful, undecorated — nature painted with honest physical strength'
+    },
+    cassatt: {
+        name:'Mary Cassatt', flag:'🇺🇸', years:'1844–1926', info:'Impressionism · domestic intimacy, mothers and children, Japanese influence',
+        style:'Mary Cassatt Impressionist oil and pastel painting',
+        technique:'intimate domestic compositional scale with Japanese influence in flat patterning and unusual cropping, warm flesh tones and soft ambient light, tender physical closeness conveyed through compositional proximity, pastel hatching with layered colour, quiet interior light without drama',
+        palette:'warm cream, dusty rose, sage green, soft cerulean, warm yellow, tender peach flesh, domestic interior warm light',
+        mood:'warm, tender, quietly loving — the private world of domestic intimacy'
+    },
+    aivazovsky: {
+        name:'Ivan Aivazovsky', flag:'', years:'1817–1900', info:'Marine painting · sea, storms, moonlight',
+        style:'Ivan Aivazovsky Romantic marine oil painting',
+        technique:'translucent layered glazes giving water absolute luminosity, dramatic light bursting through clouds onto sea, foam and spray rendered with delicate translucent paint, rapid alla prima execution capturing the energy of waves, moon and sun as primary light sources illuminating water from within',
+        palette:'luminous turquoise sea, golden sunset, silver moonlight, deep storm grey, white foam, pale rose horizon, deep blue depth',
+        mood:'sublime, dramatic, oceanic — the eternal dialogue between water, light and sky'
+    },
+    delacroix: {
+        name:'Eugène Delacroix', flag:'', years:'1798–1863', info:'Romanticism · passion, colour, dramatic movement',
+        style:'Eugène Delacroix Romantic oil painting',
+        technique:'expressive dynamic brushwork conveying movement and emotion, Rubensian colour vibrancy, complementary colour theory used for vibrating intensity, dramatic diagonal compositions, exotic Oriental influence, paint applied with passionate energy',
+        palette:'vivid carmine red, deep emerald, gold, warm umber, dramatic crimson, rich sapphire blue, vibrant orange',
+        mood:'passionate, dynamic, romantic — colour and movement carrying pure emotional force'
+    },
+    corot: {
+        name:'Camille Corot', flag:'', years:'1796–1875', info:'Barbizon Landscape · silvery atmosphere, tonal harmony',
+        style:'Camille Corot Barbizon landscape oil painting',
+        technique:'silvery tonal harmony with feathered tree foliage rendered as soft brushed clouds, atmospheric distance built through pearl-grey gradation, plein air observation softened in studio finish, intimate human figures small within luminous landscape, paint applied in soft gentle touches',
+        palette:'silver-grey, pale olive green, warm cream, pearl pink, soft umber, atmospheric blue distance, gentle gold',
+        mood:'lyrical, atmospheric, gently melancholic — landscape as a quiet poem in silver tones'
+    },
+    bouguereau: {
+        name:'William-Adolphe Bouguereau', flag:'', years:'1825–1905', info:'Academic art · idealised beauty, mythological subjects',
+        style:'William-Adolphe Bouguereau Academic oil painting',
+        technique:'flawlessly smooth brushwork with no visible marks, idealised classical beauty rendered with absolute anatomical precision, porcelain-perfect skin, mythological and pastoral subjects, sfumato softness combined with sculptural form, polished academic finish',
+        palette:'warm porcelain flesh, soft rose, pale blue sky, dusky pink drapery, cream, warm shadow, gentle gold',
+        mood:'idealised, serene, classically beautiful — perfection achieved through meticulous craft'
+    },
+    redon: {
+        name:'Odilon Redon', flag:'', years:'1840–1916', info:'Symbolism · dreams, flowers, pastel mysticism',
+        style:'Odilon Redon Symbolist pastel and oil painting',
+        technique:'soft luminous pastel building dreamlike imagery, glowing flower colour against dark mysterious grounds, mythological and visionary subjects rendered with hazy spiritual atmosphere, oil paint applied with chalky pastel-like delicacy, light emerging from within forms',
+        palette:'luminous violet, soft rose, dreamlike turquoise, dark mystical ground, glowing yellow, pearl white, ethereal pastel tones',
+        mood:'dreamlike, mystical, visionary — imagination given form in soft luminous colour'
+    },
+    moreau: {
+        name:'Gustave Moreau', flag:'', years:'1826–1898', info:'Symbolism · mythology, jewel-like detail, mystical subjects',
+        style:'Gustave Moreau Symbolist oil and watercolour painting',
+        technique:'jewel-encrusted surface treatment with extraordinary decorative detail, mythological figures rendered with Byzantine richness, surfaces ornamented with intricate symbolic patterns, oil paint built with the density of mosaic, gold and jewel colour throughout',
+        palette:'jewel ruby red, deep emerald, burnished gold, sapphire blue, ivory, rich purple, pearl highlight',
+        mood:'mystical, ornate, ecstatic — myth made visible in jewel-encrusted vision'
+    },
+    beardsley: {
+        name:'Aubrey Beardsley', flag:'', years:'1872–1898', info:'Art Nouveau · black and white line, decadent decoration',
+        style:'Aubrey Beardsley Art Nouveau ink illustration',
+        technique:'flat black and white ink composition with extraordinary linear elegance, asymmetric Japanese-influenced design, decorative pattern in pure silhouette and line, decadent ornamental detail, no shading or modelling — only line and pure black and white shape',
+        palette:'pure black ink, white paper ground, occasional grey wash, no colour — only chiaroscuro of black and white',
+        mood:'elegant, decadent, ornamental — line as pure aesthetic philosophy'
+    },
+    larsson: {
+        name:'Carl Larsson', flag:'', years:'1853–1919', info:'Watercolour illustration · cozy domestic interiors, family life',
+        style:'Carl Larsson watercolour and ink illustration',
+        technique:'fresh transparent watercolour with precise ink outline, warm domestic interior scenes rendered with cheerful clarity, decorative folk pattern integrated into furniture and textile, plein air freshness in oil and watercolour, light filling rooms through tall windows',
+        palette:'warm cream, dusty rose, sage green, soft cerulean, ochre wood, geranium red accent, fresh white linen',
+        mood:'cozy, sun-warmed, domestically joyful — home as the most beautiful subject'
+    },
+    zorn: {
+        name:'Anders Zorn', flag:'', years:'1860–1920', info:'Impressionism · water reflections, portraits, watercolour',
+        style:'Anders Zorn Impressionist oil and watercolour',
+        technique:'limited four-colour Zorn palette achieving extraordinary tonal range from black white ochre and red alone, watercolour transparency in oil, water surfaces and skin tones rendered with virtuoso confidence, broken impressionist brushwork capturing light on water',
+        palette:'ivory black, lead white, yellow ochre, vermilion red — the famous Zorn palette',
+        mood:'intimate, masterly, water and light captured with supreme economy of means'
+    },
+    morisot: {
+        name:'Berthe Morisot', years:'1841–1895', info:'Impressionism · airy, intimate, spontaneous',
+        style:'Berthe Morisot impressionist oil painting',
+        technique:'rapid open sketch-like brushwork with feathery unfinished edges where forms dissolve into bare primed canvas, white ground left visible and breathing through the colour, light fluid zigzag and crosshatched strokes, intimate domestic and garden subjects caught in passing, no hard outlines, sense of fleeting spontaneous immediacy',
+        palette:'soft white, pale rose, silvery grey-blue, tender spring green, lilac, cool cream, warm flesh tone',
+        mood:'tender, intimate, airy — a quiet private moment caught in a single passing breath'
+    },
+    kuindzhi: {
+        name:'Arkhip Kuindzhi', years:'1842–1910', info:'Romantic landscape · luminism, moonlight, glowing light',
+        style:'Arkhip Kuindzhi romantic luminist landscape oil painting',
+        technique:'dramatic luminism with an almost supernatural glowing light source, intense contrast between deep velvet shadow and radiant illumination, smooth blended surfaces in the lit passages, moonlight or sunset rendered as though the canvas itself emits light, simplified massed silhouettes of land and tree, theatrical natural spectacle, no fussy detail',
+        palette:'deep night blue, glowing moonlit silver-green, warm amber horizon, dark emerald shadow, luminous pale turquoise, soft rose afterglow',
+        mood:'hushed, mystical, a breathtaking moment of natural light verging on the miraculous'
+    },
+    polenov: {
+        name:'Vasily Polenov', years:'1844–1927', info:'Lyrical landscape · soft daylight, quiet poetry',
+        style:'Vasily Polenov lyrical realist landscape oil painting',
+        technique:'tender plein-air realism in soft natural daylight, gentle atmospheric perspective, quiet Russian courtyards rivers and gardens, delicate rendering of foliage and still water, warm humane intimacy, balanced harmonious composition, light handled with calm clarity rather than drama',
+        palette:'soft sage green, warm sandy ochre, gentle sky blue, dusty rose, cream white, muted olive, tender lilac shadow',
+        mood:'peaceful, lyrical — the quiet poetry of an ordinary sunlit day'
+    },
+    morris: {
+        name:'William Morris', years:'1834–1896', info:'Arts and Crafts · botanical pattern, ornament',
+        style:'William Morris Arts and Crafts decorative botanical pattern design',
+        technique:'flat repeating botanical pattern with rhythmic interlacing stems and foliage, dense all-over surface ornament with no empty space, stylised flowers birds and curling vines in mirrored symmetry, hand-printed textile and wallpaper quality, medieval-inspired flat decorative richness, pure ornamental plane with no perspective or shadow',
+        palette:'deep forest green, soft indigo blue, madder rose red, golden ochre, cream ground, muted teal, warm earth brown',
+        mood:'lush, harmonious — the abundant ornamental beauty of nature tamed into living pattern'
+    },
+    bauer: {
+        name:'John Bauer', years:'1882–1918', info:'Nordic fairy tale · trolls, mossy forest, mist',
+        style:'John Bauer Nordic fairy tale illustration',
+        technique:'flattened decorative composition, soft muted watercolour washes over delicate ink outline, towering mossy granite boulders and ancient pine forest, tiny figures dwarfed by vast brooding nature, gentle stylisation of trolls and princesses, atmospheric mist between the trees, Nordic folk-tale stillness, subtle decorative border sensibility',
+        palette:'deep moss green, misty grey-blue, soft brown, muted gold, pale dawn pink, deep forest shadow, silvery fog white',
+        mood:'hushed, enchanted — the quiet ancient magic of a deep Northern forest'
+    },
+    crane: {
+        name:'Walter Crane', years:'1845–1915', info:'Victorian fairy tale · flowing line, ornament',
+        style:'Walter Crane Victorian fairy tale picture-book illustration',
+        technique:'clear flowing outline drawing filled with flat decorative colour, ornamental borders and integrated hand-lettering, influence of Japanese prints and medieval tapestry, graceful classical figures, dense decorative patterning of fabric and foliage, picture-book clarity, every element stylised into rhythmic pattern',
+        palette:'soft terracotta, sage green, cream, muted gold, dusty blue, warm ivory, gentle rose',
+        mood:'graceful, decorative — the ordered storybook charm of a classic fairy-tale page'
+    },
+    greenaway: {
+        name:'Kate Greenaway', years:'1846–1901', info:'Childrens illustration · nostalgic, pastel, gentle',
+        style:'Kate Greenaway Victorian childrens book illustration',
+        technique:'delicate fine outline with soft pale watercolour wash, nostalgic Regency-dressed children in bonnets and pinafores, gentle pastel tinting, airy uncluttered composition with generous white space, soft flat lighting, dainty floral and cottage-garden detail, tender innocent charm',
+        palette:'soft pale pink, powder blue, tender mint green, cream, buttery yellow, dusty lavender, gentle sage',
+        mood:'innocent, nostalgic — the gentle pastoral sweetness of an idealised childhood'
+    },
+    goble: {
+        name:'Warwick Goble', years:'1862–1943', info:'Watercolour fairy tale · luminous, Eastern grace',
+        style:'Warwick Goble watercolour fairy tale illustration',
+        technique:'luminous delicate watercolour washes, refined Japanese and Indian decorative influence, graceful flowing figures in trailing robes, atmospheric misty backgrounds, fine detailed line beneath transparent colour, elegant Eastern fairy-tale ornament, soft jewel-like translucency',
+        palette:'soft turquoise, pale coral, misty lavender, gentle gold, sea green, warm ivory, dusty rose',
+        mood:'dreamy, elegant — the delicate enchantment of an Eastern fairy tale'
+    },
+    jwsmith: {
+        name:'Jessie Willcox Smith', years:'1863–1935', info:'Golden Age illustration · warm, tender, glowing',
+        style:'Jessie Willcox Smith golden age childrens illustration',
+        technique:'warm tender realism with soft glowing light, gentle outline filled with luminous mixed-media colour, intimate scenes of children and mothers, soft rounded forms, warm domestic glow, idealised loving warmth, soft-focus background framing crisp tender figures',
+        palette:'warm cream, soft rose, golden honey, gentle sky blue, tender green, peach, soft warm brown',
+        mood:'warm, loving — the tender protected glow of childhood comfort'
+    },
+    koson: {
+        name:'Ohara Koson', years:'1877–1945', info:'Shin-hanga · bird-and-flower woodblock, serene',
+        style:'Ohara Koson shin-hanga bird and flower woodblock print',
+        technique:'refined kacho-e bird-and-flower woodblock print, exquisite delicate rendering of a single bird or branch against open empty space, subtle atmospheric gradation in the background, elegant asymmetric composition, fine naturalistic observation, serene minimal stillness, soft printed paper texture',
+        palette:'soft indigo, muted sage, warm grey, gentle coral, cream paper white, soft black, dusty olive',
+        mood:'serene, contemplative — the quiet poetry of a single bird in a still moment'
+    },
+    pyle: {
+        name:'Howard Pyle', years:'1853–1911', info:'Golden Age illustration · heroic narrative, rich colour',
+        style:'Howard Pyle golden age narrative book illustration',
+        technique:'rich academic draughtsmanship with theatrical composition, deep luminous colour and strong directional light, meticulous historical costume and armour, dramatic narrative staging, solidly modelled forms, dark atmospheric recesses framing a brightly lit central action',
+        palette:'deep burgundy, forest green, burnished gold, slate blue, warm flesh tone, rich brown shadow, crimson accent',
+        mood:'heroic, richly narrative — the grand romance of pirates, knights and legend'
+    },
+    crobinson: {
+        name:'Charles Robinson', years:'1870–1937', info:'Art Nouveau · decorative nursery book, whimsy',
+        style:'Charles Robinson art nouveau childrens book illustration',
+        technique:'delicate flowing art nouveau line, decorative borders and patterned backgrounds, tender chubby children and elves, soft watercolour tinting held within precise outline, ornamental whole-page design, gentle whimsical charm',
+        palette:'soft pastel pink, powder blue, pale gold, tender green, cream, dusty lavender',
+        mood:'whimsical, gentle — the decorative tenderness of an Edwardian nursery book'
+    },
+    whrobinson: {
+        name:'William Heath Robinson', years:'1872–1944', info:'Fairy tale · fine pen line, soft whimsy',
+        style:'William Heath Robinson fairy tale pen and watercolour illustration',
+        technique:'fine delicate pen-and-ink linework, soft transparent watercolour washes, slender graceful elongated figures, atmospheric misty woodland, gentle quiet humour, decorative restraint, ethereal fairy-tale stillness',
+        palette:'soft grey-green, pale blue, muted gold, dusty rose, cream, gentle sepia',
+        mood:'dreamy, gently whimsical — quiet enchantment with a soft sense of wonder'
+    },
+    anneanderson: {
+        name:'Anne Anderson', years:'1874–1952', info:'Watercolour fairy tale · soft pastel, tender',
+        style:'Anne Anderson watercolour fairy tale illustration',
+        technique:'soft pastel watercolour washes, delicate fine outline, tender fairies and children among flowers, airy uncluttered composition, gentle art nouveau decorative touch, soft luminous tinting',
+        palette:'pale rose, soft mint, powder blue, buttery cream, dusty lilac, gentle peach',
+        mood:'tender, sweet — the soft pastel innocence of a nursery fairy tale'
+    },
+    tenniel: {
+        name:'John Tenniel', years:'1820–1914', info:'Wood engraving · witty, precise, Wonderland',
+        style:'John Tenniel Victorian wood-engraved book illustration',
+        technique:'precise crisp wood-engraving line, fine cross-hatching for tone and shadow, witty caricatural character, clear black-and-white narrative clarity, meticulous Victorian detail, balanced classical composition in the manner of the original Alice illustrations',
+        palette:'black ink line on cream, fine grey crosshatch tone — classic wood-engraving monochrome',
+        mood:'witty, precise — the timeless Victorian wonderland of nonsense and logic'
+    },
+    beskow: {
+        name:'Elsa Beskow', years:'1874–1953', info:'Swedish childrens book · cozy nature, wholesome',
+        style:'Elsa Beskow Swedish childrens book illustration',
+        technique:'soft warm watercolour, rounded friendly figures, children flowers mushrooms and woodland creatures, gentle naturalistic detail, cozy nature-filled scenes, clear tender outline, balanced wholesome composition',
+        palette:'soft leaf green, warm rose, sky blue, buttery yellow, cream, gentle brown, berry red accent',
+        mood:'cozy, wholesome — the warm nature-loving sweetness of a Swedish nursery classic'
+    },
+    monvel: {
+        name:'Maurice Boutet de Monvel', years:'1850–1913', info:'French childrens book · refined, flat colour',
+        style:'Maurice Boutet de Monvel French childrens book illustration',
+        technique:'refined flat decorative colour, elegant economy of line, delicate restrained palette, gentle realistic children in period dress, Japanese-influenced compositional flatness, sophisticated simplicity, soft even lighting',
+        palette:'muted dusty rose, soft grey-blue, sage, cream, gentle ochre, restrained black accent',
+        mood:'refined, gentle — the elegant restraint of a classic French nursery book'
+    },
+    fordhj: {
+        name:'Henry Justice Ford', years:'1860–1941', info:'Fairy book illustration · courtly, decorative',
+        style:'Henry Justice Ford colour fairy book illustration',
+        technique:'fine pen outline filled with clear flat watercolour, Pre-Raphaelite and Burne-Jones influence, decorative medieval detail, graceful elongated figures, ornamental framing, clear storytelling in the manner of Andrew Lang\'s colour fairy books',
+        palette:'soft rose, sage green, dusty gold, gentle blue, cream, muted crimson, warm ivory',
+        mood:'courtly, enchanted — the classic colour-plate world of a Victorian fairy book'
+    },
+    kittelsen: {
+        name:'Theodor Kittelsen', years:'1857–1914', info:'Norwegian folk tale · trolls, brooding forest',
+        style:'Theodor Kittelsen Norwegian folk tale illustration',
+        technique:'atmospheric Nordic folk-tale illustration in soft watercolour and ink, vast brooding mountain and forest landscape, enormous lumbering trolls merging with the land itself, moody twilight and mist, a blend of gentle humour and eerie wonder, simplified massed silhouettes',
+        palette:'deep blue-grey, mossy green, snowy white, muted brown, cold violet shadow, pale moonlit gold',
+        mood:'eerie, wondrous — the brooding ancient magic of the Norwegian wilderness'
+    },
+    munthe: {
+        name:'Gerhard Munthe', years:'1849–1929', info:'Norwegian folk · decorative, heraldic saga',
+        style:'Gerhard Munthe Norwegian decorative folk illustration',
+        technique:'flat decorative stylisation drawn from Norwegian folk art and medieval tapestry, bold simplified shapes, rhythmic patterned composition, dragons birds and riders in heraldic flatness, woven tapestry-like surface, strong outline with flat colour areas',
+        palette:'deep red, indigo blue, forest green, ochre gold, cream, muted teal, earth brown',
+        mood:'legendary, decorative — Norse saga rendered as woven heraldic pattern'
+    },
+    polenova: {
+        name:'Elena Polenova', years:'1850–1898', info:'Russian fairy tale · folk forest, early modern',
+        style:'Elena Polenova Russian fairy tale folk illustration',
+        technique:'early Russian art nouveau folk illustration, flat decorative composition, stylised Russian forest and folk ornament, soft watercolour within outline, fairy-tale motifs drawn from peasant life, delicate moody atmosphere, integrated decorative border',
+        palette:'deep forest green, muted gold, dusty rose, slate blue, cream, earth brown, soft crimson',
+        mood:'haunting, folkloric — the quiet magic of the old Russian forest tale'
+    },
+    malyutin: {
+        name:'Sergei Malyutin', years:'1859–1937', info:'Russian Modern · folk ornament, byliny',
+        style:'Sergei Malyutin Russian Art Nouveau folk illustration',
+        technique:'Russian Modern style folk illustration, rich ornamental detail, carved-wood teremok architecture and patterned costume, bold decorative colour, byliny epic motifs, dense folk-pattern surface, strong outline',
+        palette:'deep red, gold, emerald green, cobalt blue, cream, warm ochre, black ornament line',
+        mood:'festive, epic — the ornate splendour of Russian folk legend'
+    },
+    zvorykin: {
+        name:'Boris Zworykin', years:'1872–1942', info:'Russian fairy tale · gilded, jewel-bright',
+        style:'Boris Zworykin gilded Russian fairy tale illustration',
+        technique:'ornate Russian fairy-tale illustration with gold detailing, intricate decorative borders and folk ornament, jewel-bright flat colour with fine black outline, firebirds tsarevnas and onion domes, icon-like richness, dense patterned framing',
+        palette:'deep crimson, gold leaf, emerald, sapphire blue, cream, warm ochre, black outline',
+        mood:'opulent, magical — the gilded splendour of the Russian wonder-tale'
+    },
+    narbut: {
+        name:'Georgy Narbut', years:'1886–1920', info:'Graphic silhouette · heraldic, antiquarian',
+        style:'Georgy Narbut graphic silhouette book illustration',
+        technique:'refined graphic illustration, elegant flat silhouette and precise outline, heraldic decorative composition, old-world Ukrainian and Russian motifs, restrained sophisticated ornament, balance of black shape and fine line, book-design clarity',
+        palette:'black silhouette, deep red, muted gold, cream, slate grey, soft green accent',
+        mood:'elegant, antiquarian — refined graphic grace drawn from old folk heraldry'
+    },
+    jmking: {
+        name:'Jessie M. King', years:'1875–1949', info:'Glasgow Style · fine line, ethereal romance',
+        style:'Jessie M. King Glasgow Style art nouveau illustration',
+        technique:'exquisitely fine flowing ink line, delicate dotted and stippled detail, decorative Glasgow Style art nouveau ornament, willowy elongated figures, sparing use of colour with gold accents, dreamlike medieval romance, intricate pattern',
+        palette:'soft silver-grey, pale gold, muted rose, sage green, ivory, gentle violet, fine black line',
+        mood:'ethereal, refined — the delicate dreamlike grace of the Glasgow Style'
+    },
+    clarke: {
+        name:'Harry Clarke', years:'1889–1931', info:'Art Nouveau · stained glass, jewelled detail',
+        style:'Harry Clarke stained-glass art nouveau illustration',
+        technique:'intricate jewel-like detail inspired by stained glass, dense ornamental pattern, elongated stylised figures in elaborate flowing costume, deep saturated colour bounded by fine black line, decadent symbolist atmosphere, obsessive decorative density',
+        palette:'deep sapphire blue, emerald green, ruby red, violet, gold, inky black, jewel-toned glow',
+        mood:'ornate, otherworldly — the dark jewelled enchantment of stained-glass fantasy'
+    },
+    sterrett: {
+        name:'Virginia Frances Sterrett', years:'1900–1931', info:'Art Nouveau · ethereal, dreamlike washes',
+        style:'Virginia Frances Sterrett art nouveau fairy tale illustration',
+        technique:'delicate ethereal art nouveau, flowing decorative line, dreamlike translucent washes, intricate patterned detail dissolving into atmosphere, willowy elongated figures, fragile otherworldly elegance, ornamental composition',
+        palette:'soft coral, dusty turquoise, pale gold, lavender, rose, sea green, gentle ivory',
+        mood:'dreamlike, fragile — the delicate otherworldly beauty of old French fairy tales'
+    },
+    dore: {
+        name:'Gustave Doré', years:'1832–1883', info:'Romanticism · wood engraving, sublime drama',
+        style:'Gustave Doré romantic wood-engraving illustration',
+        technique:'dramatic wood-engraving with intense chiaroscuro, vast sublime landscapes and crowds dwarfing tiny figures, fine dense cross-hatching building deep velvety shadow pierced by shafts of light, theatrical romantic grandeur, meticulous detail, monochrome tonal drama',
+        palette:'deep black shadow, luminous silver-grey light, finely engraved tone on cream — dramatic monochrome',
+        mood:'sublime, awe-inspiring — the grand romantic spectacle of myth and legend'
+    },
+};
+
+// ═══════════════════════════════════════════════
+// SECURE RANDOM
+// ═══════════════════════════════════════════════
+function rand(max) {
+    const a = new Uint32Array(1);
+    crypto.getRandomValues(a);
+    return a[0] % max;
+}
+
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+let currentScene = '';
+let currentKey = '';
+let prompts = [];
+
+function onInputChange() {
+    currentScene = document.getElementById('scene-input').value.trim();
+    updateButton();
+}
+
+function onArtistChange() {
+    currentKey = document.getElementById('artist-select').value;
+    if (currentKey && A[currentKey]) {
+        const a = A[currentKey];
+        document.getElementById('info-flag').textContent = '🎨';
+        document.getElementById('info-text').textContent = a.info;
+        document.getElementById('info-years').textContent = a.years;
+    } else {
+        document.getElementById('info-flag').textContent = '🎨';
+        document.getElementById('info-text').textContent = 'Select a master to see their style';
+        document.getElementById('info-years').textContent = '';
+    }
+    updateButton();
+}
+
+function updateButton() {
+    const btn = document.getElementById('gen-btn');
+    const lbl = document.getElementById('btn-label');
+    const ready = currentScene.length > 2 && currentKey && A[currentKey];
+    btn.disabled = !ready;
+    if (!currentScene) {
+        lbl.textContent = 'Enter a scene and choose an artist';
+    } else if (!currentKey) {
+        lbl.textContent = 'Now choose an artist';
+    } else {
+        lbl.textContent = `Paint this scene through ${A[currentKey].name}'s eyes`;
+    }
+}
+
+// ═══════════════════════════════════════════════
+// BUILD PROMPT — scene always first and central
+// ═══════════════════════════════════════════════
+function buildPrompt(scene, a) {
+    const times = [
+        'in warm morning light', 'in golden afternoon light', 'in soft evening light',
+        'in diffused overcast light', 'at quiet dawn', 'in gentle dusk light', 'under midday sun'
+    ];
+    const seasons = [' in spring', ' in summer', ' in autumn', ' in winter', ''];
+    const qualities = [
+        'richly detailed', 'masterfully composed', 'exquisitely rendered',
+        'with extraordinary depth', 'with luminous detail', 'intimately observed'
+    ];
+
+    const t = times[rand(times.length)];
+    const s = seasons[rand(seasons.length)];
+    const q = qualities[rand(qualities.length)];
+
+    // 5 distinct structures — scene always anchors the prompt
+    const structures = [
+        // Scene first, style as interpretive lens
+        `${scene}${s} — painted by ${a.name} — ${a.technique}, ${a.palette}, ${a.mood}, ${q} --ar 9:16 --v 7`,
+
+        // Scene interpreted through the master's specific vision
+        `${scene}, ${t}${s}, ${a.style}: ${a.technique}, palette of ${a.palette}, ${a.mood}, ${q} --ar 9:16 --v 7`,
+
+        // Scene as subject, full technical description
+        `${a.style} — ${scene}${s}, ${t} — ${a.technique} — ${a.palette} — ${a.mood} --ar 9:16 --v 7`,
+
+        // Scene in the master's world, technique highlighted
+        `as ${a.name} would see and paint it: ${scene}${s}, ${t}, using ${a.technique}, colours of ${a.palette}, ${a.mood}, ${q} --ar 9:16 --v 7`,
+
+        // Scene through the master's eyes — mood last
+        `${scene} — ${a.style}, ${t}${s}, ${a.technique}, ${a.palette}, ${q}, ${a.mood} --ar 9:16 --v 7`,
+    ];
+
+    return structures[rand(structures.length)];
+}
+
+// ═══════════════════════════════════════════════
+// GENERATE
+// ═══════════════════════════════════════════════
+function generate() {
+    if (!currentScene || !currentKey || !A[currentKey]) return;
+
+    const btn = document.getElementById('gen-btn');
+    const icon = document.getElementById('btn-icon');
+    const lbl = document.getElementById('btn-label');
+
+    btn.disabled = true;
+    icon.innerHTML = '<span class="spinning">✦</span>';
+    lbl.textContent = 'Composing…';
+
+    setTimeout(() => {
+        const a = A[currentKey];
+        // Generate 3 different prompts — ensure no duplicate structures
+        const indices = [0,1,2,3,4].sort(() => rand(3)-1).slice(0,3);
+        const times = ['in warm morning light','in golden afternoon light','in soft evening light','at quiet dawn','in gentle dusk light','under midday sun'];
+        const seasons = [' in spring',' in summer',' in autumn',' in winter',''];
+        const qualities = ['richly detailed','masterfully composed','exquisitely rendered','with extraordinary depth','with luminous detail','intimately observed'];
+
+        prompts = indices.map(i => {
+            const t = times[rand(times.length)];
+            const s = seasons[rand(seasons.length)];
+            const q = qualities[rand(qualities.length)];
+            const structs = [
+                `${currentScene}${s} — painted by ${a.name} — ${a.technique}, ${a.palette}, ${a.mood}, ${q} --ar 9:16 --v 7`,
+                `${currentScene}, ${t}${s}, ${a.style}: ${a.technique}, palette of ${a.palette}, ${a.mood}, ${q} --ar 9:16 --v 7`,
+                `${a.style} — ${currentScene}${s}, ${t} — ${a.technique} — ${a.palette} — ${a.mood} --ar 9:16 --v 7`,
+                `as ${a.name} would see and paint it: ${currentScene}${s}, ${t}, using ${a.technique}, colours of ${a.palette}, ${a.mood}, ${q} --ar 9:16 --v 7`,
+                `${currentScene} — ${a.style}, ${t}${s}, ${a.technique}, ${a.palette}, ${q}, ${a.mood} --ar 9:16 --v 7`,
+            ];
+            return structs[i];
+        });
+
+        const scenePreview = currentScene.length > 55 ? currentScene.slice(0,52)+'…' : currentScene;
+        document.getElementById('res-artist').textContent = a.name;
+        document.getElementById('res-scene').textContent = `· "${scenePreview}"`;
+
+        const container = document.getElementById('prompts-container');
+        container.innerHTML = '';
+
+        prompts.forEach((p, i) => {
+            const card = document.createElement('div');
+            card.className = 'prompt-card';
+            card.innerHTML = `
+                <div class="card-top">
+                    <span class="card-num">✦ &nbsp; Prompt ${i+1} of 3</span>
+                    <span class="card-badge">${a.name}</span>
+                </div>
+                <div class="prompt-text">${p}</div>
+                <button class="copy-btn" id="cb-${i}" onclick="copyP(${i})">
+                    <span>📋</span><span>Copy to Clipboard</span>
+                </button>`;
+            container.appendChild(card);
+        });
+
+        const results = document.getElementById('results');
+        results.classList.add('show');
+        results.scrollIntoView({ behavior:'smooth', block:'start' });
+
+        btn.disabled = false;
+        icon.textContent = '✦';
+        lbl.textContent = `Generate again · ${a.name}`;
+    }, 700);
+}
+
+// ═══════════════════════════════════════════════
+// COPY
+// ═══════════════════════════════════════════════
+function copyP(i) {
+    const text = prompts[i];
+    const btn = document.getElementById(`cb-${i}`);
+    navigator.clipboard.writeText(text).then(() => {
+        btn.classList.add('done');
+        btn.innerHTML = '<span>✓</span><span>Copied!</span>';
+        setTimeout(() => { btn.classList.remove('done'); btn.innerHTML = '<span>📋</span><span>Copy to Clipboard</span>'; }, 2000);
+    }).catch(() => {
+        const ta = document.createElement('textarea');
+        ta.value = text; ta.style.cssText = 'position:fixed;left:-9999px';
+        document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+        btn.innerHTML = '<span>✓</span><span>Copied!</span>';
+        setTimeout(() => { btn.innerHTML = '<span>📋</span><span>Copy to Clipboard</span>'; }, 2000);
+    });
+}
+</script>
+</body>
+</html>
