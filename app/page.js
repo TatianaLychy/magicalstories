@@ -227,7 +227,7 @@ export default function Page() {
                 <li>Priority access to new generators</li>
                 <li>Exclusive bonus style packs</li>
                 <li>One payment for the full year</li>
-              <a href="https://whop.com/checkout/plan_Nm1bqb4HqA95A" style={{ display: "inline-block", marginTop: 18, background: "linear-gradient(135deg,#b8922a 0%,#d4af37 50%,#b8922a 100%)", color: "#0a1a0e", padding: "12px 18px", borderRadius: 999, textDecoration: "none", boxShadow: "0 6px 22px rgba(212,175,55,.22)" }}>Start Yearly</a>
+              <a href="https://whop.com/checkout/plan_Nm1bqb4HqA95A" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", marginTop: 18, background: "linear-gradient(135deg,#b8922a 0%,#d4af37 50%,#b8922a 100%)", color: "#0a1a0e", padding: "12px 18px", borderRadius: 999, textDecoration: "none", boxShadow: "0 6px 22px rgba(212,175,55,.22)" }}>Start Yearly</a>
               <a href="#" style={{ display: "block", textAlign: "center", padding: "13px 16px", borderRadius: 10, background: "linear-gradient(135deg,#b8922a 0%,#d4af37 50%,#b8922a 100%)", color: "#0a1a0e" }}>Start Free Trial</a>
             </div>
           </div>
