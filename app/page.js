@@ -214,7 +214,7 @@ export default function Page() {
                 <li>Use in any browser</li>
                 <li>Cancel anytime</li>
               </ul>
-              <a href="#" style={{ display: "block", textAlign: "center", padding: "13px 16px", borderRadius: 10, border: "1px solid rgba(212,175,55,.3)", color: "#d4af37" }}>Start Free Trial</a>
+              <a href="https://whop.com/checkout/plan_e5EQbgYs95UvS" style={{ display: "inline-block", marginTop: 18, background: "linear-gradient(135deg,#b8922a 0%,#d4af37 50%,#b8922a 100%)", color: "#0a1a0e", padding: "12px 18px", borderRadius: 999, textDecoration: "none", boxShadow: "0 6px 22px rgba(212,175,55,.22)" }}>Start Monthly</a>
             </div>
             <div style={{ background: "rgba(13,32,22,.9)", border: "1px solid rgba(212,175,55,.45)", borderRadius: 22, padding: 28, position: "relative" }}>
               <div style={{ position: "absolute", top: -12, left: "50%", transform: "translateX(-50%)", background: "#d4af37", color: "#0a1a0e", padding: "4px 12px", borderRadius: 999, fontSize: 11, letterSpacing: ".18em", textTransform: "uppercase", whiteSpace: "nowrap" }}>Best Value</div>
