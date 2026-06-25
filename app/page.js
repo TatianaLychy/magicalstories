@@ -130,7 +130,7 @@ export default function Page() {
           <a href="#generators" style={{ color: "#a8c5a0", fontSize: 13, textTransform: "uppercase", letterSpacing: ".12em" }}>Generators</a>
           <a href="#pricing" style={{ color: "#a8c5a0", fontSize: 13, textTransform: "uppercase", letterSpacing: ".12em" }}>Pricing</a>
           <a href="#faq" style={{ color: "#a8c5a0", fontSize: 13, textTransform: "uppercase", letterSpacing: ".12em" }}>FAQ</a>
-          <a href="#pricing" style={{ background: "#d4af37", color: "#0a1a0e", padding: "8px 14px", borderRadius: 999, fontSize: 13 }}>Start Free Trial</a>
+          <a href="https://whop.com/checkout/plan_e5EQbgYs95UvS" target="_blank" rel="noopener noreferrer" style={{ background: "#d4af37", color: "#0a1a0e", padding: "8px 14px", borderRadius: 999, fontSize: 13 }}>Start Free Trial</a>
         </div>
       </nav>
 
@@ -144,7 +144,7 @@ export default function Page() {
             A private library of AI generators for animators, illustrators and storytellers.
           </p>
           <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
- <a href="https://whop.com/checkout/plan_e5EQbgYs95UvS" target="_blank" rel="noopener noreferrer" style={{ padding: "14px 28px", borderRadius: 999, background: "linear-gradient(135deg,#b8922a 0%,#d4af37 50%,#b8922a 100%)", color: "#0a1a0e", boxShadow: "0 6px 22px rgba(212,175,55,.22)" }}>Start 3-Day Free Trial</a>
+            <a href="https://whop.com/checkout/plan_e5EQbgYs95UvS" target="_blank" rel="noopener noreferrer" style={{ padding: "14px 28px", borderRadius: 999, background: "linear-gradient(135deg,#b8922a 0%,#d4af37 50%,#b8922a 100%)", color: "#0a1a0e", boxShadow: "0 6px 22px rgba(212,175,55,.22)" }}>Start 3-Day Free Trial</a>
             <a href="#generators" style={{ padding: "14px 28px", borderRadius: 999, border: "1px solid rgba(212,175,55,.3)", color: "#d4af37" }}>Explore the Generators</a>
           </div>
         </section>
@@ -153,7 +153,6 @@ export default function Page() {
           <div style={{ textAlign: "center", marginBottom: 34 }}>
             <div style={{ color: "#d4af37", opacity: 0.65, letterSpacing: ".35em", textTransform: "uppercase", fontSize: 12, marginBottom: 14 }}>✦ The Collection ✦</div>
             <h2 style={{ fontSize: "clamp(1.8rem, 4vw, 2.5rem)", fontWeight: 400, margin: 0 }}>The <span style={{ color: "#d4af37", fontStyle: "italic" }}>Generators</span></h2>
-            
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(250px,1fr))", gap: 20 }}>
             {generators.map((gen) => (
@@ -220,15 +219,15 @@ export default function Page() {
               <div style={{ position: "absolute", top: -12, left: "50%", transform: "translateX(-50%)", background: "#d4af37", color: "#0a1a0e", padding: "4px 12px", borderRadius: 999, fontSize: 11, letterSpacing: ".18em", textTransform: "uppercase", whiteSpace: "nowrap" }}>Best Value</div>
               <div style={{ color: "#d4af37", opacity: 0.78, textTransform: "uppercase", letterSpacing: ".28em", fontSize: 12, marginBottom: 14 }}>Yearly</div>
               <div style={{ fontSize: 54, lineHeight: 1, fontStyle: "italic" }}>$90</div>
-              <div style={{ color: "#a8c5a0", fontStyle: "italic", marginTop: 4 }}>per year · $11.99 / month</div>
+              <div style={{ color: "#a8c5a0", fontStyle: "italic", marginTop: 4 }}>per year · $7.50 / month</div>
               <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 16, color: "#d4af37", border: "1px solid rgba(212,175,55,.28)", borderRadius: 999, padding: "4px 12px", fontSize: 12 }}>• 3-day free trial</div>
               <ul style={{ paddingLeft: 18, color: "#a8c5a0", lineHeight: 1.9, fontStyle: "italic", margin: "22px 0" }}>
                 <li>Everything in Monthly</li>
                 <li>Priority access to new generators</li>
                 <li>Exclusive bonus style packs</li>
                 <li>One payment for the full year</li>
+              </ul>
               <a href="https://whop.com/checkout/plan_Nm1bqb4HqA95A" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", marginTop: 18, background: "linear-gradient(135deg,#b8922a 0%,#d4af37 50%,#b8922a 100%)", color: "#0a1a0e", padding: "12px 18px", borderRadius: 999, textDecoration: "none", boxShadow: "0 6px 22px rgba(212,175,55,.22)" }}>Start Yearly</a>
-              <a href="#" style={{ display: "block", textAlign: "center", padding: "13px 16px", borderRadius: 10, background: "linear-gradient(135deg,#b8922a 0%,#d4af37 50%,#b8922a 100%)", color: "#0a1a0e" }}>Start Free Trial</a>
             </div>
           </div>
         </section>
