@@ -144,7 +144,7 @@ export default function Page() {
             A private library of AI generators for animators, illustrators and storytellers.
           </p>
           <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
-                          <a href="https://whop.com/checkout/plan_e5EQbgYs95UvS" className="bg-yellow-400 hover:bg-yellow-300 text-black font-bold py-4 px-8 rounded-full text-lg transition-all duration-200 inline-block">Start 3-Day Free Trial</a>
+ <a href="https://whop.com/checkout/plan_e5EQbgYs95UvS" target="_blank" rel="noopener noreferrer" style={{ padding: "14px 28px", borderRadius: 999, background: "linear-gradient(135deg,#b8922a 0%,#d4af37 50%,#b8922a 100%)", color: "#0a1a0e", boxShadow: "0 6px 22px rgba(212,175,55,.22)" }}>Start 3-Day Free Trial</a>
             <a href="#generators" style={{ padding: "14px 28px", borderRadius: 999, border: "1px solid rgba(212,175,55,.3)", color: "#d4af37" }}>Explore the Generators</a>
           </div>
         </section>
