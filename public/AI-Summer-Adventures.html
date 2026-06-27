@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summer Adventures Generator by Tatiana Lychy</title>
+    <meta name="author" content="Tatiana Lychy">
+    <meta name="copyright" content="© 2026 Tatiana Lychy. All rights reserved.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .min-h-screen { min-height: 100vh; }
+
+        .bg-gradient {
+            background: linear-gradient(160deg, #0c4a6e 0%, #0e7490 35%, #14b8a6 65%, #f0b35a 100%);
+            background-attachment: fixed;
+        }
+
+        .container { max-width: 896px; margin: 0 auto; padding: 2rem 1rem; }
+
+        .text-center { text-align: center; }
+
+        .header-icon {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 96px; height: 96px;
+            background: linear-gradient(135deg, #fcd34d, #fb923c, #06b6d4);
+            border-radius: 50%; margin-bottom: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+        .title {
+            font-size: 3rem; font-weight: bold; color: white;
+            margin-bottom: 1rem; text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle { font-size: 1.25rem; color: #cffafe; margin-bottom: 1rem; }
+
+        .possibilities-badge {
+            display: inline-block; background: rgba(252, 211, 77, 0.2);
+            border: 2px solid #fcd34d; border-radius: 9999px;
+            padding: 0.5rem 1.5rem; margin-top: 1rem;
+        }
+
+        .possibilities-text { color: #fef3c7; font-weight: bold; font-size: 1.125rem; }
+
+        .stats-box {
+            background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(10px);
+            border-radius: 1rem; padding: 1rem; margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        .stats-text { color: white; }
+
+        .count-number { font-weight: bold; font-size: 1.875rem; color: #fcd34d; margin: 0 0.5rem; }
+
+        .button-group {
+            display: flex; gap: 1rem; justify-content: center;
+            flex-wrap: wrap; margin-bottom: 3rem;
+        }
+
+        .main-button {
+            position: relative; display: inline-flex; align-items: center; gap: 1rem;
+            padding: 1.5rem 3rem;
+            background: linear-gradient(90deg, #06b6d4, #0891b2, #0e7490);
+            color: white; border: none; border-radius: 9999px;
+            font-weight: bold; font-size: 1.25rem; cursor: pointer; transition: all 0.3s;
+        }
+
+        .main-button:hover { transform: scale(1.05); box-shadow: 0 20px 25px -5px rgba(6, 182, 212, 0.5); }
+        .main-button:disabled { opacity: 0.5; cursor: not-allowed; transform: scale(1); }
+
+        .idea-card {
+            background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(16px);
+            border-radius: 1.5rem; padding: 2rem; margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.25); animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .idea-header { display: flex; gap: 1rem; margin-bottom: 1.5rem; align-items: flex-start; }
+
+        .icon-box { padding: 0.75rem; background: linear-gradient(135deg, #fcd34d, #fb923c); border-radius: 0.75rem; }
+
+        .idea-title { font-size: 1.875rem; font-weight: bold; color: white; margin-bottom: 0.5rem; }
+
+        .description-box {
+            background: rgba(255, 255, 255, 0.08); border-radius: 0.75rem;
+            padding: 1.5rem; margin-bottom: 1.5rem; border-left: 4px solid #06b6d4;
+        }
+
+        .description-text { color: #e0f2fe; line-height: 1.75; }
+
+        .tags-container { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+
+        .tag {
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.3), rgba(13, 148, 136, 0.3));
+            border-radius: 9999px; color: #cffafe; font-size: 0.875rem; font-weight: 600;
+            border: 1px solid rgba(6, 182, 212, 0.5);
+        }
+
+        .prompt-box {
+            background: rgba(0, 0, 0, 0.3); border-radius: 0.75rem;
+            padding: 1.5rem; border: 1px solid rgba(252, 211, 77, 0.3);
+        }
+
+        .prompt-header {
+            display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;
+            color: #fcd34d; font-weight: 600; font-size: 1rem;
+        }
+
+        .prompt-text {
+            color: white; background: rgba(255, 255, 255, 0.1);
+            padding: 1rem; border-radius: 0.5rem;
+            font-family: 'Monaco', 'Courier New', monospace;
+            line-height: 1.75; margin-bottom: 1rem; word-wrap: break-word;
+        }
+
+        .copy-button {
+            width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.75rem;
+            padding: 1rem; background: linear-gradient(90deg, #0d9488, #0f766e);
+            color: white; border: none; border-radius: 0.5rem;
+            font-weight: 600; cursor: pointer; transition: all 0.2s;
+        }
+
+        .copy-button:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(13, 148, 136, 0.5); }
+
+        .footer { text-align: center; padding: 2rem 0; color: #083344; }
+        .footer p { margin-bottom: 0.5rem; }
+        .footer .handle { font-weight: 700; color: #0c4a6e; }
+        .footer .rights { font-size: 0.8rem; color: #0c4a6e; }
+
+        .copyright-badge {
+            position: fixed; top: 1rem; right: 1rem;
+            background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(10px);
+            padding: 0.5rem 1rem; border-radius: 0.5rem;
+            border: 1px solid rgba(252, 211, 77, 0.4); z-index: 1000;
+        }
+
+        .copyright-text {
+            color: #fcd34d; font-size: 0.875rem; font-weight: 600;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+
+        .style-toggle {
+            display: flex; gap: 0.5rem; justify-content: center;
+            flex-wrap: wrap; margin-bottom: 1rem;
+        }
+        .mode-btn {
+            padding: 0.6rem 1.3rem; border-radius: 9999px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.1); color: #fff;
+            font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: 0.95rem;
+        }
+        .mode-btn.active {
+            background: linear-gradient(90deg, #fcd34d, #fb923c);
+            border-color: #fcd34d; color: #0c4a6e;
+        }
+        #srefRow { display: none; justify-content: center; margin-bottom: 1.5rem; }
+        #srefRow.show { display: flex; }
+        #srefInput {
+            width: 100%; max-width: 440px; padding: 0.75rem 1rem;
+            border-radius: 0.75rem; border: 1px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.15); color: #fff; font-size: 1rem;
+            font-family: inherit;
+        }
+        #srefInput::placeholder { color: #cffafe; }
+
+        .spin { animation: spin 1s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        @media (max-width: 640px) {
+            .title { font-size: 2rem; }
+            .main-button { width: 100%; justify-content: center; }
+            .copyright-badge { position: static; margin: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="copyright-badge">
+        <div class="copyright-text">
+            <span>©</span>
+            <span>2026 Tatiana Lychy</span>
+        </div>
+    </div>
+
+    <div class="min-h-screen bg-gradient">
+        <div class="container">
+            <div class="text-center" style="padding-top: 2rem; margin-bottom: 3rem;">
+                <div class="header-icon pulse">
+                    <span style="font-size: 3rem;">☀️</span>
+                </div>
+                <h1 class="title">Summer Adventures</h1>
+                <p class="subtitle">Infinite cosy summer ideas for AI image generation</p>
+                <div class="possibilities-badge">
+                    <p class="possibilities-text">☀️ Infinite summer combinations</p>
+                </div>
+            </div>
+
+            <div class="stats-box text-center">
+                <div class="stats-text">
+                    <span style="color: #cffafe;">Generated this session:</span>
+                    <span class="count-number" id="count">0</span>
+                    <span style="color: #cffafe;">unique ideas</span>
+                </div>
+            </div>
+
+            <div class="style-toggle">
+                <button id="modeStorybook" class="mode-btn active">📖 Storybook Style</button>
+                <button id="modeSignature" class="mode-btn">✨ My Signature Style</button>
+            </div>
+            <div id="srefRow">
+                <input id="srefInput" type="text" placeholder="your style code: --profile … or --sref …" autocomplete="off" spellcheck="false" />
+            </div>
+
+            <div class="button-group">
+                <button id="generateBtn" class="main-button">
+                    <span id="genIcon" style="font-size: 2rem;">✨</span>
+                    <span id="genText">Generate New Idea</span>
+                </button>
+                <button id="resetBtn" class="main-button" style="background: linear-gradient(90deg, #fbbf24, #fb923c, #f97316);">
+                    <span style="font-size: 2rem;">🎲</span>
+                    <span>Reset &amp; New Idea</span>
+                </button>
+            </div>
+
+            <div id="result"></div>
+
+            <div class="footer">
+                <p>🎨 Created with love by Tatiana Lychy</p>
+                <p class="handle">@TatianaLychy</p>
+                <p class="rights">© 2026 Tatiana Lychy · All Rights Reserved · For personal use only</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ====== CRYPTOGRAPHICALLY SECURE RANDOM ======
+        function getTrulyRandomInt(max) {
+            const array = new Uint32Array(1);
+            crypto.getRandomValues(array);
+            return array[0] % max;
+        }
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = getTrulyRandomInt(i + 1);
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        // ====== SUMMER ARRAYS - ATOMIC ELEMENTS ======
+
+        // 1. CHARACTERS (WHO) with gender tag:
+        //    g = 'boy' | 'girl' | 'girls' (all-girl pair) | 'mixed' (pair containing a boy)
+        const originalCharacters = [
+            // most frequent: toddlers and little ones aged 3-5
+            { t: 'a little girl about 3 years old', g: 'girl' },
+            { t: 'a sweet girl about 4 years old with a flower in her hair', g: 'girl' },
+            { t: 'a tiny girl about 3 years old with soft curls', g: 'girl' },
+            { t: 'a little girl about 5 years old', g: 'girl' },
+            { t: 'a freckled girl about 4 years old with two braids', g: 'girl' },
+            { t: 'a cheerful little girl about 5 years old', g: 'girl' },
+            { t: 'a little boy about 3 years old', g: 'boy' },
+            { t: 'a small boy about 4 years old with tousled hair', g: 'boy' },
+            { t: 'a tiny boy about 3 years old', g: 'boy' },
+            { t: 'a little boy about 5 years old', g: 'boy' },
+            { t: 'a small boy about 4 years old with a little flat cap', g: 'boy' },
+            { t: 'a cheerful little boy about 5 years old', g: 'boy' },
+            // pairs, also young (3-5)
+            { t: 'two little sisters about 4 and 5 years old', g: 'girls' },
+            { t: 'two giggling little girls about 3 and 5 years old', g: 'girls' },
+            { t: 'two little friends about 4 years old, a girl and a boy', g: 'mixed' },
+            { t: 'a girl and her younger brother, about 5 and 3 years old', g: 'mixed' },
+            { t: 'a little brother and sister about 3 and 5 years old', g: 'mixed' },
+            { t: 'two cheerful children about 4 years old', g: 'mixed' },
+            { t: 'two best friends about 5 years old', g: 'mixed' },
+            { t: 'a pair of small friends about 4 years old', g: 'mixed' },
+            // less frequent: older children 6-10
+            { t: 'a girl about 6 years old', g: 'girl' },
+            { t: 'a curious girl about 8 years old', g: 'girl' },
+            { t: 'a dreamy girl about 9 years old', g: 'girl' },
+            { t: 'a boy about 7 years old', g: 'boy' },
+            { t: 'an adventurous boy about 8 years old', g: 'boy' },
+            { t: 'a boy about 10 years old', g: 'boy' }
+        ];
+
+        // 2a. OUTFITS for a single child (feminine ones auto-detected and never used on boys)
+        const originalOutfitsSingle = [
+            'in a soft yellow sundress with daisy print',
+            'in pale blue linen overalls',
+            'in a straw hat and white cotton dress',
+            'in a striped sailor tee and rolled-up shorts',
+            'in a breezy floral summer dress',
+            'in denim shorts and a cream knit top',
+            'in a wide-brimmed sun hat and sandals',
+            'in a gingham picnic dress',
+            'in light linen clothes and bare feet',
+            'in a soft mint-green romper',
+            'in a sky-blue dress with a ribbon sash',
+            'in cosy cotton dungarees',
+            'in a vintage sailor outfit',
+            'in a flowy peach pinafore',
+            'in a knitted summer cardigan and shorts',
+            'in a lavender cotton dress',
+            'in a wheat-coloured linen shirt and suspenders',
+            'in a coral swimsuit and sun hat',
+            'in a hand-sewn cream smock with embroidery',
+            'in soft summer clothes and a flower crown',
+            'in pastel striped overalls',
+            'in a buttercup-yellow blouse and skirt',
+            'in a cottage-style floral dress',
+            'in comfy adventure clothes with a little backpack',
+            'in a seashell-print summer dress'
+        ];
+
+        // 2b. OUTFITS for a pair/group (plural; feminine ones never used when a boy is present)
+        const originalOutfitsPair = [
+            'in soft summer clothes',
+            'in matching straw hats and light clothes',
+            'in light linen outfits',
+            'in cosy cotton clothes and sandals',
+            'in vintage summer outfits',
+            'in breezy seaside clothes',
+            'in comfy adventure clothes with little backpacks',
+            'in pastel summer outfits',
+            'in matching sailor outfits',
+            'in soft knitted summer clothes',
+            'in matching floral sundresses',
+            'in pretty pinafores with ribbons',
+            'in soft summer dresses with flower crowns',
+            'in matching gingham dresses'
+        ];
+
+        // 3. ACTIONS (the only strongly feminine one, 'weaving a flower crown', is never used on boys)
+        const originalActions = [
+            'reading a picture book',
+            'riding a bicycle',
+            'swinging on a rope swing',
+            'rowing a little wooden boat',
+            'sailing a toy yacht',
+            'having a tea party',
+            'gazing up at the sky',
+            'picking wildflowers',
+            'building a sandcastle',
+            'collecting seashells',
+            'flying a colourful kite',
+            'fishing with a little rod',
+            'climbing a tree',
+            'reading by lantern light',
+            'looking through binoculars at the distance',
+            'picking berries into a tin pail',
+            'pouring lemonade at a little stand',
+            'sketching findings in a notebook',
+            'pressing flowers in a book',
+            'making sand pastries',
+            'planting seeds and watering a sprout',
+            'feeding a little lamb',
+            'feeding ducks by the water',
+            'riding on a hay wagon',
+            'running through a garden sprinkler',
+            'watching dolphins in the distance',
+            'floating a paper boat',
+            'weaving a flower crown',
+            'eating a slice of watermelon',
+            'catching butterflies with a net',
+            'watching fireflies at dusk',
+            'rocking gently in a hammock',
+            'watering the garden flowers',
+            'sharing a picnic on a blanket',
+            'lying among the wildflowers',
+            'riding a gentle pony',
+            'crossing a little log bridge',
+            'planting a small tree',
+            'drifting on a small raft',
+            'observing crickets with a magnifying glass',
+            'hiding playfully in the tall grass',
+            'paddling at the water\'s edge',
+            'reading a hand-drawn treasure map',
+            'searching for hidden treasure',
+            'studying a tiny compass',
+            'watching the birds overhead',
+            'gazing at the drifting clouds',
+            'building a little den',
+            'blowing soap bubbles',
+            'gathering pretty pebbles',
+            'waving at passing boats',
+            'hanging tiny fairy lights',
+            'hoisting a basket up on a rope',
+            'singing a cheerful song',
+            'napping under a sun hat',
+            'sharing a basket of cherries',
+            'rummaging through an old trunk',
+            'carrying a lunch basket',
+            'building a treehouse',
+            'going on a little hike with a backpack',
+            'discovering an old photograph',
+            'sitting on a wooden ladder',
+            'splashing in a shallow stream',
+            'chasing a fluttering butterfly',
+            'arranging a bunch of fresh flowers',
+            'sailing a little boat with a paper sail',
+            'wading after a gentle duck'
+        ];
+
+        // 4. COMPANIONS (animal - OPTIONAL, several blanks for child-only scenes) - NO corgi
+        const originalCompanions = [
+            'with a fluffy ginger kitten',
+            'with a small white puppy with floppy ears',
+            'with a gentle brown bunny',
+            'with a soft grey kitten',
+            'with a tiny yellow duckling waddling along',
+            'with a spotted fawn close by',
+            'with a curious red fox cub',
+            'with a cream-coloured lamb',
+            'with a little hedgehog',
+            'with a fluffy white rabbit',
+            'with a friendly golden retriever puppy',
+            'with a calico kitten',
+            'with a baby goat trotting beside',
+            'with a small woolly sheep',
+            'with a gentle pony nearby',
+            'with a tabby cat with green eyes',
+            'with a baby raccoon peeking out',
+            'with a fluffy chick cupped in hands',
+            'with a wire-haired terrier puppy',
+            'with a yellow Labrador puppy',
+            'with a cocker spaniel puppy with long silky ears',
+            'with a fluffy apricot cockapoo',
+            'with a fluffy Maine Coon kitten',
+            'with a Ragdoll kitten with blue eyes',
+            '', '', '', '', '', ''
+        ];
+
+        // 5. LOCATIONS
+        const originalLocations = [
+            'on a sandy beach with gentle dunes',
+            'in a rocky seaside cove',
+            'on a weathered wooden jetty',
+            'beside a little white lighthouse on the shore',
+            'in a small harbour full of fishing boats',
+            'on a terrace overlooking the sparkling sea',
+            'in a blooming lavender field',
+            'in a field of tall sunflowers',
+            'in a scarlet poppy meadow',
+            'in a daisy-filled meadow',
+            'in a golden wheat field at sunset',
+            'in a cosy cottage garden bursting with flowers',
+            'on a porch with a hanging hammock',
+            'on a wooden swing beneath an old oak',
+            'beside a peaceful duck pond',
+            'in an apple and cherry orchard',
+            'in a sunlit forest clearing',
+            'beside a pebbly woodland stream',
+            'on the shore of a calm blue lake',
+            'in a fragrant pine forest',
+            'at a little campsite by the lake',
+            'in a cosy sunlit attic full of old trunks and books',
+            'in a wooden treehouse among the leafy branches',
+            'on a rooftop under a wide evening sky',
+            'on a country lane lined with wildflowers',
+            'in a friendly little farmyard',
+            'in a sunny vegetable garden',
+            'on a grassy riverbank with a weeping willow',
+            'beside a gentle waterfall in the woods',
+            'on a hillside meadow with grazing lambs',
+            'at a flower-covered garden gate',
+            'on a stone bridge over a babbling brook',
+            'in a greenhouse full of potted plants',
+            'on a haystack in a summer field',
+            'beside an old stone well in the garden',
+            'on a sun-warmed pier by the sea',
+            'in a secret garden behind an old wall',
+            'on a winding woodland path',
+            'in a buttercup field by a cottage',
+            'on a quiet sandy shore at low tide',
+            'in a cherry blossom grove',
+            'on a cottage windowsill nook',
+            'in a strawberry patch',
+            'by a clear rock pool at the seaside',
+            'in a meadow scattered with hay bales'
+        ];
+
+        // 6. TIME / LIGHT
+        const originalTimes = [
+            'soft early summer morning light',
+            'warm golden afternoon sunshine',
+            'gentle dappled light through the leaves',
+            'dreamy golden hour glow',
+            'soft pink summer sunset',
+            'bright clear summer daylight',
+            'warm hazy summer light',
+            'cool blue twilight with the first stars',
+            'glittering light on the water',
+            'soft misty morning light',
+            'lantern and firefly glow at dusk',
+            'sun-dappled meadow light',
+            'fresh breezy morning light',
+            'warm sleepy afternoon light',
+            'soft sunlight after a summer shower'
+        ];
+
+        // 7. PHENOMENA / ATMOSPHERE
+        const originalPhenomena = [
+            'butterflies dancing in the air',
+            'dandelion seeds drifting on the breeze',
+            'soap bubbles floating by',
+            'petals drifting from blossom trees',
+            'fireflies beginning to glow',
+            'a gentle warm breeze stirring the grass',
+            'birdsong filling the air',
+            'sunbeams streaming through the leaves',
+            'a soft summer rain shower passing',
+            'sparkling dew on the meadow',
+            'seagulls wheeling overhead',
+            'gentle waves lapping the shore',
+            'tall grass swaying softly',
+            'bees humming among the flowers',
+            'a rainbow arching after the rain',
+            'fluffy white clouds drifting overhead',
+            'pollen glowing softly in the sun',
+            'dragonflies skimming the water',
+            'wildflowers nodding in the wind',
+            'swallows darting across the sky',
+            'ripe fruit hanging from the branches',
+            'laundry fluttering on a line',
+            'a kite tail rippling in the wind',
+            'warm sand underfoot',
+            'lily pads floating on the pond'
+        ];
+
+        // 8. MOOD / EMOTION (cosy, heartwarming, wholesome)
+        const originalMoods = [
+            'cosy and heartwarming',
+            'gentle and tender',
+            'joyful and carefree',
+            'peaceful and serene',
+            'sweet and nostalgic',
+            'warm and loving',
+            'curious and adventurous',
+            'dreamy and magical',
+            'playful and happy',
+            'calm and contented',
+            'innocent and pure',
+            'wholesome and kind',
+            'snug and comforting',
+            'bright and cheerful',
+            'quiet and full of wonder',
+            'safe and snug',
+            'tender friendship',
+            'gentle summer happiness',
+            'cosy togetherness',
+            'soft and soothing',
+            'heartfelt and caring',
+            'lazy summer ease',
+            'sun-warmed and gentle',
+            'simple summer joy',
+            'kind-hearted and warm'
+        ];
+
+        // 9. AESTHETIC / STYLE
+        const originalAesthetics = [
+            'cottagecore aesthetic',
+            'vintage storybook illustration style',
+            'classic children\'s book aesthetic',
+            'English countryside style',
+            'whimsical cottagecore',
+            'nostalgic vintage illustration',
+            'soft watercolour storybook style',
+            'fairytale storybook aesthetic',
+            'cosy summer cottagecore style',
+            'gentle hand-painted illustration style',
+            'timeless children\'s book charm',
+            'dreamy vintage summer aesthetic',
+            'warm pastoral illustration style',
+            'delicate storybook watercolour',
+            'romantic countryside aesthetic'
+        ];
+
+        // 10. COLORS
+        const originalColors = [
+            'soft turquoise and warm sand',
+            'sunny yellow and sky blue',
+            'lavender purple and sage green',
+            'coral pink and seafoam',
+            'golden wheat and cornflower blue',
+            'fresh meadow green and buttercup yellow',
+            'peach and soft mint',
+            'sun-bleached pastels',
+            'warm terracotta and cream',
+            'aqua blue and pale gold',
+            'rose pink and meadow green',
+            'sunset orange and dusty pink',
+            'soft cream and cornflower blue',
+            'poppy red and wheat gold',
+            'sea blue and sandy beige'
+        ];
+
+        // 11. DETAILS
+        const originalDetails = [
+            'highly detailed with soft painterly textures',
+            'gentle watercolour-style rendering',
+            'vintage storybook illustration details',
+            'soft brushstrokes and warm light',
+            'rich textures and fine details',
+            'dreamy soft-focus quality',
+            'crisp charming illustration',
+            'whimsical hand-drawn style',
+            'delicate fine-art quality',
+            'storybook charm with depth'
+        ];
+
+        // 12. EXPRESSIONS (radiant kind gaze + soft gentle smile, never wild laughter)
+        const originalExpressions = [
+            'with bright joyful eyes and a gentle tender smile',
+            'with warm radiant eyes and a soft kind smile',
+            'with sparkling happy eyes and a sweet gentle smile',
+            'with a serene loving gaze and a delicate soft smile',
+            'with kind shining eyes and a soft contented smile',
+            'with a warm gentle expression full of quiet joy',
+            'with eyes bright with wonder and a tender smile',
+            'with a calm radiant look and a soft happy smile',
+            'with sweet sparkling eyes and a gentle elegant smile',
+            'with a peaceful loving gaze and a delicate happy smile',
+            'with glowing kind eyes and a soft cheerful smile',
+            'with a tender bright-eyed look full of warmth',
+            'with a gentle joyful expression and soft smiling eyes',
+            'with a soft elegant smile and eyes full of kindness',
+            'with a luminous gentle gaze radiating warmth and joy'
+        ];
+
+        // Shuffle all arrays on load
+        const characters    = shuffleArray(originalCharacters);
+        const outfitsSingle = shuffleArray(originalOutfitsSingle);
+        const outfitsPair   = shuffleArray(originalOutfitsPair);
+        const actions       = shuffleArray(originalActions);
+        const companions    = shuffleArray(originalCompanions);
+        const locations     = shuffleArray(originalLocations);
+        const times         = shuffleArray(originalTimes);
+        const phenomena     = shuffleArray(originalPhenomena);
+        const moods         = shuffleArray(originalMoods);
+        const aesthetics    = shuffleArray(originalAesthetics);
+        const colors        = shuffleArray(originalColors);
+        const details       = shuffleArray(originalDetails);
+        const expressions   = shuffleArray(originalExpressions);
+
+        // feminine clothing / accessory detector (dresses, skirts, pinafores, flower crowns)
+        const FEM = /dress|pinafore|skirt|sundress|flower crown|gown|bonnet|blouse/i;
+
+        // ====== STATE ======
+        let idea = null;
+        let isGenerating = false;
+        let copied = false;
+        let generatedThisSession = 0;
+        let copyTimer = null;
+        let styleMode = 'storybook'; // 'storybook' | 'signature'
+
+        function freshUsed() {
+            return {
+                characters: new Set(), outfitsSingle: new Set(), outfitsPair: new Set(),
+                actions: new Set(), companions: new Set(), locations: new Set(),
+                times: new Set(), phenomena: new Set(), moods: new Set(),
+                aesthetics: new Set(), colors: new Set(), details: new Set(), expressions: new Set()
+            };
+        }
+        let usedIndices = freshUsed();
+
+        // pick a random index that satisfies pred (optional) and avoids recent repeats
+        function pick(arr, usedSet, pred) {
+            const allowed = [];
+            for (let i = 0; i < arr.length; i++) {
+                if (!pred || pred(arr[i])) allowed.push(i);
+            }
+            const fresh = allowed.filter(function (i) { return !usedSet.has(i); });
+            const pool = fresh.length ? fresh : allowed;
+            const idx = pool[getTrulyRandomInt(pool.length)];
+            usedSet.add(idx);
+            return idx;
+        }
+
+        function phrase(parts) {
+            return parts.filter(Boolean).join(' ').replace(/\s+/g, ' ').trim();
+        }
+        function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+        // build the final prompt for a given scene + current style mode
+        function buildPrompt(p) {
+            const subject = phrase([p.character, p.outfit]);
+            const signature = (styleMode === 'signature');
+            let code = (document.getElementById('srefInput').value || '').trim();
+            // if the user typed a full parameter (--sref / --profile / --p ...), keep it as-is;
+            // if they typed a bare number/code, assume it's an --sref
+            if (code && !/^--/.test(code)) code = '--sref ' + code;
+            const srefSuffix = (signature && code) ? (' ' + code) : '';
+            const suffix = ' --ar 9:16 --v 7' + srefSuffix;
+
+            let tail, structures;
+            if (signature) {
+                // clean scene only — no style/render words that fight the --sref look
+                tail = [
+                    p.expression, p.time, p.phenomenon, p.mood + ' atmosphere',
+                    'sunny and full of warmth and kindness',
+                    'a soft gentle closed-lip smile, elegant and graceful'
+                ].join(', ');
+                structures = [
+                    phrase([subject, p.companion, p.action, p.location]) + ', ' + tail + suffix,
+                    phrase([cap(p.location) + ',', subject, p.companion, p.action]) + ', ' + tail + suffix,
+                    phrase([subject, p.action, p.location, p.companion]) + ', ' + p.expression + ', ' + p.mood + ' mood, ' +
+                        [p.time, p.phenomenon, 'sunny and full of warmth and kindness', 'a soft gentle closed-lip smile, elegant and graceful'].join(', ') + suffix
+                ];
+            } else {
+                tail = [
+                    p.expression, p.time, p.phenomenon, p.mood + ' atmosphere',
+                    'sunny, joyful and full of warmth and kindness',
+                    'a soft gentle closed-lip smile, elegant and graceful',
+                    p.aesthetic, 'color palette: ' + p.color, p.detail,
+                    'wholesome and heartwarming', 'saturated colors', 'beautiful composition'
+                ].join(', ');
+                structures = [
+                    phrase([subject, p.companion, p.action, p.location]) + ', ' + tail + suffix,
+                    phrase([cap(p.location) + ',', subject, p.companion, p.action]) + ', ' + tail + suffix,
+                    phrase([subject, p.action, p.location, p.companion]) + ', ' + p.expression + ', ' + p.mood + ' mood, ' +
+                        [p.time, p.phenomenon, 'sunny and joyful, radiating warmth and kindness', 'a soft gentle closed-lip smile, elegant and graceful', p.aesthetic, 'color palette: ' + p.color, p.detail, 'heartwarming and wholesome', 'saturated colors'].join(', ') + suffix
+                ];
+            }
+            return structures[getTrulyRandomInt(structures.length)];
+        }
+
+        // ====== GENERATE ======
+        function generateIdea() {
+            if (isGenerating) return;
+            isGenerating = true;
+            copied = false;
+            render();
+
+            setTimeout(function () {
+                const U = usedIndices;
+
+                const character = characters[pick(characters, U.characters, null)];
+                const g = character.g;
+                const hasBoy = (g === 'boy' || g === 'mixed');
+                const isPair = (g === 'girls' || g === 'mixed');
+
+                const notFem = function (s) { return !FEM.test(s); };
+                const noCrown = function (s) { return !/flower crown/i.test(s); };
+
+                let outfit;
+                if (isPair) {
+                    outfit = outfitsPair[pick(outfitsPair, U.outfitsPair, hasBoy ? notFem : null)];
+                } else {
+                    outfit = outfitsSingle[pick(outfitsSingle, U.outfitsSingle, hasBoy ? notFem : null)];
+                }
+
+                const action     = actions[pick(actions, U.actions, hasBoy ? noCrown : null)];
+                let companion   = companions[pick(companions, U.companions, null)];
+                // rare: a sleek black cat occasionally appears instead
+                if (companion && getTrulyRandomInt(100) < 6) companion = 'with a sleek black cat';
+                const location   = locations[pick(locations, U.locations, null)];
+                const time       = times[pick(times, U.times, null)];
+                const phenomenon = phenomena[pick(phenomena, U.phenomena, null)];
+                const mood       = moods[pick(moods, U.moods, null)];
+                const aesthetic  = aesthetics[pick(aesthetics, U.aesthetics, null)];
+                const color      = colors[pick(colors, U.colors, null)];
+                const detail     = details[pick(details, U.details, null)];
+                const expression = expressions[pick(expressions, U.expressions, null)];
+
+                const parts = {
+                    character: character.t, outfit: outfit, companion: companion,
+                    action: action, location: location, time: time,
+                    phenomenon: phenomenon, mood: mood, aesthetic: aesthetic,
+                    color: color, detail: detail, expression: expression
+                };
+                const prompt = buildPrompt(parts);
+
+                // tags
+                const fullText = (character.t + ' ' + companion + ' ' + action + ' ' + location + ' ' + phenomenon).toLowerCase();
+                const tags = [];
+                if (/beach|sea|shore|ocean|wave|jetty|harbour|lighthouse|sand|dolphin|cove|pier|tide|rock pool/.test(fullText)) tags.push('seaside');
+                if (/garden|orchard|pond|greenhouse|cottage|vegetable|strawberry|well/.test(fullText)) tags.push('garden');
+                if (/forest|woodland|pine|stream|waterfall|den/.test(fullText)) tags.push('woodland');
+                if (/field|meadow|wheat|sunflower|poppy|daisy|hay|buttercup/.test(fullText)) tags.push('meadow');
+                if (/lavender/.test(fullText)) tags.push('lavender');
+                if (/treehouse|tree|branch/.test(fullText)) tags.push('treehouse');
+                if (/attic|trunk|photograph/.test(fullText)) tags.push('attic');
+                if (/lake|raft|riverbank|river|campsite|bridge/.test(fullText)) tags.push('lakeside');
+                if (companion && /kitten|puppy|bunny|rabbit|lamb|fawn|duck|pony|fox|hedgehog|cat|goat|sheep|raccoon|chick|retriever|terrier|labrador|spaniel|cockapoo|maine coon|ragdoll/.test(companion.toLowerCase())) tags.push('animals');
+                if (/treasure|map|hike|binocular|compass/.test(fullText)) tags.push('adventure');
+                if (/book|read|sketch|notebook/.test(fullText)) tags.push('reading');
+                tags.push('summer', 'cosy');
+                const finalTags = tags.slice(0, 6);
+
+                idea = {
+                    title: cap(action),
+                    description: cap(phrase([character.t, outfit, companion]) + ', ' + action + ' ' + location + '. ' + cap(mood) + ', ' + aesthetic + '.'),
+                    tags: finalTags,
+                    prompt: prompt,
+                    parts: parts
+                };
+
+                generatedThisSession += 1;
+                isGenerating = false;
+                render();
+            }, 1000);
+        }
+
+        // ====== RESET (immediately generates a fresh idea) ======
+        function handleReshuffle() {
+            usedIndices = freshUsed();
+            generatedThisSession = 0;
+            idea = null;
+            copied = false;
+            generateIdea();
+        }
+
+        // ====== COPY ======
+        async function copyToClipboard(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                markCopied();
+            } catch (err) {
+                try {
+                    const textArea = document.createElement('textarea');
+                    textArea.value = text;
+                    textArea.style.position = 'fixed';
+                    textArea.style.left = '-999999px';
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    markCopied();
+                } catch (fallbackErr) {
+                    alert('Failed to copy. Please copy manually.');
+                }
+            }
+        }
+
+        function markCopied() {
+            copied = true;
+            render();
+            if (copyTimer) clearTimeout(copyTimer);
+            copyTimer = setTimeout(function () { copied = false; render(); }, 2000);
+        }
+
+        // ====== RENDER ======
+        function el(tag, props, children) {
+            const node = document.createElement(tag);
+            if (props) {
+                for (const k in props) {
+                    if (k === 'class') node.className = props[k];
+                    else if (k === 'style') node.setAttribute('style', props[k]);
+                    else if (k === 'text') node.textContent = props[k];
+                    else node.setAttribute(k, props[k]);
+                }
+            }
+            (children || []).forEach(function (c) {
+                if (typeof c === 'string') node.appendChild(document.createTextNode(c));
+                else if (c) node.appendChild(c);
+            });
+            return node;
+        }
+
+        function render() {
+            document.getElementById('count').textContent = generatedThisSession;
+
+            const genIcon = document.getElementById('genIcon');
+            const genText = document.getElementById('genText');
+            const genBtn = document.getElementById('generateBtn');
+            genIcon.textContent = isGenerating ? '🔄' : '✨';
+            genText.textContent = isGenerating ? 'Generating Magic...' : 'Generate New Idea';
+            genText.className = isGenerating ? 'spin' : '';
+            genBtn.disabled = isGenerating;
+
+            const result = document.getElementById('result');
+            result.innerHTML = '';
+
+            if (isGenerating) return;
+
+            if (idea) {
+                const card = el('div', { class: 'idea-card' }, [
+                    el('div', { class: 'idea-header' }, [
+                        el('div', { class: 'icon-box' }, [ el('span', { style: 'font-size: 1.5rem;', text: '☀️' }) ]),
+                        el('div', { style: 'flex: 1;' }, [ el('h2', { class: 'idea-title', text: idea.title }) ])
+                    ]),
+                    el('div', { class: 'description-box' }, [
+                        el('p', { class: 'description-text', text: idea.description })
+                    ]),
+                    el('div', { class: 'tags-container' },
+                        idea.tags.map(function (tag) { return el('span', { class: 'tag', text: '#' + tag }); })
+                    ),
+                    (function () {
+                        const copyBtn = el('button', { class: 'copy-button' }, [
+                            el('span', { text: copied ? '✓' : '📋' }),
+                            el('span', { text: copied ? 'Copied!' : 'Copy to Clipboard' })
+                        ]);
+                        copyBtn.addEventListener('click', function () { copyToClipboard(idea.prompt); });
+                        return el('div', { class: 'prompt-box' }, [
+                            el('div', { class: 'prompt-header' }, [
+                                el('span', { text: '🖼️' }),
+                                el('span', { text: 'AI Art Prompt (ready to copy)' })
+                            ]),
+                            el('p', { class: 'prompt-text', text: idea.prompt }),
+                            copyBtn
+                        ]);
+                    })()
+                ]);
+                result.appendChild(card);
+            } else {
+                const placeholder = el('div', { class: 'text-center', style: 'color: #cffafe; margin-bottom: 2rem;' }, [
+                    el('p', { style: 'font-size: 1.125rem; margin-bottom: 1rem;', text: '🌻 Tap the button above to generate your first summer idea!' }),
+                    el('p', { style: 'font-size: 0.875rem; color: #7dd3fc;', text: 'Every prompt is a cosy, one-of-a-kind summer scene.' })
+                ]);
+                result.appendChild(placeholder);
+            }
+        }
+
+        // ====== INIT ======
+        function setMode(mode) {
+            styleMode = mode;
+            document.getElementById('modeStorybook').classList.toggle('active', mode === 'storybook');
+            document.getElementById('modeSignature').classList.toggle('active', mode === 'signature');
+            document.getElementById('srefRow').classList.toggle('show', mode === 'signature');
+            if (idea && !isGenerating) { idea.prompt = buildPrompt(idea.parts); render(); }
+        }
+        document.getElementById('modeStorybook').addEventListener('click', function () { setMode('storybook'); });
+        document.getElementById('modeSignature').addEventListener('click', function () { setMode('signature'); });
+        document.getElementById('srefInput').addEventListener('input', function () {
+            if (styleMode === 'signature' && idea && !isGenerating) { idea.prompt = buildPrompt(idea.parts); render(); }
+        });
+
+        document.getElementById('generateBtn').addEventListener('click', generateIdea);
+        document.getElementById('resetBtn').addEventListener('click', handleReshuffle);
+        render();
+    </script>
+</body>
+</html>
