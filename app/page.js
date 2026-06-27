@@ -120,10 +120,6 @@ export default function Page() {
         </div>
       ) : null}
 
-      <div style={{ position: "fixed", top: 16, right: 16, zIndex: 20, background: "rgba(10,26,14,.82)", border: "1px solid rgba(212,175,55,.3)", borderRadius: 8, padding: "6px 12px", color: "#d4af37", fontStyle: "italic", fontSize: 12 }}>
-        © 2026 Tatiana Lychy
-      </div>
-
       <nav style={{ position: "sticky", top: 0, zIndex: 10, display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 24px", background: "rgba(10,26,14,.92)", backdropFilter: "blur(16px)", borderBottom: "1px solid rgba(212,175,55,.18)" }}>
         <div style={{ color: "#d4af37", fontStyle: "italic" }}>✦ Magical Prompt Studio</div>
         <div style={{ display: "flex", gap: 20, alignItems: "center", flexWrap: "wrap" }}>
