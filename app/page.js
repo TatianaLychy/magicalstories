@@ -43,33 +43,6 @@ const generators = [
     file: "/ai-summer-adventures.html",
     active: true,
   },
-  {
-    key: "kling",
-    icon: "✨",
-    title: "Kling Animation Builder",
-    description:
-      "Camera moves, cinematic motion and elegant prompt structure for AI video workflows.",
-    tag: "Kling",
-    active: false,
-  },
-  {
-    key: "seedance",
-    icon: "🎬",
-    title: "Seedance Scene Generator",
-    description:
-      "Multi-shot sequences with consistent atmosphere and visual continuity for Seedance 2.0.",
-    tag: "Seedance",
-    active: false,
-  },
-  {
-    key: "consistency",
-    icon: "🖼️",
-    title: "Character Consistency Sheet",
-    description:
-      "Keep one character consistent across poses, scenes, styling notes and story moments.",
-    tag: "Midjourney",
-    active: false,
-  },
 ];
 
 const faq = [
