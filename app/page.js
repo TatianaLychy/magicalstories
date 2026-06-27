@@ -34,6 +34,16 @@ const generators = [
     active: true,
   },
   {
+    key: "summer-adventures",
+    icon: "☀️",
+    title: "Summer Adventures",
+    description:
+      "Create warm, cozy summer scenes filled with sunshine, nostalgia, soft storytelling, and magical seasonal atmosphere.",
+    tag: "Midjourney",
+    file: "/ai-summer-adventures.html",
+    active: true,
+  },
+  {
     key: "kling",
     icon: "✨",
     title: "Kling Animation Builder",
