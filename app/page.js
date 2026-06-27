@@ -40,7 +40,7 @@ const generators = [
     description:
       "Create warm, cozy summer scenes filled with sunshine, nostalgia, soft storytelling, and magical seasonal atmosphere.",
     tag: "Midjourney",
-    file: "/ai-summer-adventures.html",
+    file: "/AI-Summer-Adventures.html",
     active: true,
   },
 ];
