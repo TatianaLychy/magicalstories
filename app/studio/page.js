@@ -44,6 +44,16 @@ const generators = [
     file: "/AI-Summer-Adventures.html",
     active: true,
   },
+  {
+    key: "cosy-inspiration",
+    icon: "☕",
+    title: "Cosy Inspiration Generator",
+    description:
+      "Generate endless cosy visual ideas for storytelling, illustration, and atmospheric AI image creation.",
+    tag: "Midjourney",
+    file: "/Cosy-Inspiration-Generator.html",
+    active: true,
+  },
 ];
 
 const digitalProducts = [
