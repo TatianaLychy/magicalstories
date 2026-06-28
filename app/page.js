@@ -37,7 +37,7 @@ const collection = [
   },
   {
     key: "cosy",
-    icon: "🕯️",
+    icon: "🍵",
     title: "Cosy Inspiration Generator",
     description:
       "Generate tender, atmospheric cozy concepts for magical interiors, quiet rituals, seasonal moodboards, and warm visual storytelling.",
@@ -216,7 +216,7 @@ export default function Page() {
               lineHeight: 1.7,
             }}
           >
-            A private studio for AI generators, prompt tools, and creative digital products for illustrators, animators, and storytellers.
+            A studio for AI generators, prompt tools, and creative digital products for illustrators, animators, and storytellers.
           </p>
 
           <div
@@ -279,10 +279,10 @@ export default function Page() {
                 marginBottom: 14,
               }}
             >
-              ✦ Private Access ✦
+              ✦ Studio Access ✦
             </div>
             <h2 style={{ margin: "0 0 10px", fontWeight: 400, fontSize: 30 }}>
-              See the full collection before you join the <span style={{ color: "#d4af37", fontStyle: "italic" }}>Studio</span>
+              Your generators now belong inside the <span style={{ color: "#d4af37", fontStyle: "italic" }}>Studio</span>
             </h2>
             <p
               style={{
@@ -293,7 +293,7 @@ export default function Page() {
                 lineHeight: 1.8,
               }}
             >
-              Explore every generator and digital product on this page, then unlock full use inside the private Studio after subscribing.
+              This page shows the world of the Studio. After subscribing, you can enter and work with the available tools and digital products inside.
             </p>
           </div>
         </section>
@@ -319,7 +319,7 @@ export default function Page() {
                 margin: 0,
               }}
             >
-              Everything included inside the <span style={{ color: "#d4af37", fontStyle: "italic" }}>Studio</span>
+              Inside the <span style={{ color: "#d4af37", fontStyle: "italic" }}>Studio</span>
             </h2>
             <p
               style={{
@@ -329,7 +329,7 @@ export default function Page() {
                 lineHeight: 1.8,
               }}
             >
-              Browse the full library before subscribing. Usage opens after registration and payment.
+              The library grows over time as new generators and digital resources are added.
             </p>
           </div>
 
@@ -401,7 +401,7 @@ export default function Page() {
                     textAlign: "center",
                   }}
                 >
-                  Visible now · unlocked inside Studio
+                  Available inside Studio
                 </div>
               </div>
             ))}
@@ -437,18 +437,18 @@ export default function Page() {
             {[
               [
                 "I",
-                "Explore the Collection",
-                "See all generators and digital products on the public page before making a decision.",
+                "Join the Studio",
+                "Start with a 3-day free trial and create your member access through checkout.",
               ],
               [
                 "II",
-                "Choose Monthly or Yearly",
-                "Start with the plan that fits you best and activate your access through checkout.",
+                "Enter Your Space",
+                "After joining, enter the Studio and access the current collection of tools and products.",
               ],
               [
                 "III",
-                "Enter Your Private Studio",
-                "After joining, enter the Studio and use the available generators inside your member space.",
+                "Choose a Generator",
+                "Open the tool you need for your creative task and build your prompt flow inside the studio.",
               ],
               [
                 "IV",
@@ -585,7 +585,7 @@ export default function Page() {
                 }}
               >
                 <li>Studio access</li>
-                <li>Full use of all 5 current generators</li>
+                <li>Full use of current generators</li>
                 <li>New tools added over time</li>
                 <li>Cancel anytime</li>
               </ul>
@@ -804,7 +804,7 @@ export default function Page() {
                 lineHeight: 1.8,
               }}
             >
-              Explore the collection publicly, then unlock full Studio use with your subscription.
+              Both plans include a 3-day free trial. Join first, then enter the Studio.
             </p>
 
             <div
