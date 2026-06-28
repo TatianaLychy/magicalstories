@@ -53,7 +53,7 @@ const digitalProducts = [
     title: "Bonus Style Packs",
     description:
       "Exclusive creative resources and visual direction packs reserved for Studio members.",
-    status: "Member Exclusive",
+    status: "Included",
   },
   {
     key: "bonus-2",
@@ -69,7 +69,7 @@ const digitalProducts = [
     title: "Digital Story Tools",
     description:
       "A developing collection of additional storytelling tools and creative digital products.",
-    status: "Coming Next",
+    status: "Coming Soon",
   },
 ];
 
@@ -253,15 +253,11 @@ export default function StudioPage() {
               lineHeight: 1.8,
             }}
           >
-            This is your private creative space for prompt generators, digital tools, and growing resources inside Magical Prompt Studio.
+            A private creative space for prompt generators, story tools, and digital resources designed for artists, animators, and storytellers.
           </p>
         </section>
 
-        <section
-          style={{
-            padding: "0 0 54px",
-          }}
-        >
+        <section style={{ padding: "0 0 54px" }}>
           <div
             style={{
               background: "rgba(13,32,22,.72)",
@@ -281,11 +277,11 @@ export default function StudioPage() {
                 marginBottom: 14,
               }}
             >
-              ✦ Member Area ✦
+              ✦ Magical Prompt Studio ✦
             </div>
 
             <h2 style={{ margin: "0 0 10px", fontWeight: 400, fontSize: 30 }}>
-              Your creative tools are gathered <span style={{ color: "#d4af37", fontStyle: "italic" }}>here</span>
+              Your creative library begins <span style={{ color: "#d4af37", fontStyle: "italic" }}>here</span>
             </h2>
 
             <p
@@ -297,7 +293,7 @@ export default function StudioPage() {
                 lineHeight: 1.8,
               }}
             >
-              For now, this Studio page organizes the experience in one place. The next step will be adding protected access so only approved members can enter.
+              Explore generators, return to your favorite tools, and discover new digital products as the collection grows.
             </p>
           </div>
         </section>
@@ -502,7 +498,7 @@ export default function StudioPage() {
                 margin: "0 0 10px",
               }}
             >
-              The Studio is now <span style={{ color: "#d4af37", fontStyle: "italic" }}>separate</span> from the home page
+              Return whenever inspiration <span style={{ color: "#d4af37", fontStyle: "italic" }}>calls</span>
             </h2>
 
             <p
@@ -514,7 +510,7 @@ export default function StudioPage() {
                 maxWidth: 720,
               }}
             >
-              This is the correct structure for the next phase: public home page outside, member tools inside Studio.
+              Your studio is designed to grow with your creative practice, one generator, one story, and one beautiful idea at a time.
             </p>
 
             <Link
