@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosy Inspiration Generator by Tatiana Lychy</title>
+    <meta name="author" content="Tatiana Lychy">
+    <meta name="copyright" content="© 2026 Tatiana Lychy. All rights reserved.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .min-h-screen {
+            min-height: 100vh;
+        }
+
+        .bg-gradient {
+            background: linear-gradient(135deg, #1e1b4b 0%, #581c87 50%, #be185d 100%);
+        }
+
+        .container {
+            max-width: 896px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .header-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 96px;
+            height: 96px;
+            background: linear-gradient(135deg, #fbbf24, #ec4899, #9333ea);
+            border-radius: 50%;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .title {
+            font-size: 3rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: #e9d5ff;
+            margin-bottom: 1rem;
+        }
+
+        .possibilities-badge {
+            display: inline-block;
+            background: rgba(251, 191, 36, 0.2);
+            border: 2px solid #fbbf24;
+            border-radius: 9999px;
+            padding: 0.5rem 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .possibilities-text {
+            color: #fde68a;
+            font-weight: bold;
+            font-size: 1.125rem;
+        }
+
+        .stats-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stats-text {
+            color: white;
+        }
+
+        .count-number {
+            font-weight: bold;
+            font-size: 1.875rem;
+            color: #fcd34d;
+            margin: 0 0.5rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .main-button {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem 3rem;
+            background: linear-gradient(90deg, #ec4899, #9333ea, #4f46e5);
+            color: white;
+            border: none;
+            border-radius: 9999px;
+            font-weight: bold;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .main-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 25px -5px rgba(236, 72, 153, 0.5);
+        }
+
+        .main-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: scale(1);
+        }
+
+        .idea-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .idea-header {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .icon-box {
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #fbbf24, #f97316);
+            border-radius: 0.75rem;
+        }
+
+        .idea-title {
+            font-size: 1.875rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .description-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #ec4899;
+        }
+
+        .description-text {
+            color: #e9d5ff;
+            line-height: 1.75;
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.3), rgba(147, 51, 234, 0.3));
+            border-radius: 9999px;
+            color: #fde68a;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border: 1px solid rgba(236, 72, 153, 0.5);
+        }
+
+        .prompt-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+
+        .prompt-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            color: #fbbf24;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .prompt-text {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: 'Monaco', 'Courier New', monospace;
+            line-height: 1.75;
+            margin-bottom: 1rem;
+            word-wrap: break-word;
+        }
+
+        .copy-button {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: linear-gradient(90deg, #10b981, #059669);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.5);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: #d8b4fe;
+        }
+
+        .footer p {
+            margin-bottom: 0.5rem;
+        }
+
+        .copyright-badge {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            z-index: 1000;
+        }
+
+        .copyright-text {
+            color: #fbbf24;
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .spin {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 640px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .main-button {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .copyright-badge {
+                position: static;
+                margin: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="copyright-badge">
+        <div class="copyright-text">
+            <span>©</span>
+            <span>2026 Tatiana Lychy</span>
+        </div>
+    </div>
+
+    <div class="min-h-screen bg-gradient">
+        <div class="container">
+            <div class="text-center" style="padding-top: 2rem; margin-bottom: 3rem;">
+                <div class="header-icon pulse">
+                    <span style="font-size: 3rem;">💡</span>
+                </div>
+                <h1 class="title">Cosy Inspiration Generator</h1>
+                <p class="subtitle">Infinite creative ideas for AI image generation</p>
+                <div class="possibilities-badge">
+                    <p class="possibilities-text">♾️ Infinite cosy combinations</p>
+                </div>
+            </div>
+
+            <div class="stats-box text-center">
+                <div class="stats-text">
+                    <span style="color: #e9d5ff;">Generated this session:</span>
+                    <span class="count-number" id="count">0</span>
+                    <span style="color: #e9d5ff;">unique ideas</span>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button id="generateBtn" class="main-button">
+                    <span id="genIcon" style="font-size: 2rem;">✨</span>
+                    <span id="genText">Generate New Idea</span>
+                </button>
+                <button id="resetBtn" class="main-button" style="background: linear-gradient(90deg, #f59e0b, #ef4444, #dc2626);">
+                    <span style="font-size: 2rem;">🎲</span>
+                    <span>Reset Session</span>
+                </button>
+            </div>
+
+            <div id="result"></div>
+
+            <div class="footer">
+                <p>🎨 Created with love by Tatiana Lychy</p>
+                <p>Perfect for content creators, artists, and AI enthusiasts</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ====== CRYPTOGRAPHICALLY SECURE RANDOM ======
+        function getTrulyRandomInt(max) {
+            const array = new Uint32Array(1);
+            crypto.getRandomValues(array);
+            return array[0] % max;
+        }
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = getTrulyRandomInt(i + 1);
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        // ====== MAXIMUM CHAOS ARRAYS - ATOMIC ELEMENTS ======
+        // 1. CHARACTER TYPES (30 elements) - WHO
+        const originalCharacterTypes = [
+        'young girl around 5 years old',
+        'little boy around 6 years old',
+        'girl around 8 years old',
+        'boy around 7 years old',
+        'toddler girl around 3 years old',
+        'small boy around 4 years old',
+        'girl around 9 years old',
+        'teenage girl around 12 years old',
+        'little girl around 6 years old',
+        'boy around 8 years old',
+        'young Victorian girl',
+        'French country boy',
+        'Victorian child',
+        'countryside girl',
+        'little angel',
+        'cherub',
+        'cupid',
+        'anthropomorphic white rabbit gentleman',
+        'anthropomorphic gray rabbit lady',
+        'anthropomorphic brown rabbit couple',
+        'Victorian dressed bunny',
+        'vintage bunny pair',
+        'rabbit in top hat',
+        'lady rabbit in gown',
+        'bunny couple',
+        'French bunny gentleman',
+        'countryside rabbit lady',
+        'elegant rabbit pair',
+        'whimsical bunny duo',
+        'storybook rabbit characters'
+        ];
+
+        // 2. CLOTHING STYLES (40 elements) - WHAT WEARING
+        const originalClothingStyles = [
+        'in soft pink dress with white lace collar',
+        'in navy blue shorts and cream knit sweater',
+        'in vintage burgundy coat and knitted white hat',
+        'in brown tweed jacket and wool cap',
+        'in pale yellow sundress with ribbon',
+        'in denim overalls and striped shirt',
+        'in forest green velvet dress with gold buttons',
+        'in dusty rose cardigan and flowing skirt',
+        'in lavender pinafore with floral embroidery',
+        'in charcoal wool coat and red scarf',
+        'in ivory lace dress with silk ribbons',
+        'in earth-tone linen shirt and suspenders',
+        'in vintage cream nightgown with embroidered flowers',
+        'in classic navy sailor suit with white trim',
+        'in flowing white gown with golden details',
+        'in soft peach robes with tiny wings',
+        'in powder blue winter coat with fur trim',
+        'in rustic brown leather jacket and wool scarf',
+        'in hand-knitted cream romper with wooden buttons',
+        'in soft coral dress with vintage lace overlay',
+        'in midnight blue velvet with pearl buttons',
+        'in sage green cotton dress and white apron',
+        'in wheat-colored linen suit with woven belt',
+        'in blush pink wool coat with oversized buttons',
+        'in vintage floral print dress with puff sleeves',
+        'in forest ranger outfit with brass compass',
+        'in cloud-white tunic with silver star details',
+        'in romantic rose-colored gown with tulle layers',
+        'in paint-splattered cream smock',
+        'in adventure gear with leather satchel',
+        'in plum-colored dress with black velvet ribbons',
+        'in striped sailor dress with red neckerchief',
+        'in mint green dress with flower basket',
+        'in countryside outfit with straw hat',
+        'in pristine white with golden halo',
+        'in cozy burgundy sweater and plaid skirt',
+        'in vintage brown corduroy with patches',
+        'in hand-sewn lavender dress with wooden beads',
+        'in ethereal white dress with butterfly details',
+        'in Victorian formal attire with top hat'
+        ];
+
+        // 3. ACTIONS (60 elements) - DOING WHAT
+        const originalActions = [
+        'reading love letter',
+        'holding valentine card',
+        'making heart decorations',
+        'baking cookies',
+        'painting with watercolors',
+        'dancing gracefully',
+        'walking hand in hand',
+        'sitting peacefully',
+        'picking flowers',
+        'arranging roses',
+        'writing letter',
+        'crafting valentines',
+        'decorating with ribbons',
+        'holding gift box',
+        'offering bouquet',
+        'exchanging gifts',
+        'having tea party',
+        'sharing picnic',
+        'playing music box',
+        'singing softly',
+        'whispering secrets',
+        'laughing together',
+        'embracing gently',
+        'holding hands tenderly',
+        'gazing at each other',
+        'smelling flowers',
+        'gathering blossoms',
+        'weaving flower crown',
+        'tying ribbons',
+        'hanging garlands',
+        'lighting candles',
+        'opening gift',
+        'unwrapping present',
+        'displaying valentine',
+        'mailing letter',
+        'delivering card',
+        'surprising with gift',
+        'preparing surprise',
+        'setting table',
+        'pouring tea',
+        'serving treats',
+        'offering sweets',
+        'sharing chocolate',
+        'feeding each other',
+        'toasting celebration',
+        'clinking glasses',
+        'cutting cake',
+        'frosting cupcakes',
+        'decorating cookies',
+        'sprinkling hearts',
+        'tossing petals',
+        'releasing balloons',
+        'flying kite',
+        'blowing bubbles',
+        'chasing butterflies',
+        'watching sunset',
+        'stargazing together',
+        'cloud watching',
+        'exploring garden',
+        'discovering treasures'
+        ];
+
+        // 4. OBJECTS/PROPS (50 elements) - WITH WHAT
+        const originalObjects = [
+        'heart-shaped balloon',
+        'bouquet of red roses',
+        'valentine card with lace',
+        'love letter with wax seal',
+        'box of chocolates',
+        'heart-shaped cookies',
+        'vintage music box',
+        'basket of flowers',
+        'gift wrapped in ribbon',
+        'tea set with hearts',
+        'romantic picnic basket',
+        'book of poetry',
+        'vintage camera',
+        'heart garland',
+        'rose petals in basket',
+        'pink ribbon',
+        'silk scarf',
+        'pearl necklace',
+        'flower crown',
+        'spring wreath',
+        'butterfly net',
+        'glass jar of fireflies',
+        'vintage lantern',
+        'wicker basket',
+        'lace parasol',
+        'velvet cushion',
+        'embroidered handkerchief',
+        'porcelain teacup',
+        'silver spoon',
+        'crystal vase',
+        'antique mirror',
+        'music sheet',
+        'watercolor palette',
+        'sketchbook',
+        'vintage pen',
+        'ink bottle',
+        'stack of letters',
+        'photo album',
+        'teddy bear with bow',
+        'stuffed bunny',
+        'wooden toy',
+        'rag doll',
+        'heart-shaped pillow',
+        'knitted blanket',
+        'vintage suitcase',
+        'straw hat with flowers',
+        'garden tools',
+        'watering can',
+        'seed packets',
+        'bird nest'
+        ];
+
+        // 5. ANIMALS (30 elements)
+        const originalAnimals = [
+        'fluffy white bunny with pink nose',
+        'soft gray kitten with blue eyes',
+        'gentle brown deer with spotted coat',
+        'tiny hedgehog with cream-colored spines',
+        'golden Labrador retriever puppy with floppy ears',
+        'orange tabby cat with green eyes',
+        'cream-colored lamb with curly wool',
+        'fluffy Maine Coon cat with amber eyes',
+        'spotted fawn with long eyelashes',
+        'white rabbit with gray patches',
+        'ginger fox kit with playful expression',
+        'gentle sheep with woolly coat',
+        'small red fox with bushy tail',
+        'chocolate brown bunny with white paws',
+        'fluffy red squirrel with bushy tail',
+        'calico kitten with curious eyes',
+        'tortoiseshell cat with gentle nature',
+        'wire-haired toy terrier puppy with perky ears',
+        'majestic Maine Coon with silver-gray fur',
+        'black and white tuxedo cat with green eyes',
+        'fluffy white alpaca with gentle eyes',
+        'Highland cow calf with ginger fur and long bangs',
+        'sweet brown and white calf with big eyes',
+        'white goose with orange beak',
+        'small white bunny with pink ribbon',
+        'orange Maine Coon kitten with fluffy tail',
+        'young red fox with bright eyes',
+        'cream Labrador puppy with wagging tail',
+        'baby raccoon with masked face and ringed tail',
+        'brown speckled hen with red comb'
+        ];
+
+        // 6. LOCATIONS (60 elements)
+        const originalLocations = [
+        'cobblestone village street with gas lamps',
+        'wooden bridge over babbling brook',
+        'cottage garden path lined with roses',
+        'snowy forest clearing with pine trees',
+        'meadow filled with wildflowers',
+        'vintage library with leather-bound books',
+        'stone cottage doorway covered in ivy',
+        'country lane with wooden fence',
+        'flower market stall overflowing with blooms',
+        'cozy attic room with round window',
+        'garden gazebo wrapped in climbing roses',
+        'riverside with weeping willow trees',
+        'orchard pathway between apple trees',
+        'village square with fountain',
+        'woodland trail through spring blossoms',
+        'stone bridge in enchanted forest',
+        'cottage kitchen with wooden beams',
+        'flower field at golden hour',
+        'vintage greenhouse with glass panels',
+        'country church garden',
+        'lakeside dock with wooden planks',
+        'forest glade with moss-covered stones',
+        'garden swing under old oak tree',
+        'countryside meadow with distant hills',
+        'cobblestone alley with flower boxes',
+        'rustic barn doorway with hay bales',
+        'rose garden with white picket fence',
+        'tree house nestled in branches',
+        'creek bank with smooth pebbles',
+        'village bakery window with display',
+        'garden archway covered in wisteria',
+        'woodland cabin porch with rocking chair',
+        'flower cart on vintage street',
+        'stone well in cottage garden',
+        'meadow hillside with grazing sheep',
+        'vintage train station platform',
+        'country road lined with cherry trees',
+        'garden tea table set for two',
+        'forest path with dappled sunlight',
+        'cottage bedroom with lace curtains',
+        'village pond with lily pads',
+        'orchard ladder leaning on tree',
+        'garden shed surrounded by plants',
+        'stone steps leading to cottage door',
+        'wheat field with gentle breeze',
+        'village bookshop window display',
+        'forest stream with wooden stepping stones',
+        'cottage porch with hanging baskets',
+        'garden bench under rose arbor',
+        'countryside windmill on hillside',
+        'spring garden bursting with tulips',
+        'cherry blossom grove in bloom',
+        'romantic balcony with climbing roses',
+        'French countryside vineyard',
+        'English garden maze',
+        'Victorian conservatory',
+        'secret garden behind old wall',
+        'fairy ring in forest clearing',
+        'moonlit garden path',
+        'sunrise meadow with morning dew'
+        ];
+
+        // 7. MOODS (20 elements)
+        const originalMoods = [
+        'romantic and tender',
+        'sweet and loving',
+        'joyful and cheerful',
+        'gentle and heartwarming',
+        'magical and enchanting',
+        'peaceful spring',
+        'dreamy romantic',
+        'cozy and intimate',
+        'whimsical valentine',
+        'serene spring morning',
+        'tender and caring',
+        'bright spring joy',
+        'soft romantic',
+        'warm and affectionate',
+        'playful spring',
+        'nostalgic and sweet',
+        'ethereal and delicate',
+        'innocent and pure',
+        'blissful and content',
+        'loving and devoted'
+        ];
+
+        // 8. LIGHTING (15 elements)
+        const originalLightings = [
+        'soft early morning spring light',
+        'gentle spring afternoon sunlight',
+        'warm spring golden hour glow',
+        'soft diffused spring daylight',
+        'romantic pink sunset light',
+        'fresh morning spring rays',
+        'delicate spring window light',
+        'soft spring garden light',
+        'warm afternoon spring sunshine',
+        'gentle spring twilight glow',
+        'dappled light through blossoms',
+        'ethereal morning mist light',
+        'candlelight and spring sunset',
+        'lantern glow in spring evening',
+        'firefly sparkle at dusk'
+        ];
+
+        // 9. PHENOMENA (25 elements)
+        const originalPhenomena = [
+        'rose petals drifting gently',
+        'floating heart-shaped confetti',
+        'pink and red heart bokeh',
+        'romantic sparkles in air',
+        'gentle heart bubbles floating',
+        'red rose petals falling',
+        'cherry blossoms beginning to bloom',
+        'early spring flower petals drifting',
+        'daffodils swaying in breeze',
+        'tulips blooming around them',
+        'soft spring mist rolling in',
+        'gentle spring rain droplets',
+        'morning dew on flowers sparkling',
+        'soft pink cherry blossoms falling',
+        'white apple blossoms floating',
+        'delicate magnolia petals drifting',
+        'early spring butterflies dancing',
+        'soft golden pollen in air',
+        'spring sunbeams through branches',
+        'romantic rose garden atmosphere',
+        'ribbon streamers floating',
+        'bubbles drifting in breeze',
+        'dandelion wishes floating',
+        'fireflies beginning to glow',
+        'birds singing spring songs'
+        ];
+
+        // 10. AESTHETICS (15 elements)
+        const originalAesthetics = [
+        'cottagecore aesthetic',
+        'vintage storybook illustration style',
+        'Victorian children\'s book aesthetic',
+        'French countryside style',
+        'whimsical cottagecore',
+        'romantic vintage aesthetic',
+        'English countryside style',
+        'fairytale storybook aesthetic',
+        'nostalgic vintage illustration',
+        'cozy cottagecore style',
+        'classic children\'s book aesthetic',
+        'rustic countryside style',
+        'dreamy vintage aesthetic',
+        'gentle storybook illustration style',
+        'timeless cottagecore aesthetic'
+        ];
+
+        // 11. COLORS (15 elements)
+        const originalColors = [
+        'soft pink and romantic red',
+        'rose pink and cream',
+        'cherry blossom pink and white',
+        'coral pink and spring green',
+        'blush pink and gold',
+        'romantic red and ivory',
+        'dusty rose and sage green',
+        'peach pink and mint green',
+        'lavender pink and soft yellow',
+        'valentine red and white',
+        'spring pink and fresh green',
+        'soft magenta and cream',
+        'powder pink and sky blue',
+        'warm coral and butter yellow',
+        'ruby red and pearl white'
+        ];
+
+        // 12. DETAILS (10 elements)
+        const originalDetails = [
+        'highly detailed with intricate textures',
+        'soft painterly quality with gentle brushstrokes',
+        'vintage storybook illustration details',
+        'delicate watercolor-style rendering',
+        'rich textures and fine details',
+        'dreamy soft-focus aesthetic',
+        'crisp detailed illustration',
+        'whimsical hand-drawn style',
+        'romantic fine art quality',
+        'storybook charm with depth'
+        ];
+
+        // 13. EMOTIONS (30 elements)
+        const originalEmotions = [
+        'friendship moment',
+        'gentle expression of wonder',
+        'quiet moment of discovery',
+        'tender caring gesture',
+        'joyful laughter',
+        'peaceful contentment',
+        'sweet companionship',
+        'magical sense of awe',
+        'loving connection',
+        'curious exploration',
+        'serene tranquility',
+        'heartwarming kindness',
+        'playful interaction',
+        'gentle trust',
+        'innocent joy',
+        'quiet understanding',
+        'tender affection',
+        'dreamy contemplation',
+        'warm embrace',
+        'shared happiness',
+        'gentle protection',
+        'sweet discovery',
+        'peaceful harmony',
+        'loving care',
+        'joyful wonder',
+        'romantic moment',
+        'intimate connection',
+        'blissful togetherness',
+        'pure happiness',
+        'heartfelt emotion'
+        ];
+
+        // Shuffle all arrays on load - MAXIMUM CHAOS
+        const characterTypes = shuffleArray(originalCharacterTypes);
+        const clothingStyles = shuffleArray(originalClothingStyles);
+        const actions       = shuffleArray(originalActions);
+        const objects       = shuffleArray(originalObjects);
+        const animals       = shuffleArray(originalAnimals);
+        const locations     = shuffleArray(originalLocations);
+        const moods         = shuffleArray(originalMoods);
+        const lightings     = shuffleArray(originalLightings);
+        const phenomena     = shuffleArray(originalPhenomena);
+        const aesthetics    = shuffleArray(originalAesthetics);
+        const colors        = shuffleArray(originalColors);
+        const details       = shuffleArray(originalDetails);
+        const emotions      = shuffleArray(originalEmotions);
+
+        // ====== STATE ======
+        let idea = null;
+        let isGenerating = false;
+        let copied = false;
+        let generatedThisSession = 0;
+        let copyTimer = null;
+
+        function freshUsed() {
+            return {
+                characterTypes: new Set(), clothingStyles: new Set(), actions: new Set(),
+                objects: new Set(), animals: new Set(), locations: new Set(),
+                moods: new Set(), lightings: new Set(), phenomena: new Set(),
+                aesthetics: new Set(), colors: new Set(), details: new Set(), emotions: new Set()
+            };
+        }
+        let usedIndices = freshUsed();
+
+        function getRandomUnusedIndex(arrayLength, usedSet) {
+            if (usedSet.size >= arrayLength) {
+                return getTrulyRandomInt(arrayLength);
+            }
+            let index, attempts = 0;
+            do {
+                index = getTrulyRandomInt(arrayLength);
+                attempts++;
+                if (attempts > 100) return index;
+            } while (usedSet.has(index));
+            return index;
+        }
+
+        // ====== GENERATE ======
+        function generateIdea() {
+            if (isGenerating) return;
+            isGenerating = true;
+            copied = false;
+            render();
+
+            setTimeout(function () {
+                const characterTypeIdx = getRandomUnusedIndex(characterTypes.length, usedIndices.characterTypes);
+                const clothingIdx      = getRandomUnusedIndex(clothingStyles.length, usedIndices.clothingStyles);
+                const actionIdx        = getRandomUnusedIndex(actions.length, usedIndices.actions);
+                const objectIdx        = getRandomUnusedIndex(objects.length, usedIndices.objects);
+                const animalIdx        = getRandomUnusedIndex(animals.length, usedIndices.animals);
+                const locationIdx      = getRandomUnusedIndex(locations.length, usedIndices.locations);
+                const moodIdx          = getRandomUnusedIndex(moods.length, usedIndices.moods);
+                const lightingIdx      = getRandomUnusedIndex(lightings.length, usedIndices.lightings);
+                const phenomenonIdx    = getRandomUnusedIndex(phenomena.length, usedIndices.phenomena);
+                const aestheticIdx     = getRandomUnusedIndex(aesthetics.length, usedIndices.aesthetics);
+                const colorIdx         = getRandomUnusedIndex(colors.length, usedIndices.colors);
+                const detailIdx        = getRandomUnusedIndex(details.length, usedIndices.details);
+                const emotionIdx       = getRandomUnusedIndex(emotions.length, usedIndices.emotions);
+
+                usedIndices.characterTypes.add(characterTypeIdx);
+                usedIndices.clothingStyles.add(clothingIdx);
+                usedIndices.actions.add(actionIdx);
+                usedIndices.objects.add(objectIdx);
+                usedIndices.animals.add(animalIdx);
+                usedIndices.locations.add(locationIdx);
+                usedIndices.moods.add(moodIdx);
+                usedIndices.lightings.add(lightingIdx);
+                usedIndices.phenomena.add(phenomenonIdx);
+                usedIndices.aesthetics.add(aestheticIdx);
+                usedIndices.colors.add(colorIdx);
+                usedIndices.details.add(detailIdx);
+                usedIndices.emotions.add(emotionIdx);
+
+                const characterType = characterTypes[characterTypeIdx];
+                const clothing = clothingStyles[clothingIdx];
+                const action = actions[actionIdx];
+                const object = objects[objectIdx];
+                const animal = animals[animalIdx];
+                const location = locations[locationIdx];
+                const mood = moods[moodIdx];
+                const lighting = lightings[lightingIdx];
+                const phenomenon = phenomena[phenomenonIdx];
+                const aesthetic = aesthetics[aestheticIdx];
+                const color = colors[colorIdx];
+                const detail = details[detailIdx];
+                const emotion = emotions[emotionIdx];
+
+                const structures = [
+                    `${characterType} ${clothing} ${action} with ${object} beside ${animal} in ${location}, ${mood} atmosphere, ${lighting}, ${phenomenon}, ${aesthetic}, color palette: ${color}, ${detail}, ${emotion}, saturated colors, rich color palette, beautiful composition --ar 9:16 --v 7`,
+                    `${characterType} ${clothing} beside ${animal}, ${action} with ${object} in ${location}, ${phenomenon}, ${lighting}, ${mood} atmosphere, ${aesthetic}, ${color} colors, ${detail}, ${emotion}, saturated colors, beautiful composition --ar 9:16 --v 7`,
+                    `in ${location}, ${characterType} ${clothing} ${action} with ${object} and ${animal}, ${mood} mood, ${lighting}, ${phenomenon} surrounding them, ${aesthetic}, color palette: ${color}, ${detail}, capturing ${emotion}, saturated colors, rich color palette --ar 9:16 --v 7`
+                ];
+                const prompt = structures[getTrulyRandomInt(structures.length)];
+
+                const fullText = `${characterType} ${action} ${object} ${location} ${phenomenon}`.toLowerCase();
+                const tags = [];
+                if (fullText.includes('valentine') || fullText.includes('heart') || fullText.includes('love') || fullText.includes('rose')) tags.push('valentine');
+                if (fullText.includes('spring') || fullText.includes('blossom') || fullText.includes('flower')) tags.push('spring');
+                if (fullText.includes('bunny') || fullText.includes('rabbit')) tags.push('bunnies');
+                if (fullText.includes('cat') || fullText.includes('kitten') || fullText.includes('fox') || fullText.includes('deer')) tags.push('animals');
+                if (fullText.includes('cottage') || fullText.includes('garden') || fullText.includes('countryside')) tags.push('cottagecore');
+                if (fullText.includes('victorian') || fullText.includes('vintage')) tags.push('vintage');
+                tags.push('romantic', 'sweet');
+                const finalTags = tags.slice(0, 6);
+
+                const title = `${characterType} ${action}`.split(' ').slice(0, 6).join(' ');
+                const titleCapitalized = title.charAt(0).toUpperCase() + title.slice(1);
+
+                idea = {
+                    title: titleCapitalized,
+                    description: `${characterType} ${clothing}, ${action} with ${object} beside ${animal} in ${location}. ${emotion} in ${aesthetic}.`,
+                    tags: finalTags,
+                    prompt: prompt
+                };
+
+                generatedThisSession += 1;
+                isGenerating = false;
+                render();
+            }, 1000);
+        }
+
+        // ====== RESET ======
+        function handleReshuffle() {
+            usedIndices = freshUsed();
+            generatedThisSession = 0;
+            idea = null;
+            copied = false;
+            render();
+        }
+
+        // ====== COPY ======
+        async function copyToClipboard(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                markCopied();
+            } catch (err) {
+                try {
+                    const textArea = document.createElement('textarea');
+                    textArea.value = text;
+                    textArea.style.position = 'fixed';
+                    textArea.style.left = '-999999px';
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    markCopied();
+                } catch (fallbackErr) {
+                    alert('Failed to copy. Please copy manually.');
+                }
+            }
+        }
+
+        function markCopied() {
+            copied = true;
+            render();
+            if (copyTimer) clearTimeout(copyTimer);
+            copyTimer = setTimeout(function () {
+                copied = false;
+                render();
+            }, 2000);
+        }
+
+        // ====== RENDER ======
+        function el(tag, props, children) {
+            const node = document.createElement(tag);
+            if (props) {
+                for (const k in props) {
+                    if (k === 'class') node.className = props[k];
+                    else if (k === 'style') node.setAttribute('style', props[k]);
+                    else if (k === 'text') node.textContent = props[k];
+                    else node.setAttribute(k, props[k]);
+                }
+            }
+            (children || []).forEach(function (c) {
+                if (typeof c === 'string') node.appendChild(document.createTextNode(c));
+                else if (c) node.appendChild(c);
+            });
+            return node;
+        }
+
+        function render() {
+            // stats
+            document.getElementById('count').textContent = generatedThisSession;
+
+            // generate button state
+            const genIcon = document.getElementById('genIcon');
+            const genText = document.getElementById('genText');
+            const genBtn = document.getElementById('generateBtn');
+            genIcon.textContent = isGenerating ? '🔄' : '✨';
+            genText.textContent = isGenerating ? 'Generating Magic...' : 'Generate New Idea';
+            genText.className = isGenerating ? 'spin' : '';
+            genBtn.disabled = isGenerating;
+
+            // result area
+            const result = document.getElementById('result');
+            result.innerHTML = '';
+
+            if (isGenerating) return;
+
+            if (idea) {
+                const card = el('div', { class: 'idea-card' }, [
+                    el('div', { class: 'idea-header' }, [
+                        el('div', { class: 'icon-box' }, [
+                            el('span', { style: 'font-size: 1.5rem;', text: '✨' })
+                        ]),
+                        el('div', { style: 'flex: 1;' }, [
+                            el('h2', { class: 'idea-title', text: idea.title })
+                        ])
+                    ]),
+                    el('div', { class: 'description-box' }, [
+                        el('p', { class: 'description-text', text: idea.description })
+                    ]),
+                    el('div', { class: 'tags-container' },
+                        idea.tags.map(function (tag) {
+                            return el('span', { class: 'tag', text: '#' + tag });
+                        })
+                    ),
+                    (function () {
+                        const copyBtn = el('button', { class: 'copy-button' }, [
+                            el('span', { text: copied ? '✓' : '📋' }),
+                            el('span', { text: copied ? 'Copied!' : 'Copy to Clipboard' })
+                        ]);
+                        copyBtn.addEventListener('click', function () { copyToClipboard(idea.prompt); });
+                        return el('div', { class: 'prompt-box' }, [
+                            el('div', { class: 'prompt-header' }, [
+                                el('span', { text: '🖼️' }),
+                                el('span', { text: 'AI Art Prompt (ready to copy)' })
+                            ]),
+                            el('p', { class: 'prompt-text', text: idea.prompt }),
+                            copyBtn
+                        ]);
+                    })()
+                ]);
+                result.appendChild(card);
+            } else {
+                const placeholder = el('div', { class: 'text-center', style: 'color: #e9d5ff; margin-bottom: 2rem;' }, [
+                    el('p', { style: 'font-size: 1.125rem; margin-bottom: 1rem;', text: '🎨 Click the button above to generate your first idea!' }),
+                    el('p', { style: 'font-size: 0.875rem; color: #d8b4fe;', text: 'Each idea is unique and full of cosy charm!' })
+                ]);
+                result.appendChild(placeholder);
+            }
+        }
+
+        // ====== INIT ======
+        document.getElementById('generateBtn').addEventListener('click', generateIdea);
+        document.getElementById('resetBtn').addEventListener('click', handleReshuffle);
+        render();
+    </script>
+</body>
+</html>
