@@ -18,7 +18,7 @@ const collection = [
     title: "Storybook Character Generator",
     description:
       "Build fairy tale characters in flat-lay photography style with complete prompts for Midjourney and Seedance 2.0.",
-    tag: "Midjourney · Seedance",
+    tag: "Midjourney • Seedance",
   },
   {
     key: "flower",
@@ -631,7 +631,7 @@ export default function Page() {
                 $90
               </div>
               <div style={{ color: "#a8c5a0", fontStyle: "italic", marginTop: 4 }}>
-                per year · $7.50 / month
+                per year • $7.50 / month
               </div>
               <div
                 style={{
@@ -846,7 +846,7 @@ export default function Page() {
               letterSpacing: ".05em",
             }}
           >
-            © 2026 Tatiana Lychy — All Rights Reserved · Studio access required
+            © 2026 Tatiana Lychy — All Rights Reserved • Studio access required
           </p>
         </footer>
       </main>
