@@ -18,7 +18,7 @@ const collection = [
     title: "Storybook Character Generator",
     description:
       "Build fairy tale characters in flat-lay photography style with complete prompts for Midjourney and Seedance 2.0.",
-    tag: "Midjourney • Seedance",
+    tag: "Midjourney · Seedance",
   },
   {
     key: "flower",
@@ -141,8 +141,11 @@ export default function Page() {
             FAQ
           </a>
 
-          <Link
-            href="/studio"
+          {/* Enter Studio → Whop checkout (месячный план) */}
+          <a
+            href="https://whop.com/checkout/plan_e5EQbgYs95UvS"
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
               border: "1px solid rgba(212,175,55,.28)",
               color: "#d4af37",
@@ -152,8 +155,9 @@ export default function Page() {
             }}
           >
             Enter Studio
-          </Link>
+          </a>
 
+          {/* верхняя кнопка trial остаётся как была */}
           <a
             href="https://whop.com/checkout/plan_e5EQbgYs95UvS"
             target="_blank"
@@ -218,6 +222,7 @@ export default function Page() {
               flexWrap: "wrap",
             }}
           >
+            {/* hero trial → Whop */}
             <a
               href="https://whop.com/checkout/plan_e5EQbgYs95UvS"
               target="_blank"
@@ -234,8 +239,11 @@ export default function Page() {
               Start 3-Day Free Trial
             </a>
 
-            <Link
-              href="/studio"
+            {/* hero Enter Studio → тоже Whop (месяц) */}
+            <a
+              href="https://whop.com/checkout/plan_e5EQbgYs95UvS"
+              target="_blank"
+              rel="noopener noreferrer"
               style={{
                 padding: "14px 28px",
                 borderRadius: 999,
@@ -244,7 +252,7 @@ export default function Page() {
               }}
             >
               Enter Studio
-            </Link>
+            </a>
           </div>
         </section>
 
@@ -631,7 +639,7 @@ export default function Page() {
                 $90
               </div>
               <div style={{ color: "#a8c5a0", fontStyle: "italic", marginTop: 4 }}>
-                per year • $7.50 / month
+                per year · $7.50 / month
               </div>
               <div
                 style={{
@@ -810,8 +818,11 @@ export default function Page() {
                 Choose Your Plan
               </a>
 
-              <Link
-                href="/studio"
+              {/* нижний Enter Studio → тоже Whop */}
+              <a
+                href="https://whop.com/checkout/plan_e5EQbgYs95UvS"
+                target="_blank"
+                rel="noopener noreferrer"
                 style={{
                   display: "inline-block",
                   padding: "14px 28px",
@@ -821,7 +832,7 @@ export default function Page() {
                 }}
               >
                 Enter Studio
-              </Link>
+              </a>
             </div>
           </div>
         </section>
@@ -846,7 +857,7 @@ export default function Page() {
               letterSpacing: ".05em",
             }}
           >
-            © 2026 Tatiana Lychy — All Rights Reserved • Studio access required
+            © 2026 Tatiana Lychy — All Rights Reserved · Studio access required
           </p>
         </footer>
       </main>
