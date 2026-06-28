@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 
 const collection = [
@@ -34,6 +33,14 @@ const collection = [
     title: "Summer Adventures",
     description:
       "Create warm, cozy summer scenes filled with sunshine, nostalgia, soft storytelling, and magical seasonal atmosphere.",
+    tag: "Midjourney",
+  },
+  {
+    key: "cosy",
+    icon: "🕯️",
+    title: "Cosy Inspiration Generator",
+    description:
+      "Generate tender, atmospheric cozy concepts for magical interiors, quiet rituals, seasonal moodboards, and warm visual storytelling.",
     tag: "Midjourney",
   },
 ];
@@ -141,7 +148,6 @@ export default function Page() {
             FAQ
           </a>
 
-          {/* Enter Studio → Whop checkout (месячный план) */}
           <a
             href="https://whop.com/checkout/plan_e5EQbgYs95UvS"
             target="_blank"
@@ -157,7 +163,6 @@ export default function Page() {
             Enter Studio
           </a>
 
-          {/* верхняя кнопка trial остаётся как была */}
           <a
             href="https://whop.com/checkout/plan_e5EQbgYs95UvS"
             target="_blank"
@@ -222,7 +227,6 @@ export default function Page() {
               flexWrap: "wrap",
             }}
           >
-            {/* hero trial → Whop */}
             <a
               href="https://whop.com/checkout/plan_e5EQbgYs95UvS"
               target="_blank"
@@ -239,7 +243,6 @@ export default function Page() {
               Start 3-Day Free Trial
             </a>
 
-            {/* hero Enter Studio → тоже Whop (месяц) */}
             <a
               href="https://whop.com/checkout/plan_e5EQbgYs95UvS"
               target="_blank"
@@ -279,7 +282,7 @@ export default function Page() {
               ✦ Private Access ✦
             </div>
             <h2 style={{ margin: "0 0 10px", fontWeight: 400, fontSize: 30 }}>
-              Your generators now belong inside the <span style={{ color: "#d4af37", fontStyle: "italic" }}>Studio</span>
+              See the full collection before you join the <span style={{ color: "#d4af37", fontStyle: "italic" }}>Studio</span>
             </h2>
             <p
               style={{
@@ -290,7 +293,7 @@ export default function Page() {
                 lineHeight: 1.8,
               }}
             >
-              This public page is your entrance hall. The working tools and digital products live inside the Studio member area.
+              Explore every generator and digital product on this page, then unlock full use inside the private Studio after subscribing.
             </p>
           </div>
         </section>
@@ -316,8 +319,18 @@ export default function Page() {
                 margin: 0,
               }}
             >
-              Inside the <span style={{ color: "#d4af37", fontStyle: "italic" }}>Studio</span>
+              Everything included inside the <span style={{ color: "#d4af37", fontStyle: "italic" }}>Studio</span>
             </h2>
+            <p
+              style={{
+                color: "#a8c5a0",
+                fontStyle: "italic",
+                marginTop: 12,
+                lineHeight: 1.8,
+              }}
+            >
+              Browse the full library before subscribing. Usage opens after registration and payment.
+            </p>
           </div>
 
           <div
@@ -388,7 +401,7 @@ export default function Page() {
                     textAlign: "center",
                   }}
                 >
-                  Available inside Studio
+                  Visible now · unlocked inside Studio
                 </div>
               </div>
             ))}
@@ -424,18 +437,18 @@ export default function Page() {
             {[
               [
                 "I",
-                "Join the Studio",
-                "Start with a 3-day free trial and create your member access through checkout.",
+                "Explore the Collection",
+                "See all generators and digital products on the public page before making a decision.",
               ],
               [
                 "II",
-                "Enter Your Private Space",
-                "After joining, enter the Studio and access the current collection of tools and products.",
+                "Choose Monthly or Yearly",
+                "Start with the plan that fits you best and activate your access through checkout.",
               ],
               [
                 "III",
-                "Choose a Generator",
-                "Open the tool you need for your creative task and build your prompt flow inside the studio.",
+                "Enter Your Private Studio",
+                "After joining, enter the Studio and use the available generators inside your member space.",
               ],
               [
                 "IV",
@@ -572,7 +585,7 @@ export default function Page() {
                 }}
               >
                 <li>Studio access</li>
-                <li>Full use of current generators</li>
+                <li>Full use of all 5 current generators</li>
                 <li>New tools added over time</li>
                 <li>Cancel anytime</li>
               </ul>
@@ -791,7 +804,7 @@ export default function Page() {
                 lineHeight: 1.8,
               }}
             >
-              Both plans include a 3-day free trial. Join first, then enter the Studio.
+              Explore the collection publicly, then unlock full Studio use with your subscription.
             </p>
 
             <div
@@ -818,7 +831,6 @@ export default function Page() {
                 Choose Your Plan
               </a>
 
-              {/* нижний Enter Studio → тоже Whop */}
               <a
                 href="https://whop.com/checkout/plan_e5EQbgYs95UvS"
                 target="_blank"
