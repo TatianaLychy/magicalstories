@@ -47,5 +47,5 @@ export function middleware(request) {
 }
 
 export const config = {
-  matcher: ["/studio/:path*"],
+ matcher: ["/studio/:path+"],
 };
