@@ -181,6 +181,7 @@ export default function Page() {
       </nav>
 
       <main style={{ maxWidth: 960, margin: "0 auto", padding: "0 24px 96px" }}>
+        {/* HERO — БЕЗ центральных кнопок */}
         <section style={{ textAlign: "center", padding: "88px 0 64px" }}>
           <div
             style={{
@@ -216,47 +217,9 @@ export default function Page() {
               lineHeight: 1.7,
             }}
           >
-            A studio for AI generators, prompt tools, and creative digital products for illustrators, animators, and storytellers.
+            A studio for AI generators, prompt tools, and creative digital products
+            for illustrators, animators, and storytellers.
           </p>
-
-          <div
-            style={{
-              display: "flex",
-              gap: 16,
-              justifyContent: "center",
-              flexWrap: "wrap",
-            }}
-          >
-            <a
-              href="https://whop.com/checkout/plan_e5EQbgYs95UvS"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                padding: "14px 28px",
-                borderRadius: 999,
-                background:
-                  "linear-gradient(135deg,#b8922a 0%,#d4af37 50%,#b8922a 100%)",
-                color: "#0a1a0e",
-                boxShadow: "0 6px 22px rgba(212,175,55,.22)",
-              }}
-            >
-              Start 3-Day Free Trial
-            </a>
-
-            <a
-              href="https://whop.com/checkout/plan_e5EQbgYs95UvS"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                padding: "14px 28px",
-                borderRadius: 999,
-                border: "1px solid rgba(212,175,55,.3)",
-                color: "#d4af37",
-              }}
-            >
-              Enter Studio
-            </a>
-          </div>
         </section>
 
         <section style={{ padding: "0 0 54px" }}>
@@ -282,7 +245,8 @@ export default function Page() {
               ✦ Studio Access ✦
             </div>
             <h2 style={{ margin: "0 0 10px", fontWeight: 400, fontSize: 30 }}>
-              Your generators now belong inside the <span style={{ color: "#d4af37", fontStyle: "italic" }}>Studio</span>
+              Your generators now belong inside the{" "}
+              <span style={{ color: "#d4af37", fontStyle: "italic" }}>Studio</span>
             </h2>
             <p
               style={{
@@ -293,7 +257,8 @@ export default function Page() {
                 lineHeight: 1.8,
               }}
             >
-              This page shows the world of the Studio. After subscribing, you can enter and work with the available tools and digital products inside.
+              This page shows the world of the Studio. After subscribing, you can
+              enter and work with the available tools and digital products inside.
             </p>
           </div>
         </section>
@@ -319,7 +284,8 @@ export default function Page() {
                 margin: 0,
               }}
             >
-              Inside the <span style={{ color: "#d4af37", fontStyle: "italic" }}>Studio</span>
+              Inside the{" "}
+              <span style={{ color: "#d4af37", fontStyle: "italic" }}>Studio</span>
             </h2>
             <p
               style={{
@@ -329,7 +295,8 @@ export default function Page() {
                 lineHeight: 1.8,
               }}
             >
-              The library grows over time as new generators and digital resources are added.
+              The library grows over time as new generators and digital resources
+              are added.
             </p>
           </div>
 
@@ -429,7 +396,8 @@ export default function Page() {
                 margin: 0,
               }}
             >
-              How it <span style={{ color: "#d4af37", fontStyle: "italic" }}>works</span>
+              How it{" "}
+              <span style={{ color: "#d4af37", fontStyle: "italic" }}>works</span>
             </h2>
           </div>
 
@@ -478,7 +446,9 @@ export default function Page() {
                   {n}
                 </div>
                 <div>
-                  <h3 style={{ margin: "0 0 6px", fontWeight: 400, fontSize: 18 }}>
+                  <h3
+                    style={{ margin: "0 0 6px", fontWeight: 400, fontSize: 18 }}
+                  >
                     {t}
                   </h3>
                   <p
@@ -518,7 +488,8 @@ export default function Page() {
                 margin: 0,
               }}
             >
-              Choose Your <span style={{ color: "#d4af37", fontStyle: "italic" }}>Plan</span>
+              Choose Your{" "}
+              <span style={{ color: "#d4af37", fontStyle: "italic" }}>Plan</span>
             </h2>
             <p style={{ color: "#a8c5a0", fontStyle: "italic", marginTop: 12 }}>
               Simple, elegant pricing with Studio access included.
@@ -557,7 +528,9 @@ export default function Page() {
               <div style={{ fontSize: 54, lineHeight: 1, fontStyle: "italic" }}>
                 $11.99
               </div>
-              <div style={{ color: "#a8c5a0", fontStyle: "italic", marginTop: 4 }}>
+              <div
+                style={{ color: "#a8c5a0", fontStyle: "italic", marginTop: 4 }}
+              >
                 per month
               </div>
               <div
@@ -651,7 +624,9 @@ export default function Page() {
               <div style={{ fontSize: 54, lineHeight: 1, fontStyle: "italic" }}>
                 $90
               </div>
-              <div style={{ color: "#a8c5a0", fontStyle: "italic", marginTop: 4 }}>
+              <div
+                style={{ color: "#a8c5a0", fontStyle: "italic", marginTop: 4 }}
+              >
                 per year · $7.50 / month
               </div>
               <div
@@ -726,7 +701,9 @@ export default function Page() {
                 margin: 0,
               }}
             >
-              <span style={{ color: "#d4af37", fontStyle: "italic" }}>Frequently</span>{" "}
+              <span style={{ color: "#d4af37", fontStyle: "italic" }}>
+                Frequently
+              </span>{" "}
               Asked
             </h2>
           </div>
@@ -794,7 +771,8 @@ export default function Page() {
                 margin: "0 0 10px",
               }}
             >
-              Begin creating <span style={{ color: "#d4af37", fontStyle: "italic" }}>today</span>
+              Begin creating{" "}
+              <span style={{ color: "#d4af37", fontStyle: "italic" }}>today</span>
             </h2>
             <p
               style={{
@@ -804,7 +782,8 @@ export default function Page() {
                 lineHeight: 1.8,
               }}
             >
-              Both plans include a 3-day free trial. Join first, then enter the Studio.
+              Both plans include a 3-day free trial. Join first, then enter the
+              Studio.
             </p>
 
             <div
